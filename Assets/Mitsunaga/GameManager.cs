@@ -32,6 +32,10 @@ public class GameManager : SingletonMBGameManager<GameManager>
     public BoolReactiveProperty isClear     = new BoolReactiveProperty(false);      // クリア
     public BoolReactiveProperty isGameOver  = new BoolReactiveProperty(false);      // ゲームオーバー
     public BoolReactiveProperty isPause     = new BoolReactiveProperty(true);       // 一時停止
+    
+    // シーン遷移までの待ち時間
+    const int WAIT_TIME_CLEAR = 4;
+    const int WAIT_TIME_GAMEOVER = 2;
 
     override protected void Awake()
     {
@@ -40,6 +44,43 @@ public class GameManager : SingletonMBGameManager<GameManager>
 
         // シーンが変わっても破棄されないようにする
         DontDestroyOnLoad(this.gameObject);
+
+        // クリア時の処理
+        isClear
+            .Where(x => x)
+            .Subscribe(_ =>
+            {
+                isPause.Value = true;
+
+                Debug.Log("IsClear : " + _.ToString());
+                bigText.text = "CLEAR!";
+
+                Observable.Timer(TimeSpan.FromSeconds(WAIT_TIME_CLEAR))
+                .Subscribe(c =>
+                {
+                    FadeOut("01 Title");
+                })
+                .AddTo(this.gameObject);
+            })
+            .AddTo(this.gameObject);
+
+        isGameOver
+            .Where(x => x)
+            .Subscribe(_ =>
+            {
+                isPause.Value = true;
+
+                Debug.Log("IsGameOver : " + _.ToString());
+                bigText.text = "GAME OVER";
+
+                Observable.Timer(TimeSpan.FromSeconds(WAIT_TIME_GAMEOVER))
+                .Subscribe(c =>
+                {
+                    FadeOut("02 StageSelect");
+                })
+                .AddTo(this.gameObject);
+            })
+            .AddTo(gameObject);
 
         // デバッグ中以外なら読み込み後タイトルシーンに遷移
         if (!isDebug)
@@ -68,6 +109,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
     }
     void FadeIn()
     {
+        bigText.text = "";
         isGameOver.Value    = false;
         isClear.Value       = false;
 
