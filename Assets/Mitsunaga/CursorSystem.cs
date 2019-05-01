@@ -4,19 +4,24 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+using UnityEngine.VFX;
+using UnityEditor.VFX;
+using UnityEngine.Experimental.Rendering.LWRP;
+using UnityEngine.Experimental.VFX;
+
 public class CursorSystem : MonoBehaviour
 {
     // マウスカーソルの処理
 
     [SerializeField, Header("ブラックホールとホワイトホール")]
-    GameObject bHole;
-    [SerializeField]
-    GameObject wHole;
+    VisualEffect vfxHole;
 
+    VisualEffect holeEffect;
     bool cursorFlg = false;
-    void Awake()
-    {
-    }
+
+    const float bSize = 2.5f;
+    const float wSize = 8.0f;
+
     void Start()
     {
         this.UpdateAsObservable()
@@ -33,15 +38,13 @@ public class CursorSystem : MonoBehaviour
                 {
                     GameManager.Instance.cursorFlg = false;
 
-                    bHole.SetActive(false);
-                    wHole.SetActive(true);
+                    vfxHole.SetFloat("ConformSize", wSize);
                 }
                 else
                 {
                     GameManager.Instance.cursorFlg = true;
 
-                    bHole.SetActive(true);
-                    wHole.SetActive(false);
+                    vfxHole.SetFloat("ConformSize", bSize);
                 }
 
                 GameManager.Instance.cursorPos = this.gameObject.transform.position;

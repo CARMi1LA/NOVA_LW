@@ -31,6 +31,10 @@ public class _StarParam : MonoBehaviour
         // コルーチンの再生、停止をコントロールするためここで宣言
         routine = SetStarSizeCoroutine(nextSize);
 
+        // Rigidbodyを取得して、Y軸の移動を停止させる
+        starRig = GetComponent<Rigidbody>();
+        starRig.constraints = RigidbodyConstraints.FreezePositionY;
+
         // starSizeの値が変化した場合、値をスケールに適用
         starSize.Subscribe(c =>
         {
@@ -50,10 +54,6 @@ public class _StarParam : MonoBehaviour
             }
         })
         .AddTo(this.gameObject);
-
-        // Rigidbodyを取得して、Y軸の移動を停止させる
-        starRig = GetComponent<Rigidbody>();
-        starRig.constraints = RigidbodyConstraints.FreezePositionY;
     }
 
     // 星のサイズ設定

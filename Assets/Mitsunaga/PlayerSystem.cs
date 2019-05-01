@@ -42,10 +42,6 @@ public class PlayerSystem : _StarParam
     {
         // _StarParamのAwakeを最初に起動
         base.Awake();
-
-        // プレイヤー情報をGameManagerに送信
-        GameManager.Instance.playerPosition = this.transform.position;
-        GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
         // SEを取得
         collisionAudioSource = GetComponent<AudioSource>();
         // カメラの初期化
@@ -58,6 +54,10 @@ public class PlayerSystem : _StarParam
         linePtB.startWidth = 0.1f;  // 開始点の幅
         linePtB.endWidth = 0.1f;    // 終点の幅
         linePtB.positionCount = 2;  // 頂点の数
+
+        // プレイヤー情報をGameManagerに送信
+        GameManager.Instance.playerPosition = this.transform.position;
+        GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
 
         // アップデート
         // isPauseがfalseの場合のみ実行
