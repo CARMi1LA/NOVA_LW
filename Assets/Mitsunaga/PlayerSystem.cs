@@ -56,7 +56,7 @@ public class PlayerSystem : _StarParam
         linePtB.positionCount = 2;  // 頂点の数
 
         // プレイヤー情報をGameManagerに送信
-        GameManager.Instance.playerPosition = this.transform.position;
+        GameManager.Instance.playerTransform = this.transform;
         GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
 
         // アップデート
@@ -70,7 +70,7 @@ public class PlayerSystem : _StarParam
                 SetStarMove(moveSpeed, moveSpeedMul);
 
                 // プレイヤー情報をGameManagerに送信
-                GameManager.Instance.playerPosition = this.transform.position;
+                GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
 
                 // ボスとの間に線を引く
