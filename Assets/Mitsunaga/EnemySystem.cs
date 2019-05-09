@@ -76,12 +76,12 @@ public class EnemySystem : _StarParam
             .Where(_ => starID != 2)
             .Subscribe(c =>
             {
-                if (Vector3.Distance(this.transform.position, GameManager.Instance.playerPosition) <= moveSpace)
+                if (Vector3.Distance(this.transform.position, GameManager.Instance.playerTransform.position) <= moveSpace)
                 {
                     // プレイヤーの方向を向くAIか否か
                     if (isLookPlayer)
                     {
-                        moveDir = (GameManager.Instance.playerPosition - this.transform.position).normalized;
+                        moveDir = (GameManager.Instance.playerTransform.position - this.transform.position).normalized;
                     }
                     // 速度と方向を計算して、力を加える
                     starRig.AddForce(moveSpeedMul * ((moveDir * moveSpeed) - starRig.velocity));

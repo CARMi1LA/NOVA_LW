@@ -44,7 +44,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
     [Header("シーン毎に設定が必要なコンポーネント")]
     [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
-    [SerializeField] private EnemyController[] planetPrefab;      // スポーンする惑星をここに格納
+    [SerializeField] private EnemySystem[] planetPrefab;      // スポーンする惑星をここに格納
     [SerializeField] private List<LevelSpawnPlanets> planetScaleList = new List<LevelSpawnPlanets>();
     [SerializeField] private PlanetPool planetPool;             // 惑星のオブジェクトプール
     [SerializeField] private Transform hierarchyTrans;          // スポーンしたオブジェクトをまとめるために必要
