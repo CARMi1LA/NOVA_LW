@@ -11,17 +11,6 @@ using TMPro;
 
 using Random = UnityEngine.Random; // ランダム関数はUnityEngineの物を使う
 
-// 二次元配列のリストをインスペクター上で表示するためのクラス
-[System.SerializableAttribute]
-public class LevelSpawnPlanets
-{
-    public List<float> planetScales = new List<float>();
-    public LevelSpawnPlanets(List<float> list)
-    {
-        planetScales = list;
-    }
-}
-
 public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 {
     // 惑星自動生成スクリプト
@@ -37,20 +26,23 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     [SerializeField] private float planetSpawnHeight;
     [SerializeField] private float stageSize;                   // ランダム生成の範囲
 
-    [SerializeField] private int level;
+    [SerializeField] private int level;                         // 現在のレベル
 
     [Header("デバッグ用に値を変更可能")]
-    [SerializeField] private int planetSpawnInterval;         // 惑星の再出現までのフレーム
+    [SerializeField] private int planetSpawnInterval;           // 惑星の再出現までのフレーム
 
     [Header("シーン毎に設定が必要なコンポーネント")]
     [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
-    [SerializeField] private EnemySystem[] planetPrefab;      // スポーンする惑星をここに格納
-    [SerializeField] private List<LevelSpawnPlanets> planetScaleList = new List<LevelSpawnPlanets>();
+    [SerializeField] private EnemySystem[] planetPrefab;        // スポーンする惑星をここに格納
     [SerializeField] private PlanetPool planetPool;             // 惑星のオブジェクトプール
-    [SerializeField] private Transform hierarchyTrans;          // スポーンしたオブジェクトをまとめるために必要
-    [SerializeField] private float[] planetScales;            // 惑星の大きさの格納できる配列
-    [SerializeField] private float[] planetScaleMax;
-    [SerializeField] private float[] planetScaleMin;
+    [Header("プールをまとめるオブジェクトを作成、格納")]
+    [SerializeField] private Transform poolObjTrans;            // スポーンした惑星をまとめるオブジェクトをここに格納
+    [SerializeField] private float[] planetScales;              // 惑星の大きさの格納できる配列
+    [Header("レベル毎の惑星の大きさの最小値")]
+    [SerializeField] private float[] planetScaleMin;            // レベル毎の惑星の大きさの最小値
+    [Header("レベル毎の惑星の大きさの最大値")]
+    [SerializeField] private float[] planetScaleMax;            // レベル毎の惑星の大きさの最大値
+
 
     [Header("自動稼働し、設定する必要がないもの")]
     [SerializeField] private int count;                         // 現在のスポーン数
@@ -83,7 +75,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         minR = Mathf.Pow(hotSpotRadiusMin, 2);
 
         // オブジェクトプールの初期化
-        planetPool = new PlanetPool(hierarchyTrans,planetPrefab[0]);
+        planetPool = new PlanetPool(poolObjTrans,planetPrefab[0]);
 
         // 指定したフレームごとに実行
         Observable.IntervalFrame(planetSpawnInterval)
@@ -133,10 +125,8 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         // オブジェクトプールに追加
         var planet = planetPool.Rent();
         count++;
-        // 惑星生成  planetScales[Random.Range(0,planetScales.Length)]
-        //planet.PlanetSpawn(
-        //    spawnPos, 
-        //    planetScaleList[level - 1].planetScales[Random.Range(0, planetScaleList[level - 1].planetScales.Count())]);
+        // 惑星をスポーンさせる
+        // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
         planet.PlanetSpawn(spawnPos, playerPos.localScale.x * Random.Range(planetScaleMin[level-1], planetScaleMax[level-1]));
         // 消滅時、オブジェクトをプールに返す
         planet.OnDisableAsObservable().Subscribe(_ =>
@@ -189,10 +179,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
                 var planet = planetPool.Rent();
                 // 惑星スポーン、数をカウント
                 count++;
+                // 惑星をスポーンさせる
+                // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
                 planet.PlanetSpawn(
                 spawnPos + bossObjTrans.position, 
                 playerPos.localScale.x * Random.Range(planetScaleMin[level-1], planetScaleMax[level-1]));
-                //planetScaleList[level - 1].planetScales[Random.Range(0, planetScaleList[level - 1].planetScales.Count())]);
                 Debug.Log(spawnPos + bossObjTrans.position);
                 
                 // 消滅時、オブジェクトをプールに返す
