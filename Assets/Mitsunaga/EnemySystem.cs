@@ -45,6 +45,12 @@ public class EnemySystem : _StarParam
         // 星をアクティブにする
         this.gameObject.SetActive(true);
 
+        // ボス星の場合は、GameManagerに情報を送る
+        if(starID == 2)
+        {
+            GameManager.Instance.bossTransform = this.transform;
+        }
+
         // 移動速度、AIナンバーをランダムに取得する
         moveSpeed = UnityEngine.Random.Range(3.0f, 10.0f);
         AInum = UnityEngine.Random.Range(0, 3);

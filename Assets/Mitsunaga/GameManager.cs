@@ -24,7 +24,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
 
     [Header("ここから下、確認用")]
     // プレイヤーの情報
-    public Transform    playerTransform;    // プレイヤーのポジション
+    public Transform    playerTransform;    // プレイヤーのトランスフォーム
+    public Transform    bossTransform;      // ボスのトランスフォーム
     public Vector3      cameraPosition;     // カメラのポジション
     public Vector3      cursorPos;          // カーソルの位置
     public bool         cursorFlg;          // カーソルのフラグ(0ならブラックホール、1ならホワイトホール)

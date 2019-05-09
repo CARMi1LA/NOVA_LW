@@ -11,11 +11,9 @@ public class PlayerSystem : _StarParam
 {
     // プレイヤーとカメラのコントロールを行う
 
-    [SerializeField, Header("ボスとのライン関連")]
+    [SerializeField, Header("メインシーンか否か")]
     bool isMainScene = true;
-    [SerializeField]
-    Transform bossTransform;
-    [SerializeField]
+    [SerializeField, Header("ボスとのライン関連")]
     LineRenderer linePtB;
 
     // 星の移動関連 移動は敵と統合して _StarParam に移す予定
@@ -83,7 +81,7 @@ public class PlayerSystem : _StarParam
                 {
                     // ボスとの間に線を引く
                     linePtB.SetPosition(0, transform.position);     // 開始点の座標
-                    linePtB.SetPosition(1, bossTransform.position); // 終点の座標
+                    linePtB.SetPosition(1, GameManager.Instance.bossTransform.position); // 終点の座標
                 }
             })
             .AddTo(this.gameObject);
