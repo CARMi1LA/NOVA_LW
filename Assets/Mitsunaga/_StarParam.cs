@@ -99,7 +99,7 @@ public class _StarParam : MonoBehaviour
         starSize.Value = size;
     }
 
-    // 星の移動処理
+    // 星のマウスでの移動処理
     // speed    … 移動速度
     // speedMul … 移動速度への追従度(大きいほど加速、減速大)
     protected void SetStarMove(float speed,float speedMul)
@@ -112,8 +112,8 @@ public class _StarParam : MonoBehaviour
             case 1:
                 // マウスカーソルの方向を取得し、その方向に向かって力を加える
                 isMoving.Value = true;
-                Vector3 pDir = (GameManager.Instance.cursorPos - transform.position).normalized;
-                starRig.AddForce(speedMul * ((pDir * speed) - starRig.velocity));
+                Vector3 pDir = (GameManager.Instance.cursorPos - this.transform.position).normalized;
+                starRig.AddForce(speedMul * ((pDir * ((GameManager.Instance.cursorFlg) ? speed : -speed)) - starRig.velocity));
                 break;
             case 2:
                 isMoving.Value = false;

@@ -11,7 +11,9 @@ public class PlayerSystem : _StarParam
 {
     // プレイヤーとカメラのコントロールを行う
 
-    [SerializeField, Header("ボスのトランスフォーム,ボス間の線")]
+    [SerializeField, Header("ボスとのライン関連")]
+    bool isMainScene = true;
+    [SerializeField]
     Transform bossTransform;
     [SerializeField]
     LineRenderer linePtB;
@@ -34,6 +36,7 @@ public class PlayerSystem : _StarParam
     [SerializeField, Header("シネマシーンのカメラ")]
     CinemachineVirtualCamera vCam;
     const float CDISTANCE = 100.0f; // カメラの引き
+    const float CDISTANCE_SELECTSCENE = 50.0f;
 
     // 音楽関連
     AudioSource collisionAudioSource;
@@ -50,10 +53,13 @@ public class PlayerSystem : _StarParam
 
     void Start()
     {
-        // ラインレンダラーの情報を指定
-        linePtB.startWidth = 0.1f;  // 開始点の幅
-        linePtB.endWidth = 0.1f;    // 終点の幅
-        linePtB.positionCount = 2;  // 頂点の数
+        if (isMainScene)
+        {
+            // ラインレンダラーの情報を指定
+            linePtB.startWidth = 0.1f;  // 開始点の幅
+            linePtB.endWidth = 0.1f;    // 終点の幅
+            linePtB.positionCount = 2;  // 頂点の数
+        }
 
         // プレイヤー情報をGameManagerに送信
         GameManager.Instance.playerTransform = this.transform;
@@ -73,9 +79,12 @@ public class PlayerSystem : _StarParam
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
 
-                // ボスとの間に線を引く
-                linePtB.SetPosition(0, transform.position);     // 開始点の座標
-                linePtB.SetPosition(1, bossTransform.position); // 終点の座標
+                if (isMainScene)
+                {
+                    // ボスとの間に線を引く
+                    linePtB.SetPosition(0, transform.position);     // 開始点の座標
+                    linePtB.SetPosition(1, bossTransform.position); // 終点の座標
+                }
             })
             .AddTo(this.gameObject);
 
@@ -165,9 +174,18 @@ public class PlayerSystem : _StarParam
     // カメラの処理
     void SetCamera()
     {
-        // カメラ初期位置と星の半径を足した距離分、カメラを離す
-        vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance
-            = CDISTANCE + (transform.localScale.x / 1.5f);
+        if (isMainScene)
+        {
+            // カメラ初期位置と星の半径を足した距離分、カメラを離す
+            vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance
+                = CDISTANCE + (transform.localScale.x / 1.5f);
+        }
+        else
+        {
+            // カメラ初期位置と星の半径を足した距離分、カメラを離す
+            vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance
+                = CDISTANCE_SELECTSCENE + (transform.localScale.x / 1.5f);
+        }
     }
 
     // 衝突後の待ち時間、星の再構成を管理するコルーチン

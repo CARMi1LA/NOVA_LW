@@ -96,7 +96,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
     // シーン遷移
     // フェードアウト後にシーンを切り替え、フェードインする
     // それぞれフラグを元に戻しておく
-    void FadeOut(string SceneName)
+    public void FadeOut(string SceneName)
     {
         isPause.Value = true;
         IObservable<bool> obsOut = Observable.FromCoroutine<bool>(observer => fadeSystem.FadeOutCoroutine(observer, fadeTime));

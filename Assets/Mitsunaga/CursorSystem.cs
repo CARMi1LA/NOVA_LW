@@ -5,8 +5,8 @@ using UniRx;
 using UniRx.Triggers;
 
 using UnityEngine.VFX;
-using UnityEditor.VFX;
-using UnityEngine.Experimental.Rendering.LWRP;
+//using UnityEditor.VFX;
+//using UnityEngine.Experimental.Rendering.LWRP;
 using UnityEngine.Experimental.VFX;
 
 public class CursorSystem : MonoBehaviour
@@ -26,9 +26,11 @@ public class CursorSystem : MonoBehaviour
             {
                 // マウスカーソルの座標を取得、変換し、ポジションに適用
                 Vector3 cScreen = Input.mousePosition;
-                cScreen.z = GameManager.Instance.cameraPosition.z -
-                            GameManager.Instance.playerTransform.position.z;
+                cScreen.z = GameManager.Instance.cameraPosition.y -
+                            GameManager.Instance.playerTransform.position.y;
                 this.transform.position = Camera.main.ScreenToWorldPoint(cScreen);
+
+                Debug.Log(cScreen.z.ToString());
 
                 // マウスがクリックされている間、ホールを切り替える
                 if (Input.GetMouseButton(0))
