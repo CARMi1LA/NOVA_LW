@@ -108,7 +108,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     // 通常スポーン用
     void PlanetCreate()
     {
-        if (count == planetMaxnum ) return; // 30回生成されたらこのメソッドは起動しない
+        if (count == planetMaxnum ) return; // 生成量が最大生成量を超えたらこのメソッドは起動しない
         planetObjNum = Random.Range(0, planetPrefab.Length); // 生成したい惑星を取得
 
         spawnPos.x = Random.Range(-stageSize, stageSize); // 生成座標の設定
