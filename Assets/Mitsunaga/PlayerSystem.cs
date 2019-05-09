@@ -97,6 +97,7 @@ public class PlayerSystem : _StarParam
             .Where(c => !GameManager.Instance.isClear.Value)
             .Subscribe(_ =>
             {
+                GameManager.Instance.bigText.text = "";
                 GameManager.Instance.isPause.Value = false;
             })
             .AddTo(this.gameObject);

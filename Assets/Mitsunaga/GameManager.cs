@@ -100,7 +100,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
     {
         isPause.Value = true;
         IObservable<bool> obsOut = Observable.FromCoroutine<bool>(observer => fadeSystem.FadeOutCoroutine(observer, fadeTime));
-        obsOut.Subscribe(onCompleted =>
+        obsOut.Subscribe(_ =>
         {
             SceneManager.LoadScene(SceneName);
             FadeIn();
@@ -109,9 +109,19 @@ public class GameManager : SingletonMBGameManager<GameManager>
     }
     void FadeIn()
     {
-        bigText.text = "";
         isGameOver.Value    = false;
         isClear.Value       = false;
+
+        Debug.Log(SceneManager.GetActiveScene().ToString());
+
+        if (SceneManager.GetActiveScene().ToString() == "03 Stage01")
+        {
+            bigText.text = "Click Start";
+        }
+        else
+        {
+            bigText.text = "";
+        }
 
         StartCoroutine(fadeSystem.FadeInCoroutine(fadeTime));
     }

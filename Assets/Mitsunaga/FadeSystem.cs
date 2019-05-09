@@ -23,12 +23,16 @@ public class FadeSystem : MonoBehaviour
     [SerializeField]
     float startRange = 0.0f;
 
+    Color maskColor;
+
     void Start()
     {
         cutoutRange.Subscribe(c =>
         {
             // アルファ値をマテリアルに適用する
             maskMat.SetFloat(maskKeyword, c);
+
+            maskImage.gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1.0f - c);
 
             // マスクを更新する
             maskImage.enabled = false;
