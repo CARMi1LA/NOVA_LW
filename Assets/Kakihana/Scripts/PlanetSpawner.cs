@@ -61,8 +61,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     // Start is called before the first frame update
     void Start()
     {
+        // プレイヤー情報の取得
         playerPos = GameManager.Instance.playerTransform;
         debugPlayerPos = playerPos.position;
+        // ボス情報の取得
+        bossObjTrans = GameManager.Instance.bossTransform;
         // ボスオブジェクトの円周を求める
         bossRadius = bossObjTrans.localScale.x * Mathf.PI;
         // 初期化メソッド
