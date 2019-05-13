@@ -37,13 +37,13 @@ public class CursorSystem : MonoBehaviour
                 {
                     GameManager.Instance.cursorFlg = false;
 
-                    vfxHole.SetFloat("ConformSize", wSize);
+                    vfxHole.SetFloat("ConformSize", Mathf.Lerp(vfxHole.GetFloat("ConformSize"), wSize, 0.1f));
                 }
                 else
                 {
                     GameManager.Instance.cursorFlg = true;
 
-                    vfxHole.SetFloat("ConformSize", bSize);
+                    vfxHole.SetFloat("ConformSize", Mathf.Lerp(vfxHole.GetFloat("ConformSize"), bSize, 0.1f));
                 }
 
                 GameManager.Instance.cursorPos = this.gameObject.transform.position;
