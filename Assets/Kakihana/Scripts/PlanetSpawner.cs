@@ -32,12 +32,10 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     [SerializeField] private int planetSpawnInterval;           // 惑星の再出現までのフレーム
 
     [Header("シーン毎に設定が必要なコンポーネント")]
-    [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
     [SerializeField] private EnemySystem[] planetPrefab;        // スポーンする惑星をここに格納
     [SerializeField] private PlanetPool planetPool;             // 惑星のオブジェクトプール
     [Header("プールをまとめるオブジェクトを作成、格納")]
     [SerializeField] private Transform poolObjTrans;            // スポーンした惑星をまとめるオブジェクトをここに格納
-    [SerializeField] private float[] planetScales;              // 惑星の大きさの格納できる配列
     [Header("レベル毎の惑星の大きさの最小値")]
     [SerializeField] private float[] planetScaleMin;            // レベル毎の惑星の大きさの最小値
     [Header("レベル毎の惑星の大きさの最大値")]
@@ -54,7 +52,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
     [SerializeField] private Vector3 spawnPos;                  // スポーンする惑星の座標
     [SerializeField] private Transform playerPos;
-    [SerializeField] private Vector3 debugPlayerPos;
+    [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
     public float debugTime;                                     // デバッグ用時間経過をカウントする
     [SerializeField] private TextMeshProUGUI debugLevelText;
     
@@ -63,13 +61,10 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     {
         // プレイヤー情報の取得
         playerPos = GameManager.Instance.playerTransform;
-        debugPlayerPos = playerPos.position;
         // ボス情報の取得
         bossObjTrans = GameManager.Instance.bossTransform;
         // ボスオブジェクトの円周を求める
         bossRadius = bossObjTrans.localScale.x * Mathf.PI;
-        // 初期化メソッド
-        PlanetInit();
 
         debugLevelText.text = string.Format("Level:{0}",level);
 
@@ -145,7 +140,9 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         planetObjNum = Random.Range(0, planetPrefab.Length); // 生成したい惑星を取得
         RaycastHit hit;                                      // 惑星重なり防止用Rayの当たり判定
 
-        int scaleRandom = Random.Range(0, planetScales.Length);
+        // スポーン予定の惑星の大きさを事前に算出
+        // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
+        var planetSubscription = playerPos.localScale.x * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
 
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);
@@ -165,7 +162,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         xAbs = Mathf.Abs(Mathf.Pow(spawnPos.x, 2));
         zAbs = Mathf.Abs(Mathf.Pow(spawnPos.z, 2));
         // 惑星をスポーンする前にスポーンしたい惑星の大きさと同じ球型Rayを飛ばす
-        if (Physics.SphereCast(spawnPos,planetObjRadius[scaleRandom],Vector3.down,out hit))
+        if (Physics.SphereCast(spawnPos,planetSubscription,Vector3.down,out hit))
         {
             // 既に惑星がいる場合はスポーン不可
             Debug.DrawRay(spawnPos, hit.point, Color.red,5);
@@ -183,10 +180,10 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
                 // 惑星スポーン、数をカウント
                 count++;
                 // 惑星をスポーンさせる
-                // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
+                // 事前に算出した大きさを代入
                 planet.PlanetSpawn(
-                spawnPos + bossObjTrans.position, 
-                playerPos.localScale.x * Random.Range(planetScaleMin[level-1], planetScaleMax[level-1]));
+                spawnPos + bossObjTrans.position,
+                planetSubscription);
                 Debug.Log(spawnPos + bossObjTrans.position);
                 
                 // 消滅時、オブジェクトをプールに返す
@@ -200,18 +197,6 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
             {
                 Debug.Log("スポーン範囲外");
             }
-        }
-    }
-
-    // スポーンクラス初期設定
-    void PlanetInit()
-    {
-        // 惑星プレハブのアタッチ分、半径を格納する配列の初期化
-        planetObjRadius = new float[planetScales.Length];
-        for(int i = 0;i < planetScales.Length; ++i)
-        {
-            // プレハブに格納されている全ての惑星の半径を取得し配列に格納する
-            planetObjRadius[i] = planetScales[i] * 0.5f;
         }
     }
 
