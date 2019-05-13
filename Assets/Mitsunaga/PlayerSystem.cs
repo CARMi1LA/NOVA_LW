@@ -54,6 +54,11 @@ public class PlayerSystem : _StarParam
         collisionAudioSource = GetComponent<AudioSource>();
         // カメラの初期化
         SetCamera();
+
+        // プレイヤー情報をGameManagerに送信
+        GameManager.Instance.playerTransform = this.transform;
+        GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
+
     }
 
     void Start()
