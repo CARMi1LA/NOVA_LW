@@ -229,11 +229,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     }
 
     // デバッグ用ボス周辺エリアを可視化する
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
-        Gizmos.DrawSphere(bossObjTrans.position, bossRadius);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+    //    Gizmos.DrawSphere(bossObjTrans.position, bossRadius);
+    //}
 
     public void LevelUp()
     {
