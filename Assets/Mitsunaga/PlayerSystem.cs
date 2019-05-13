@@ -7,6 +7,11 @@ using UniRx.Triggers;
 using UniRx.Toolkit;
 using Cinemachine;
 
+using UnityEngine.VFX;
+//using UnityEditor.VFX;
+//using UnityEngine.Experimental.Rendering.LWRP;
+using UnityEngine.Experimental.VFX;
+
 public class PlayerSystem : _StarParam
 {
     // プレイヤーとカメラのコントロールを行う
@@ -17,10 +22,12 @@ public class PlayerSystem : _StarParam
     LineRenderer linePtB;
 
     // 星の移動関連 移動は敵と統合して _StarParam に移す予定
-    [SerializeField, Header("星の加速度、加速度への追従度")]
+    [SerializeField, Header("星の加速度、加速度への追従度、軌跡パーティクル")]
     float moveSpeed = 10.0f;
     [SerializeField]
     float moveSpeedMul = 2.0f;
+    [SerializeField]
+    VisualEffect VFXPath;
 
     // 衝突関連
     [SerializeField, Header("星の衝突、合体時の待ち時間、パーティクル")]
@@ -72,6 +79,8 @@ public class PlayerSystem : _StarParam
                 // 移動処理
                 // 移動速度と追従度を渡す
                 SetStarMove(moveSpeed, moveSpeedMul);
+                VFXPath.SetVector3("PlayerPosition", this.transform.position);
+                VFXPath.SetFloat("PlayerSize", (GetStarSize() + 1.0f) / 2);
 
                 // プレイヤー情報をGameManagerに送信
                 GameManager.Instance.playerTransform = this.transform;

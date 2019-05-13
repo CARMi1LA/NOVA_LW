@@ -12,8 +12,6 @@ using UnityEngine.Experimental.VFX;
 public class CursorSystem : MonoBehaviour
 {
     // マウスカーソルの処理
-
-    [SerializeField, Header("ブラックホールとホワイトホール")]
     VisualEffect vfxHole;
 
     const float bSize = 2.5f;
@@ -21,6 +19,8 @@ public class CursorSystem : MonoBehaviour
 
     void Start()
     {
+        vfxHole = GetComponent<VisualEffect>();
+
         this.UpdateAsObservable()
             .Subscribe(c =>
             {
@@ -30,20 +30,18 @@ public class CursorSystem : MonoBehaviour
                             GameManager.Instance.playerTransform.position.y;
                 this.transform.position = Camera.main.ScreenToWorldPoint(cScreen);
 
-                Debug.Log(cScreen.z.ToString());
-
                 // マウスがクリックされている間、ホールを切り替える
                 if (Input.GetMouseButton(0))
                 {
                     GameManager.Instance.cursorFlg = false;
 
-                    vfxHole.SetFloat("ConformSize", wSize);
+                    vfxHole.SetFloat("ConformSize", Mathf.Lerp(vfxHole.GetFloat("ConformSize"), wSize, 0.1f));
                 }
                 else
                 {
                     GameManager.Instance.cursorFlg = true;
 
-                    vfxHole.SetFloat("ConformSize", bSize);
+                    vfxHole.SetFloat("ConformSize", Mathf.Lerp(vfxHole.GetFloat("ConformSize"), bSize, 0.1f));
                 }
 
                 GameManager.Instance.cursorPos = this.gameObject.transform.position;

@@ -59,8 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Material: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -179,7 +179,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: aaaaaa
+  m_Text: 
 --- !u!1 &6848820110570491134
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &8909092998188539936
 MonoBehaviour:
@@ -298,7 +298,8 @@ MonoBehaviour:
   bigText: {fileID: 6392270794743755023}
   fadeSystem: {fileID: 943433939165886080}
   fadeTime: 1
-  playerPosition: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
+  bossTransform: {fileID: 0}
   cameraPosition: {x: 0, y: 0, z: 0}
   cursorPos: {x: 0, y: 0, z: 0}
   cursorFlg: 0
@@ -322,7 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutoutRange:
     value: 0
-  maskMat: {fileID: 0}
+  maskMat: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
   maskImage: {fileID: 6943462586927184238}
   maskKeyword: _Threshold
   canvasGroup: {fileID: 1236136845213426738}
