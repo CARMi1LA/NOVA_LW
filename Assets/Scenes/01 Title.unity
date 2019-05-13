@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -862,45 +862,5 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6392270794743755023, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
-    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3457055545976977486, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 943433939165886080, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: maskMat
-      value: 
-      objectReference: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6df4396467df98040a3da900d8ae494f, type: 3}

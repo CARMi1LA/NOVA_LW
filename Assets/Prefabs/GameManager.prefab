@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
-  m_Color: {r: 1, g: 0.995283, b: 0.995283, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -241,7 +241,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &8909092998188539936
 MonoBehaviour:
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutoutRange:
     value: 0
-  maskMat: {fileID: 0}
+  maskMat: {fileID: 2100000, guid: 993d3621337099c44b11d32bcea4a3d3, type: 2}
   maskImage: {fileID: 6943462586927184238}
   maskKeyword: _Threshold
   canvasGroup: {fileID: 1236136845213426738}

@@ -90,7 +90,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
         }
         else
         {
-            FadeIn();
+            FadeIn("DebugMode");
         }
     }
 
@@ -104,18 +104,16 @@ public class GameManager : SingletonMBGameManager<GameManager>
         obsOut.Subscribe(_ =>
         {
             SceneManager.LoadScene(SceneName);
-            FadeIn();
+            FadeIn(SceneName);
         })
         .AddTo(this.gameObject);
     }
-    void FadeIn()
+    void FadeIn(string SceneName)
     {
         isGameOver.Value    = false;
         isClear.Value       = false;
 
-        Debug.Log(SceneManager.GetActiveScene().ToString());
-
-        if (SceneManager.GetActiveScene().ToString() == "03 Stage01")
+        if (SceneName == "03 Stage01")
         {
             bigText.text = "Click Start";
         }
