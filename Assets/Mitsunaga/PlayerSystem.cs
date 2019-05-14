@@ -35,7 +35,7 @@ public class PlayerSystem : _StarParam
     [SerializeField]
     float waitCount = 4.5f;
     [SerializeField]
-    GameObject[] hitPS;
+    VisualEffect VFXCollision;
 
     // カメラ関連 これもいずれ独立させる
     [SerializeField, Header("シネマシーンのカメラ")]
@@ -52,6 +52,8 @@ public class PlayerSystem : _StarParam
         base.Awake();
         // SEを取得
         collisionAudioSource = GetComponent<AudioSource>();
+        // 当たり判定のVFXを初期化する
+        //VFXCollision.Stop();
         // カメラの初期化
         SetCamera();
 
@@ -90,6 +92,7 @@ public class PlayerSystem : _StarParam
                 // プレイヤー情報をGameManagerに送信
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
+                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 0, 5);
 
                 if (isMainScene)
                 {
@@ -148,10 +151,10 @@ public class PlayerSystem : _StarParam
                         // 2. 自分と同じくらいならばお互いを破壊して合体
 
                         // パーティクル再生
-                        foreach (GameObject ps in hitPS)
-                        {
-                            Instantiate(ps).transform.position = transform.position;
-                        }
+                        //foreach (GameObject ps in hitPS)
+                        //{
+                        //    Instantiate(ps).transform.position = transform.position;
+                        //}
 
                         // ボスを倒すとゲームクリア
                         if (c.gameObject.GetComponent<_StarParam>().starID == 2)
@@ -210,6 +213,8 @@ public class PlayerSystem : _StarParam
         float count = 0.0f;                     // 待ち時間を計測する変数
         float size = transform.localScale.x;    // プレイヤーのサイズを保存する
 
+        VFXCollision.Play();
+
         // ヒットストップを最初に起動
         StartCoroutine(HitStopCoroutine(hitStopTime));
 
@@ -234,6 +239,7 @@ public class PlayerSystem : _StarParam
         }
 
         starRig.isKinematic = false;    // プレイヤーを移動可能に
+        VFXCollision.Stop();
         SetCamera();                    // カメラをセットする
     }
 
