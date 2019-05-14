@@ -29,6 +29,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
     public Vector3      cameraPosition;     // カメラのポジション
     public Vector3      cursorPos;          // カーソルの位置
     public bool         cursorFlg;          // カーソルのフラグ(0ならブラックホール、1ならホワイトホール)
+
+    public int          playerLevel = 1;    // 
     // フラグ管理
     public BoolReactiveProperty isClear     = new BoolReactiveProperty(false);      // クリア
     public BoolReactiveProperty isGameOver  = new BoolReactiveProperty(false);      // ゲームオーバー
