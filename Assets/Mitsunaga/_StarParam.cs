@@ -26,6 +26,9 @@ public class _StarParam : MonoBehaviour
     protected Rigidbody starRig;    // 星のRigidbody
     protected BoolReactiveProperty isMoving = new BoolReactiveProperty(false);
 
+    public Subject<float> playCollisionFX = new Subject<float>();
+    public Subject<float> playDeathFX = new Subject<float>();
+
     protected void Awake()
     {
         // コルーチンの再生、停止をコントロールするためここで宣言

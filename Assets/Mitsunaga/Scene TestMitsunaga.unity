@@ -133,8 +133,9 @@ GameObject:
   - component: {fileID: 27374994}
   - component: {fileID: 27374993}
   - component: {fileID: 27374992}
-  - component: {fileID: 27374991}
   - component: {fileID: 27374997}
+  - component: {fileID: 27374991}
+  - component: {fileID: 27374998}
   m_Layer: 0
   m_Name: Planet Player
   m_TagString: Untagged
@@ -164,7 +165,6 @@ MonoBehaviour:
   VFXPath: {fileID: 172339961}
   hitStopTime: 0.2
   waitCount: 4.5
-  VFXCollision: {fileID: 1831987273}
   vCam: {fileID: 315401801}
 --- !u!54 &27374992
 Rigidbody:
@@ -249,10 +249,9 @@ Transform:
   m_GameObject: {fileID: 27374990}
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 172339962}
-  - {fileID: 1831987274}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
@@ -352,6 +351,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &27374998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27374990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 682f94b93048d0d46827187289d9ffb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VFXCollision: {fileID: 1831987273}
+  PSCollision: {fileID: 0}
 --- !u!1 &81121273
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,8 +402,6 @@ MonoBehaviour:
   starSize:
     value: 15
   AInum: 0
-  enemyCollisionPS: {fileID: 0}
-  enemyDeathPS: {fileID: 0}
 --- !u!54 &81121275
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -477,7 +488,7 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &104678924
 GameObject:
@@ -703,7 +714,7 @@ Transform:
   m_GameObject: {fileID: 172339959}
   m_LocalRotation: {x: -0.2588191, y: -0, z: -0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 27374996}
   m_RootOrder: 0
@@ -1113,7 +1124,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1529487551
 MonoBehaviour:
@@ -1370,9 +1381,6 @@ VFXRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1433,12 +1441,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1831987271}
-  m_LocalRotation: {x: 0.49999997, y: -0, z: -0, w: 0.86602545}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.20000008, z: 0.20000008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 27374996}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &2977223133078021822
 PrefabInstance:

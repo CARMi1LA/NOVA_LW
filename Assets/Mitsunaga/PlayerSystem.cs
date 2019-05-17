@@ -33,9 +33,7 @@ public class PlayerSystem : _StarParam
     [SerializeField, Header("星の衝突、合体時の待ち時間、パーティクル")]
     float hitStopTime = 0.2f;
     [SerializeField]
-    float waitCount = 4.5f;
-    [SerializeField]
-    VisualEffect VFXCollision;
+    float waitCount = 3.0f;
 
     // カメラ関連 これもいずれ独立させる
     [SerializeField, Header("シネマシーンのカメラ")]
@@ -52,15 +50,12 @@ public class PlayerSystem : _StarParam
         base.Awake();
         // SEを取得
         collisionAudioSource = GetComponent<AudioSource>();
-        // 当たり判定のVFXを初期化する
-        //VFXCollision.Stop();
         // カメラの初期化
         SetCamera();
 
         // プレイヤー情報をGameManagerに送信
         GameManager.Instance.playerTransform = this.transform;
         GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
-
     }
 
     void Start()
@@ -88,6 +83,11 @@ public class PlayerSystem : _StarParam
                 SetStarMove(moveSpeed, moveSpeedMul);
                 VFXPath.SetVector3("PlayerPosition", this.transform.position);
                 VFXPath.SetFloat("PlayerSize", (GetStarSize() + 1.0f) / 2);
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    playCollisionFX.OnNext(waitCount);
+                }
 
                 // プレイヤー情報をGameManagerに送信
                 GameManager.Instance.playerTransform = this.transform;
@@ -122,67 +122,96 @@ public class PlayerSystem : _StarParam
         this.OnCollisionEnterAsObservable()
             .Subscribe(c =>
             {
-                float enemySize = -1.0f;
+                EnemySystem enemyParam;         // 衝突したオブジェクトの情報を取得する
+                collisionAudioSource.Play();    // 衝突の音を出す
 
-                try
+                if (GameManager.Instance.isCoreMode.Value)
                 {
-                    enemySize = c.gameObject.GetComponent<_StarParam>().GetStarSize();
-
-                    collisionAudioSource.Play();    // 衝突の音を出す
-
-                    // 当たった星のサイズが
-                    if (enemySize <= (GetStarSize() / 4))
+                    // コアモード
+                    try
                     {
-                        // 1. 自分よりも圧倒的に小さければそのまま吸収
+                        // 衝突したオブジェクトの情報を取得する
+                        enemyParam = c.gameObject.GetComponent<EnemySystem>();
 
-                        // ボスを倒すとゲームクリア
-                        if (c.gameObject.GetComponent<_StarParam>().starID == 2)
+                        // ボスと衝突した場合、ゲームクリア
+                        if (enemyParam.starID == 2)
                         {
                             GameManager.Instance.isClear.Value = true;
                         }
-                        else
+                    }
+                    catch
+                    {
+                        // ボス以外のオブジェクトと衝突した場合、ゲームオーバー
+                        GameManager.Instance.isGameOver.Value = true;
+
+                        // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
+                        Debug.Log("_StarParam is Null");
+                    }
+                }
+                else
+                {
+                    // 通常モード
+
+                    try
+                    {
+                        enemyParam = c.gameObject.GetComponent<EnemySystem>();
+
+                        // 通常モード
+
+                        // 当たった星のサイズを比べる
+                        if (enemyParam.GetStarSize() <= (GetStarSize() / 4))
                         {
-                            // 小さい星では成長しない
+                            // 1. 自分よりも圧倒的に小さければそのまま破壊
+
+                            if (enemyParam.starID == 2)
+                            {
+                                // ボスを破壊したらコアモードへ
+                                GameManager.Instance.isClear.Value = true;
+                            }
+
+                            // 相手のオブジェクトを非表示にする
+                            enemyParam.playCollisionFX.OnNext(1.0f);
                             c.gameObject.SetActive(false);
                         }
-                    }
-                    else if (enemySize <= (GetStarSize() * 1.1f))
-                    {
-                        // 2. 自分と同じくらいならばお互いを破壊して合体
-
-                        // パーティクル再生
-                        //foreach (GameObject ps in hitPS)
-                        //{
-                        //    Instantiate(ps).transform.position = transform.position;
-                        //}
-
-                        // ボスを倒すとゲームクリア
-                        if (c.gameObject.GetComponent<_StarParam>().starID == 2)
+                        else if (enemyParam.GetStarSize() <= (GetStarSize() * 1.1f))
                         {
-                            GameManager.Instance.isClear.Value = true;
+                            // 2. 自分と同じくらいならばお互いを破壊して再構成
+
+                            playCollisionFX.OnNext(waitCount);
+
+                            if (enemyParam.starID == 2)
+                            {
+                                // ボスを破壊したらコアモードへ
+                                GameManager.Instance.isClear.Value = true;
+                            }
+                            else
+                            {
+                                // 砕けて待ち、成長
+                                StartCoroutine(WaitCoroutine(waitCount, c.transform.localScale.x / 2));
+                            }
+
+                            // 相手のオブジェクトを非表示にする
+                            enemyParam.playCollisionFX.OnNext(1.0f);
+                            c.gameObject.SetActive(false);
                         }
                         else
                         {
-                            // ぶつかったら、砕けて待ち時間のカウントを進める
-                            StartCoroutine(WaitCoroutine(waitCount, c.transform.localScale.x / 2));
+                            // 3. 自分より大きければ自分が破壊される　ゲームオーバー
+                            playDeathFX.OnNext(waitCount);
+
+                            GameManager.Instance.isGameOver.Value = true;
+                            this.gameObject.SetActive(false);
                         }
-
-                        // 相手のオブジェクトを非表示にする
-                        c.gameObject.SetActive(false);
                     }
-                    else
+                    catch
                     {
-                        // 3. 自分より大きければ自分が破壊される　ゲームオーバー
-
-                        GameManager.Instance.isGameOver.Value = true;
-                        this.gameObject.SetActive(false);
+                        // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
+                        Debug.Log("_StarParam is Null");
                     }
-                }
-                catch
-                {
-                    // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
-                    Debug.Log("_StarParam is Null");
-                }
+
+                    
+                    }
+
             })
             .AddTo(this.gameObject);
     }
@@ -213,8 +242,6 @@ public class PlayerSystem : _StarParam
         float count = 0.0f;                     // 待ち時間を計測する変数
         float size = transform.localScale.x;    // プレイヤーのサイズを保存する
 
-        VFXCollision.Play();
-
         // ヒットストップを最初に起動
         StartCoroutine(HitStopCoroutine(hitStopTime));
 
@@ -239,7 +266,6 @@ public class PlayerSystem : _StarParam
         }
 
         starRig.isKinematic = false;    // プレイヤーを移動可能に
-        VFXCollision.Stop();
         SetCamera();                    // カメラをセットする
     }
 

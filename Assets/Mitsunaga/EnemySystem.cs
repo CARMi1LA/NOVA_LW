@@ -14,11 +14,6 @@ public class EnemySystem : _StarParam
     [SerializeField,Header("AI番号")]
     int AInum;
 
-    [SerializeField, Header("衝突パーティクル")]
-    GameObject enemyCollisionPS;
-    [SerializeField, Header("死亡パーティクル")]
-    GameObject enemyDeathPS;
-
     // 移動のパラメータ
     // AI
     Vector3 moveDir = Vector3.zero;                             // 移動方向
@@ -33,12 +28,19 @@ public class EnemySystem : _StarParam
     float cursorSpeedMul = 1.0f;
     float cursorSpace = 30.0f;
 
-    const float DEATH_COUNT = 0.5f;
+    // 死亡時と衝突時の待ち時間
+    public const float DEATH_COUNT = 0.5f;
+    public const float COLLISION_COUNT = 1.0f;
+
+    Collider enemyCol;
 
     new void Awake()
     {
         // _StarParamのAwakeを最初に起動
         base.Awake();
+
+        enemyCol = GetComponent<Collider>();
+        enemyCol.isTrigger = false;
 
         // ボス星の場合は、GameManagerに情報を送る
         if (starID == 2)
@@ -52,7 +54,7 @@ public class EnemySystem : _StarParam
         this.gameObject.SetActive(true);
 
         // 移動速度、AIナンバーをランダムに取得する
-        moveSpeed = UnityEngine.Random.Range(3.0f, 10.0f);
+        moveSpeed = UnityEngine.Random.Range(5.0f, 15.0f);
         AInum = UnityEngine.Random.Range(0, 3);
 
         // 簡単なAIの挙動(プレイヤーの方向を向くか、ランダムな方向を向くか)
@@ -95,28 +97,28 @@ public class EnemySystem : _StarParam
             })
             .AddTo(this.gameObject);
 
+        //this.UpdateAsObservable().Where(_=> )
+
         // 当たり判定
         this.OnCollisionEnterAsObservable()
+            .Where(x => starID == 3)
             .Subscribe(_=>
             {
-                GameObject ps;
-
                 // 自分よりも大きい星にぶつかった場合、消滅する
                 if (transform.localScale.x < _.transform.localScale.x / 4)
                 {
-                    // 死亡時のパーティクルを生成
-                    ps = Instantiate(enemyDeathPS);
-                    ps.transform.position = this.transform.position;
+                    // 死亡時のエフェクト再生
+                    playDeathFX.OnNext(DEATH_COUNT);
 
                     // だんだん小さくなり、非表示に
+                    GetComponent<Collider>().isTrigger = true;
                     SetStarSize(0.0f);
                     DestroyCoroutine(DEATH_COUNT);
                 }
                 else
                 {
-                    // 衝突時のパーティクルを生成
-                    ps = Instantiate(enemyCollisionPS);
-                    ps.transform.position = this.transform.position;
+                    // 衝突時のエフェクト再生
+                    playCollisionFX.OnNext(COLLISION_COUNT);
                 }
             })
             .AddTo(this.gameObject);
