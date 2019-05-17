@@ -12,14 +12,13 @@ public class GameManager : SingletonMBGameManager<GameManager>
     // シーン遷移やフラグ管理など、シーンをまたぐ情報の管理を行う
     // どのシーンにも存在できるように、特定のオブジェクト、スクリプトがないと動かないという状況は避ける
 
-    [SerializeField, Header("デバッグ用")]
+    [SerializeField, Header("デバッグ用フラグ")]
     bool isDebug = false;
-    [SerializeField]
+    [SerializeField,Header("各メッセージ表示用のでかいテキスト")]
     public Text bigText;
 
-    [SerializeField, Header("シーン遷移用")]
     FadeSystem fadeSystem;
-    [SerializeField]
+    [SerializeField, Header("シーン遷移の速さ")]
     float fadeTime;
 
     [Header("ここから下、確認用")]
@@ -30,15 +29,17 @@ public class GameManager : SingletonMBGameManager<GameManager>
     public Vector3      cursorPos;          // カーソルの位置
     public bool         cursorFlg;          // カーソルのフラグ(0ならブラックホール、1ならホワイトホール)
 
-    public int          playerLevel = 1;    // 
+    public int          playerLevel = 1;    // プレイヤーのレベル(成長によってレベルアップ)
     // フラグ管理
     public BoolReactiveProperty isClear     = new BoolReactiveProperty(false);      // クリア
     public BoolReactiveProperty isGameOver  = new BoolReactiveProperty(false);      // ゲームオーバー
     public BoolReactiveProperty isPause     = new BoolReactiveProperty(true);       // 一時停止
+    public BoolReactiveProperty isCoreMode  = new BoolReactiveProperty(false);      // コアモード
     
     // シーン遷移までの待ち時間
-    const int WAIT_TIME_CLEAR = 4;
-    const int WAIT_TIME_GAMEOVER = 2;
+    const float WAITTIME_CLEAR = 4.0f;
+    const float WAITTIME_GAMEOVER = 2.0f;
+    const float WAITTIME_COREMODE = 1.0f;
 
     override protected void Awake()
     {
@@ -47,6 +48,9 @@ public class GameManager : SingletonMBGameManager<GameManager>
 
         // シーンが変わっても破棄されないようにする
         DontDestroyOnLoad(this.gameObject);
+
+        // 各情報を取得
+        fadeSystem = this.GetComponent<FadeSystem>();
 
         // クリア時の処理
         isClear
@@ -58,7 +62,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
                 Debug.Log("IsClear : " + _.ToString());
                 bigText.text = "CLEAR!";
 
-                Observable.Timer(TimeSpan.FromSeconds(WAIT_TIME_CLEAR))
+                // 一定時間待ち、タイトルに戻る
+                Observable.Timer(TimeSpan.FromSeconds(WAITTIME_CLEAR))
                 .Subscribe(c =>
                 {
                     FadeOut("01 Title");
@@ -67,6 +72,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
             })
             .AddTo(this.gameObject);
 
+        // ゲームオーバー時の処理
         isGameOver
             .Where(x => x)
             .Subscribe(_ =>
@@ -76,7 +82,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
                 Debug.Log("IsGameOver : " + _.ToString());
                 bigText.text = "GAME OVER";
 
-                Observable.Timer(TimeSpan.FromSeconds(WAIT_TIME_GAMEOVER))
+                // 一定時間待ち、ステージセレクトに戻る
+                Observable.Timer(TimeSpan.FromSeconds(WAITTIME_GAMEOVER))
                 .Subscribe(c =>
                 {
                     FadeOut("02 StageSelect");
@@ -84,6 +91,23 @@ public class GameManager : SingletonMBGameManager<GameManager>
                 .AddTo(this.gameObject);
             })
             .AddTo(gameObject);
+
+        // コアモード開始時の処理
+        isCoreMode
+            .Where(x => x)
+            .Subscribe(_ =>
+            {
+                isPause.Value = true;
+
+                // 一定時間待ち、コアモードを開始する
+                Observable.Timer(TimeSpan.FromSeconds(WAITTIME_COREMODE))
+                .Subscribe(c =>
+                {
+                    FadeOut("04 CoreMode");
+                })
+                .AddTo(this.gameObject);
+            })
+            .AddTo(this.gameObject);
 
         // デバッグ中以外なら読み込み後タイトルシーンに遷移
         if (!isDebug)
@@ -112,16 +136,24 @@ public class GameManager : SingletonMBGameManager<GameManager>
     }
     void FadeIn(string SceneName)
     {
+        Debug.Log("Start : " + SceneName);
+
         isGameOver.Value    = false;
         isClear.Value       = false;
 
         if (SceneName == "03 Stage01")
         {
             bigText.text = "Click Start";
+            isCoreMode.Value = false;
+        }
+        else if(SceneName == "04 CoreMode")
+        {
+            bigText.text = "Destroy Core";
         }
         else
         {
             bigText.text = "";
+            isCoreMode.Value = false;
         }
 
         StartCoroutine(fadeSystem.FadeInCoroutine(fadeTime));

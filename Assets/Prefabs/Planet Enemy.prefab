@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2865079808310470764}
   - component: {fileID: 6477261954125146777}
   - component: {fileID: 6182445105924426188}
+  - component: {fileID: -8137763830862468116}
   m_Layer: 0
   m_Name: Planet Enemy
   m_TagString: Untagged
@@ -125,5 +126,18 @@ MonoBehaviour:
   starSize:
     value: 1
   AInum: 0
-  enemyCollisionPS: {fileID: 0}
-  enemyDeathPS: {fileID: 0}
+--- !u!114 &-8137763830862468116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373881766258497446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec92e73192d02d43b884506a072fc96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VFXCollision: {fileID: 5345865050350525772, guid: 0268b5a5e89157e4c96e55d1e3649e0d,
+    type: 3}
+  PSCollision: {fileID: 0}
