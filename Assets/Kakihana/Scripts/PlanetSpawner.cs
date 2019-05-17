@@ -66,6 +66,8 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         // ボスオブジェクトの円周を求める
         bossRadius = bossObjTrans.localScale.x * Mathf.PI;
 
+        level = GameManager.Instance.playerLevel;
+
         debugLevelText.text = string.Format("Level:{0}",level);
 
         // ボス周辺エリアの半径を2乗する
