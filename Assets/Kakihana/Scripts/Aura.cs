@@ -57,6 +57,7 @@ public class Aura : MonoBehaviour
             .Where(c => auraState == AuraState.AuraCharge)
             .Subscribe(c =>
             {
+
             }).AddTo(this.gameObject);
 
         this.OnCollisionEnterAsObservable()
