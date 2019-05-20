@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -216,12 +216,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212625271}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Father: {fileID: 248035083427859785}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &322582260
 GameObject:
@@ -1212,6 +1212,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53608c713d0a4c24e812d39a9a0a3a73, type: 3}
+--- !u!4 &248035083427859785 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 248035083805153046, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+    type: 3}
+  m_PrefabInstance: {fileID: 248035083427859784}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2749050468066752441
 PrefabInstance:
   m_ObjectHideFlags: 0
