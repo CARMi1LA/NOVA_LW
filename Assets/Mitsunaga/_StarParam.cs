@@ -23,8 +23,8 @@ public class _StarParam : MonoBehaviour
     IEnumerator routine;            // 星のサイズコルーチンの管理
     float nextSize = 1.0f;          // 目標の星のサイズ
 
-    protected Rigidbody starRig;    // 星のRigidbody
-    protected BoolReactiveProperty isMoving = new BoolReactiveProperty(false);
+    public Rigidbody starRig;    // 星のRigidbody
+    public BoolReactiveProperty isMoving = new BoolReactiveProperty(false);
 
     public Subject<float> playCollisionFX = new Subject<float>();
     public Subject<float> playDeathFX = new Subject<float>();

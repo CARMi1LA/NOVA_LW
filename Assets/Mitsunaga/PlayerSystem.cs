@@ -92,7 +92,7 @@ public class PlayerSystem : _StarParam
                 // プレイヤー情報をGameManagerに送信
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
-                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 0, 5);
+                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);
 
                 if (isMainScene)
                 {
