@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
@@ -27,17 +28,46 @@ public class PlayerCollision : MonoBehaviour
         VCSpawnRate = VFXCollision.GetFloat("SpawnRate");
         VFXCollision.gameObject.SetActive(false);
 
+        _StarParam sp = this.GetComponent<_StarParam>();
+
         // 衝突時のエフェクト
-        this.GetComponent<_StarParam>().playCollisionFX
+        sp.playCollisionFX
             .Subscribe(count =>
             {
                 // 位置、サイズなどを指定して、VFXを起動する
-                VFXCollision.gameObject.transform.position = this.transform.position;
-                VFXCollision.SetFloat("SpawnRate", VCSpawnRate);
-                VFXCollision.SetFloat("PlayerSize", GameManager.Instance.playerTransform.localScale.x);
-                VFXCollision.SetFloat("LoopTime", count);
-                VFXCollision.gameObject.SetActive(false);
-                VFXCollision.gameObject.SetActive(true);
+                VFXCollision.gameObject.transform.position = this.transform.position;                   // 位置調整
+                VFXCollision.SetFloat("SpawnRate", VCSpawnRate);                                        // 生成レートを戻す
+                VFXCollision.SetFloat("PlayerSize", GameManager.Instance.playerTransform.localScale.x); // サイズ調整
+                VFXCollision.SetFloat("LoopTime", count);                                               // 速度調整
+                VFXCollision.gameObject.SetActive(false);                                               // 停止
+                VFXCollision.gameObject.SetActive(true);                                                // 再起動
+                // PSを起動する
+                //PSCollision.Play();
+
+                // VFXを一定時間後に停止させる
+                Observable.Timer(TimeSpan.FromSeconds(count))
+                     .Subscribe(_ =>
+                     {
+                         VFXCollision.SetFloat("SpawnRate", 0);
+                         // PSCollision.Stop();
+                     })
+                    .AddTo(this.gameObject);
+            })
+            .AddTo(this.gameObject);
+        // 死亡時のエフェクト
+        sp.playDeathFX
+            .Subscribe(count =>
+            {
+                // 死亡処理を実行
+                sp.StarDeath(count);
+
+                // 位置、サイズなどを指定して、VFXを起動する
+                VFXCollision.gameObject.transform.position = this.transform.position;                   // 位置調整
+                VFXCollision.SetFloat("SpawnRate", VCSpawnRate);                                        // 生成レートを戻す
+                VFXCollision.SetFloat("PlayerSize", GameManager.Instance.playerTransform.localScale.x); // サイズ調整
+                VFXCollision.SetFloat("LoopTime", count);                                               // 速度調整
+                VFXCollision.gameObject.SetActive(false);                                               // 停止
+                VFXCollision.gameObject.SetActive(true);                                                // 再起動
                 // PSを起動する
                 //PSCollision.Play();
 
@@ -45,17 +75,5 @@ public class PlayerCollision : MonoBehaviour
                 Invoke("VCStop", count);
             })
             .AddTo(this.gameObject);
-        // 死亡時のエフェクト
-        this.GetComponent<_StarParam>().playDeathFX
-            .Subscribe(count =>
-            {
-
-            })
-            .AddTo(this.gameObject);
-    }
-
-    void VCStop()
-    {
-        VFXCollision.SetFloat("SpawnRate", 0);
     }
 }

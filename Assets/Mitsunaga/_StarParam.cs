@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UniRx;
+using UniRx.Triggers;
 
 [RequireComponent(typeof(Rigidbody))]
 public class _StarParam : MonoBehaviour
@@ -14,6 +16,7 @@ public class _StarParam : MonoBehaviour
     // 未実装システム：星の移動、バリア、マテリアル変更　など
 
     const float MDISTANCE = 30.0f;   // 敵星が反応してくる距離
+    const float DEATHCOUNT = 0.5f;
 
     [SerializeField, Header("星のID 自:1 ボス:2 敵:3")]
     public int starID = 0;  // 自機やボスなどを指定するため
@@ -140,5 +143,24 @@ public class _StarParam : MonoBehaviour
                 break;
 
         }
+    }
+
+    // 星の死亡処理
+    public void StarDeath(float deathCount)
+    {
+        // 最初にオブジェクトのコライダーを取得、当たり判定を消す
+        Collider col =  this.gameObject.GetComponent<Collider>();
+        col.isTrigger = true;
+        // 星を小さくする
+        this.SetStarSize(0.0f);
+
+        // 一定時間後に当たり判定をもとに戻し、オブジェクトを非表示にする
+        Observable.Timer(TimeSpan.FromSeconds(deathCount))
+            .Subscribe(_ =>
+            {
+                col.isTrigger = false;
+                this.gameObject.SetActive(false);
+            })
+            .AddTo(this.gameObject);
     }
 }
