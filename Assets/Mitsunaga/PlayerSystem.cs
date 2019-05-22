@@ -92,7 +92,7 @@ public class PlayerSystem : _StarParam
                 // プレイヤー情報をGameManagerに送信
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
-                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 0, 5);
+                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);
 
                 if (isMainScene)
                 {
@@ -170,8 +170,7 @@ public class PlayerSystem : _StarParam
                             }
 
                             // 相手のオブジェクトを非表示にする
-                            enemyParam.playCollisionFX.OnNext(1.0f);
-                            c.gameObject.SetActive(false);
+                            enemyParam.playDeathFX.OnNext(0.5f);
                         }
                         else if (enemyParam.GetStarSize() <= (GetStarSize() * 1.1f))
                         {
@@ -191,8 +190,7 @@ public class PlayerSystem : _StarParam
                             }
 
                             // 相手のオブジェクトを非表示にする
-                            enemyParam.playCollisionFX.OnNext(1.0f);
-                            c.gameObject.SetActive(false);
+                            enemyParam.playDeathFX.OnNext(0.5f);
                         }
                         else
                         {
@@ -200,13 +198,12 @@ public class PlayerSystem : _StarParam
                             playDeathFX.OnNext(waitCount);
 
                             GameManager.Instance.isGameOver.Value = true;
-                            this.gameObject.SetActive(false);
                         }
                     }
                     catch
                     {
                         // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
-                        Debug.Log("_StarParam is Null");
+                        Debug.Log("Collision Error.");
                     }
 
                     

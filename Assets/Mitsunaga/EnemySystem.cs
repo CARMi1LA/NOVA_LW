@@ -34,6 +34,10 @@ public class EnemySystem : _StarParam
 
     Collider enemyCol;
 
+    public Subject<bool> coreEscape = new Subject<bool>();
+
+    public Subject<bool> EnemyAISubject = new Subject<bool>();
+
     new void Awake()
     {
         // _StarParamのAwakeを最初に起動
@@ -79,9 +83,10 @@ public class EnemySystem : _StarParam
                 moveDir.z = UnityEngine.Random.Range(-1.0f, 1.0f);
                 break;
         }
+
         this.UpdateAsObservable()
-            .Where(_ => !GameManager.Instance.isPause.Value)
             .Where(_ => starID != 2)
+            .Where(_ => !GameManager.Instance.isPause.Value)
             .Subscribe(c =>
             {
                 if (Vector3.Distance(this.transform.position, GameManager.Instance.playerTransform.position) <= moveSpace)
@@ -97,45 +102,44 @@ public class EnemySystem : _StarParam
             })
             .AddTo(this.gameObject);
 
-        //this.UpdateAsObservable().Where(_=> )
+        this.UpdateAsObservable()
+            .Where(_ => starID == 2)
+            .Where(_ => !GameManager.Instance.isPause.Value)
+            .Where(_ => GameManager.Instance.isCoreMode.Value)
+            .Subscribe(_ =>
+            {
+                isMoving.Value = true;
+                coreEscape.OnNext(true);
+
+                moveDir = transform.forward;
+
+                starRig.AddForce(moveSpeedMul * ((moveDir * moveSpeed) - starRig.velocity));
+            })
+            .AddTo(this.gameObject);
 
         // 当たり判定
         this.OnCollisionEnterAsObservable()
-            .Where(x => starID == 3)
             .Subscribe(_=>
             {
                 // 自分よりも大きい星にぶつかった場合、消滅する
                 if (transform.localScale.x < _.transform.localScale.x / 4)
                 {
                     // 死亡時のエフェクト再生
-                    playDeathFX.OnNext(DEATH_COUNT);
-
-                    // だんだん小さくなり、非表示に
-                    GetComponent<Collider>().isTrigger = true;
-                    SetStarSize(0.0f);
-                    DestroyCoroutine(DEATH_COUNT);
+                    this.playDeathFX.OnNext(DEATH_COUNT);
                 }
                 else
                 {
                     // 衝突時のエフェクト再生
-                    playCollisionFX.OnNext(COLLISION_COUNT);
+                    this.playCollisionFX.OnNext(COLLISION_COUNT);
                 }
             })
             .AddTo(this.gameObject);
     }
 
-    // 消滅までのカウントダウン用のコルーチン
-    // waitCount … 待ち時間(単位：秒)
-    IEnumerator DestroyCoroutine(float waitCount)
+    // AIで方向を取得する
+    public void SetMoveDirection(Vector3 setDirection)
     {
-        // 指定時間待った後、オブジェクトを非表示にする
-        float count = 0.0f;
-        while (count < waitCount)
-        {
-            count += Time.deltaTime;
-            yield return null;
-        }
-        this.gameObject.SetActive(false);
+        moveDir = setDirection;
     }
 
     // K A K I H A N A   Z O N E

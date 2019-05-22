@@ -24,14 +24,17 @@ public class EnemyCollision : MonoBehaviour
     {
         GameObject vc;
 
-        this.GetComponent<_StarParam>().playCollisionFX
+        _StarParam sp = this.GetComponent<_StarParam>();
+
+        sp.playCollisionFX
             .Subscribe(count =>
             {
+                // VFXを作成
                 vc = Instantiate(VFXCollision.gameObject);
                 vc.gameObject.transform.position = this.transform.position;
                 vc.gameObject.SetActive(false);
                 vc.gameObject.SetActive(true);
-
+                // 一定時間後、VFXを削除
                 Destroy(vc, count * 2);
             })
             .AddTo(this.gameObject);
@@ -39,7 +42,15 @@ public class EnemyCollision : MonoBehaviour
         this.GetComponent<_StarParam>().playDeathFX
             .Subscribe(count =>
             {
-
+                // 死亡処理を起動
+                sp.StarDeath(count);
+                // VFXを生成
+                vc = Instantiate(VFXCollision.gameObject);
+                vc.gameObject.transform.position = this.transform.position;
+                vc.gameObject.SetActive(false);
+                vc.gameObject.SetActive(true);
+                // 一定時間後VFXを削除
+                Destroy(vc, count * 2);
             })
             .AddTo(this.gameObject);
     }
