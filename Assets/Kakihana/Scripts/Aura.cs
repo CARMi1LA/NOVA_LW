@@ -9,77 +9,79 @@ public class Aura : MonoBehaviour
     // オーラの状態
     public enum AuraState
     {
-        AuraOn = 0,                  // オーラ起動中
-        AuraOff,                     // オーラ未起動
-        AuraCharge                   // オーラ準備中
+        AuraFull = 0,                  // オーラ満タン
+        AuraOff,                       // オーラHP0
+        AuraCharge                     // オーラ準備中
     }
 
-    public AuraState auraState = AuraState.AuraOn;
+    public AuraState auraState = AuraState.AuraFull;
         
-    [SerializeField] private int auraHp = 0;                // オーラのHP
-    [SerializeField] public int[] auraHpLevelList;          // レベル毎のオーラの最大HPリスト
-    [SerializeField] private int auraStatingInterval = 10;  // オーラ再生までのインターバル
+    [SerializeField] private int auraHp = 0;                     // オーラのHP
+    [SerializeField] public int[] auraHpLevelList;               // レベル毎のオーラの最大HPリスト
+    [SerializeField] private int auraHealDelayFrame = 300;       // オーラ回復処理に掛かる遅延時間（フレーム）
+    [SerializeField] private int auraHealIntervalFrame = 10;     // オーラを回復させる間隔（フレーム）
+    [SerializeField] private int level = 0;                      // 現在のレベル
 
-    [SerializeField] private int level = 0;                 // 現在のレベル
+    [SerializeField] private Transform playerTrans;              // プレイヤーの座標
 
-    [SerializeField] private float auraSizeMag = 1.25f;     // オーラの大きさの倍率
-
-    [SerializeField] private Transform playerTrans;         // プレイヤーの座標
-
-    private void Awake()
-    {
-        playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
-        level = GameManager.Instance.playerLevel;           // レベル情報を取得
-        auraHp = SetAura(level);                            // 初期のオーラHPを設定
-        // オーラの大きさを設定
-        transform.localScale = playerTrans.localScale * auraSizeMag;
-    }
+    [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
 
     // Start is called before the first frame update
     void Start()
     {
+        playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
+        level = GameManager.Instance.playerLevel;           // レベル情報を取得
+        auraHp = auraHpLevelList[level - 1];                            // 初期のオーラHPを設定
+        // オーラの大きさを設定
+        transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
         // 通常時のイベント ポーズしてなければ稼働する
         this.UpdateAsObservable()
-            .Where(c => GameManager.Instance.isPause.Value)
+            .Where(c => !GameManager.Instance.isPause.Value)
             .Subscribe(c =>
             {
-                // HPが0になったらオーラをOFFに
-                if (auraState == AuraState.AuraOn && auraHp <= 0)
+                if (auraHp == auraHpLevelList[level-1])
+                {
+                    auraState = AuraState.AuraFull;
+                    this.gameObject.SetActive(true);
+                }
+                else if (auraHp < auraHpLevelList[level - 1])
+                {
+                    auraState = AuraState.AuraCharge;
+                    this.gameObject.SetActive(true);
+                    // ここにオーラONOFFメソッドを入れる
+                    Debug.Log("KENTICHARGE");
+                }
+                else if (auraHp <= 0)
                 {
                     auraState = AuraState.AuraOff;
-                    // ここにオーラONOFFメソッドを入れる
+                    this.gameObject.SetActive(false);
                 }
-                // オーラステートOFF検知後、オーラを再生させる
-                if (auraState == AuraState.AuraOff)
-                {
-                    AuraRecharge();
-                    auraState = AuraState.AuraCharge;
-                }
-            }).AddTo(this.gameObject);
 
-        // オーラステートがChargeの時に稼働
-        this.UpdateAsObservable()
-            .Where(c => GameManager.Instance.isPause.Value)
-            .Where(c => auraState == AuraState.AuraCharge)
-            .Where(c => auraHp != auraHpLevelList[level])
+            }).AddTo(this.gameObject);
+        // 1でもダメージを受けていたらオーラHP回復処理を実行 1秒毎にオーラ回復
+        Observable.TimerFrame(auraHealDelayFrame, auraHealIntervalFrame)
+            .Where(c => !GameManager.Instance.isPause.Value)
+            .Where(c => auraState == AuraState.AuraCharge || auraState == AuraState.AuraOff)
+            .Where(c => auraHp != auraHpLevelList[level - 1])
             .Subscribe(c =>
             {
                 int heal = 1;   // 回復量
                 auraHp += heal; // オーラHPに回復量を代入
-                if (auraHp == auraHpLevelList[level])
+                if (auraHp == auraHpLevelList[level - 1])
                 {
-                    auraState = AuraState.AuraOn;
+                    auraState = AuraState.AuraFull;
                 }
+                Debug.Log("回復");
             }).AddTo(this.gameObject);
 
-        this.OnCollisionEnterAsObservable()
+        this.OnTriggerEnterAsObservable()
             .Subscribe(c =>
             {
                 float enemySize = 0.0f;
                 int damage = 0;
 
                 // 当たってもオーラが有効でないと動作しない
-                if (auraState == AuraState.AuraOn)
+                if (auraState == AuraState.AuraFull || auraState == AuraState.AuraCharge)
                 {
                     try
                     {
@@ -95,6 +97,7 @@ public class Aura : MonoBehaviour
                             else
                             {
                                 c.gameObject.SetActive(false);
+                                Debug.Log("衝突1/8");
                             }
                         }
                         // 衝突した惑星が自分よりかなり小さい場合は蒸発する。オーラのHPは【減少する】
@@ -109,12 +112,13 @@ public class Aura : MonoBehaviour
                                 damage = 1;
                                 auraHp -= damage;
                                 c.gameObject.SetActive(false);
+                                Debug.Log("衝突1/4");
                             }
                         }
                         // 衝突した惑星が自分とほぼ同じ大きさの場合オーラは発動しない
                         else if (enemySize <= playerTrans.localScale.x * 1.1f)
                         {
-
+                            Debug.Log("衝突等倍");
                         }
                         // 衝突した惑星が自分よりやや大きい場合、オーラのHPを消費してゲームオーバーを回避する
                         else if (enemySize <= playerTrans.localScale.x * 1.5f)
@@ -122,9 +126,10 @@ public class Aura : MonoBehaviour
                             // 暫定消滅
                             c.gameObject.SetActive(false);
                             // レベルに応じてオーラのHPを減らす
-                            damage = Mathf.RoundToInt((enemySize * level) / playerTrans.localScale.x);
+                            damage = Mathf.RoundToInt((enemySize * level - 1) / playerTrans.localScale.x);
                             auraHp -= damage;
                             Debug.Log(damage);
+                            Debug.Log("衝突1.5/1");
                         }
                         // 衝突した惑星が自分よりかなり大きい場合、オーラのHPをより多く消費してゲームオーバーを回避する
                         else if (enemySize <= playerTrans.localScale.x * 2.0f)
@@ -132,9 +137,10 @@ public class Aura : MonoBehaviour
                             // 暫定消滅
                             c.gameObject.SetActive(false);
                             // レベルに応じてオーラのHPを減らす
-                            damage = Mathf.RoundToInt((enemySize * (2 * level)) / playerTrans.localScale.x);
+                            damage = Mathf.RoundToInt((enemySize * (2 * level - 1)) / playerTrans.localScale.x);
                             auraHp -= damage;
                             Debug.Log(damage);
+                            Debug.Log("衝突2/1");
                         }
                     }
                     catch
@@ -145,23 +151,4 @@ public class Aura : MonoBehaviour
             }).AddTo(this.gameObject);
     }
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private int SetAura(int level)
-    {
-        int newHp = 0;
-        newHp = auraHpLevelList[level - 1];
-        return newHp;
-    }
-
-    private void AuraRecharge()
-    {
-
-    }
 }
