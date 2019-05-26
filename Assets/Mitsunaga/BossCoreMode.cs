@@ -24,45 +24,43 @@ public class BossCoreMode : MonoBehaviour
         // 自分を中心に8方向を一定間隔で探索し、ルートを出す
         bossSystem.coreEscape
             .Where(_ => GameManager.Instance.isCoreMode.Value)
+            .Sample(TimeSpan.FromSeconds(searchInterval))
             .Subscribe(_ =>
             {
-                Debug.Log("");
-
                 int rayNumber = 0;
 
-                Vector3 searchDir = new Vector3(
+                Vector3 dirPtB = (GameManager.Instance.playerTransform.position - this.transform.position).normalized;
+                float dirY = Mathf.Rad2Deg * Mathf.Atan2(dirPtB.z, dirPtB.x);
+
+                Vector3 playerDir = new Vector3(
                     0.0f,
-                    Vector3.Angle(this.transform.position, GameManager.Instance.playerTransform.position) * -1,
+                    dirY + 180.0f,
                     0.0f
                 );
 
                 while (rayNumber < 8)
                 {
                     Vector3 addDir = new Vector3(0.0f,searchAngles[rayNumber], 0.0f);
+                    Vector3 searchDir = playerDir + addDir;
 
-                    Debug.DrawRay(
-                        transform.position + (transform.localScale.x + 0.1f) * (searchDir + addDir).normalized,
-                        (searchDir + addDir).normalized, 
-                        new Color(1, 1, 0, 1), 
-                        searchRange
-                    );
+                    RaycastHit hit;
 
                     // Physics.Raycast(原点、角度、長さ)
                     // 衝突すればtrue、しなければfalse
-                    if (Physics.Raycast(transform.position, searchDir + addDir , searchRange))
+                    if (Physics.Raycast(transform.position + transform.localScale.x * searchDir,searchDir ,out hit, searchRange)
+                    )
                     {
                         rayNumber++;
                     }
                     else
                     {
-                        moveDir = addDir;
+                        Debug.Log("RayNumber : " + rayNumber.ToString());
+                        moveDir = new Vector3(Mathf.Cos(searchDir.y), 0.0f, Mathf.Sin(searchDir.y));
                         break;
                     }
-                    moveDir = Vector3.zero;
                 }
-
-                transform.eulerAngles += moveDir;
-                // bossSystem.SetMoveDirection(moveDir);
+                Debug.Log("moveDir : " + moveDir.ToString());
+                bossSystem.SetMoveDirection(this.transform.eulerAngles + moveDir);
 
             })
             .AddTo(this.gameObject);

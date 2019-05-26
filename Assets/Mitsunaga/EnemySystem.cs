@@ -102,16 +102,18 @@ public class EnemySystem : _StarParam
             })
             .AddTo(this.gameObject);
 
+        // コアモードのボスの挙動
         this.UpdateAsObservable()
             .Where(_ => starID == 2)
             .Where(_ => !GameManager.Instance.isPause.Value)
             .Where(_ => GameManager.Instance.isCoreMode.Value)
             .Subscribe(_ =>
             {
+                moveSpeed = 15.0f;
+                moveSpeedMul = 3.0f;
+
                 isMoving.Value = true;
                 coreEscape.OnNext(true);
-
-                moveDir = transform.forward;
 
                 starRig.AddForce(moveSpeedMul * ((moveDir * moveSpeed) - starRig.velocity));
             })

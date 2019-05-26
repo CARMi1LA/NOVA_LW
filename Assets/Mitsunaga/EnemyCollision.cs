@@ -32,10 +32,9 @@ public class EnemyCollision : MonoBehaviour
                 // VFXを作成
                 vc = Instantiate(VFXCollision.gameObject);
                 vc.gameObject.transform.position = this.transform.position;
+                vc.GetComponent<VFXCollisionEnemy>().deathCount = count * 2.0f;
                 vc.gameObject.SetActive(false);
                 vc.gameObject.SetActive(true);
-                // 一定時間後、VFXを削除
-                Destroy(vc, count * 2);
             })
             .AddTo(this.gameObject);
 
@@ -47,10 +46,9 @@ public class EnemyCollision : MonoBehaviour
                 // VFXを生成
                 vc = Instantiate(VFXCollision.gameObject);
                 vc.gameObject.transform.position = this.transform.position;
+                vc.GetComponent<VFXCollisionEnemy>().deathCount = count * 2.0f;
                 vc.gameObject.SetActive(false);
                 vc.gameObject.SetActive(true);
-                // 一定時間後VFXを削除
-                Destroy(vc, count * 2);
             })
             .AddTo(this.gameObject);
     }

@@ -18,8 +18,6 @@ public class PlayerSystem : _StarParam
 
     [SerializeField, Header("メインシーンか否か")]
     bool isMainScene = true;
-    [SerializeField, Header("ボスとのライン関連")]
-    LineRenderer linePtB;
 
     // 星の移動関連 移動は敵と統合して _StarParam に移す予定
     [SerializeField, Header("星の加速度、加速度への追従度、軌跡パーティクル")]
@@ -60,14 +58,6 @@ public class PlayerSystem : _StarParam
 
     void Start()
     {
-        if (isMainScene)
-        {
-            // ラインレンダラーの情報を指定
-            linePtB.startWidth = 0.1f;  // 開始点の幅
-            linePtB.endWidth = 0.1f;    // 終点の幅
-            linePtB.positionCount = 2;  // 頂点の数
-        }
-
         // プレイヤー情報をGameManagerに送信
         GameManager.Instance.playerTransform = this.transform;
         GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
@@ -93,13 +83,6 @@ public class PlayerSystem : _StarParam
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
                 GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);
-
-                if (isMainScene)
-                {
-                    // ボスとの間に線を引く
-                    linePtB.SetPosition(0, transform.position);     // 開始点の座標
-                    linePtB.SetPosition(1, GameManager.Instance.bossTransform.position); // 終点の座標
-                }
             })
             .AddTo(this.gameObject);
 
@@ -137,6 +120,7 @@ public class PlayerSystem : _StarParam
                         if (enemyParam.starID == 2)
                         {
                             GameManager.Instance.isClear.Value = true;
+                            enemyParam.playDeathFX.OnNext(0.5f);
                         }
                     }
                     catch
@@ -166,7 +150,7 @@ public class PlayerSystem : _StarParam
                             if (enemyParam.starID == 2)
                             {
                                 // ボスを破壊したらコアモードへ
-                                GameManager.Instance.isClear.Value = true;
+                                GameManager.Instance.isCoreMode.Value = true;
                             }
 
                             // 相手のオブジェクトを非表示にする
@@ -181,7 +165,7 @@ public class PlayerSystem : _StarParam
                             if (enemyParam.starID == 2)
                             {
                                 // ボスを破壊したらコアモードへ
-                                GameManager.Instance.isClear.Value = true;
+                                GameManager.Instance.isCoreMode.Value = true;
                             }
                             else
                             {
