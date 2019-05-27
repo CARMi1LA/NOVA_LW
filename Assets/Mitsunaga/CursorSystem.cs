@@ -12,6 +12,10 @@ using UnityEngine.Experimental.VFX;
 public class CursorSystem : MonoBehaviour
 {
     // マウスカーソルの処理
+
+    [SerializeField, Header("フィールドエフェクト")]
+    VisualEffect vfxField;
+    
     VisualEffect vfxHole;
 
     const float bSize = 2.5f;
@@ -43,6 +47,10 @@ public class CursorSystem : MonoBehaviour
 
                     vfxHole.SetFloat("ConformSize", Mathf.Lerp(vfxHole.GetFloat("ConformSize"), bSize, 0.1f));
                 }
+
+                vfxField.SetBool("CursorFlg", GameManager.Instance.cursorFlg);
+                vfxField.SetVector3("TargetPosition", this.transform.position);
+                vfxField.SetVector3("ParentPosition", vfxField.gameObject.transform.position);
 
                 GameManager.Instance.cursorPos = this.gameObject.transform.position;
             })
