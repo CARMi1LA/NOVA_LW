@@ -91,6 +91,8 @@ public class EnemySystem : _StarParam
             {
                 if (Vector3.Distance(this.transform.position, GameManager.Instance.playerTransform.position) <= moveSpace)
                 {
+                    isMoving.Value = true;
+
                     // プレイヤーの方向を向くAIか否か
                     if (isLookPlayer)
                     {
