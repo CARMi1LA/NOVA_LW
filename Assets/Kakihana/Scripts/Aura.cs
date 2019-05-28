@@ -4,6 +4,8 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+using UnityEngine.Experimental.VFX;
+
 public class Aura : MonoBehaviour
 {
     // オーラの状態
@@ -26,11 +28,14 @@ public class Aura : MonoBehaviour
 
     [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
 
+    [SerializeField] private Renderer auraMat;
+    [SerializeField] private Gradient a;
     // Start is called before the first frame update
     void Start()
     {
         playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
         level = GameManager.Instance.playerLevel;           // レベル情報を取得
+        auraMat = GetComponent<Renderer>();
         auraHp = auraHpLevelList[level - 1];                            // 初期のオーラHPを設定
         // オーラの大きさを設定
         transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;

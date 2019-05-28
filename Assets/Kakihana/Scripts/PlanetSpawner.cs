@@ -103,6 +103,13 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
             planetPool.Shrink(instanceCountRatio: 0.5f, minSize: count, callOnBeforeRent: false);
             Debug.Log("Pool開放");
         });
+
+        this.UpdateAsObservable().
+            Where(c => level != GameManager.Instance.playerLevel).
+            Subscribe(c =>
+            {
+                level = GameManager.Instance.playerLevel;
+            }).AddTo(this.gameObject);
     }
 
     // 通常スポーン用
