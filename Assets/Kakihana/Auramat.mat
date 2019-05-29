@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_C7B522C4_Texture:
-        m_Texture: {fileID: 2800000, guid: 3994a208efac7b0409feee1a3ce0d2a7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 94d5163c24b60d44caf6d395515ba13b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -55,6 +55,8 @@ Material:
     m_Floats:
     - Vector1_5C1C9987: 1
     - _AlphaClip: 0
+    - _AuraFlgDanger: 0
+    - _AuraFlgFine: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2

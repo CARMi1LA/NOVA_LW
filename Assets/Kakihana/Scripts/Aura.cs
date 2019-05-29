@@ -28,7 +28,7 @@ public class Aura : MonoBehaviour
     [SerializeField] private Transform playerTrans;              // プレイヤーの座標
 
     [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
-
+    [SerializeField] private Renderer auraRenderer;
     [SerializeField] private Material auraMat;
     [SerializeField] private Gradient a;
     // Start is called before the first frame update
@@ -36,11 +36,11 @@ public class Aura : MonoBehaviour
     {
         playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
         level = GameManager.Instance.playerLevel;           // レベル情報を取得
-        auraMat = GetComponent<Renderer>().material;
+        auraMat = auraRenderer.GetComponent<Renderer>().material;
         auraHp = auraHpLevelList[level - 1];                            // 初期のオーラHPを設定
         // オーラの大きさを設定
         transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
-
+        //transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
         this.UpdateAsObservable()
             .Where(_ => level != GameManager.Instance.playerLevel)
             .Subscribe(_ => {
@@ -50,20 +50,24 @@ public class Aura : MonoBehaviour
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-                if (auraHp <= auraHp * 0.5f)
+                if (auraHp <= auraHpLevelList[level - 1] * 0.5f)
                 {
+                    Debug.Log("KentiDanger");
                     auraMat.SetInt("_AuraFlgDanger", 1);
                 }
-                else if(auraHp <= auraHp * 0.25f)
+                else if(auraHp <= auraHpLevelList[level - 1] * 0.25f)
                 {
+                    Debug.Log("KentiCaution");
                     auraMat.SetInt("_AuraFlgDanger", 0);
                 }
-                if (auraHp >= auraHp * 0.8f)
+                if (auraHp >= auraHpLevelList[level - 1] * 0.8f)
                 {
+                    Debug.Log("KentiFine");
                     auraMat.SetInt("_AuraFlgFine", 0);
                 }
                 else
                 {
+                    Debug.Log("KentiDamage");
                     auraMat.SetInt("_AuraFlgFine", 1);
                 }
             }).AddTo(this.gameObject);
@@ -131,7 +135,6 @@ public class Aura : MonoBehaviour
                             else
                             {
                                 c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
-                                c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/8");
                             }
                         }
@@ -147,7 +150,6 @@ public class Aura : MonoBehaviour
                                 damage = 1;
                                 auraHp -= damage;
                                 c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
-                                c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/4");
                             }
                         }
