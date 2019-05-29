@@ -7,9 +7,6 @@ using UniRx.Triggers;
 using UniRx.Toolkit;
 using Cinemachine;
 
-using UnityEngine.VFX;
-//using UnityEditor.VFX;
-//using UnityEngine.Experimental.Rendering.LWRP;
 using UnityEngine.Experimental.VFX;
 
 public class PlayerSystem : _StarParam

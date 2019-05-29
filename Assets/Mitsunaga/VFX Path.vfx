@@ -312,15 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01270efd3285ea4a9d6c555cb0a8027, type: 3}
   m_Name: VFXUI
   m_EditorClassIdentifier: 
-  groupInfos:
-  - title: New Group Node
-    position:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 100
-      height: 100
-    contents: []
+  groupInfos: []
   stickyNoteInfos: []
   systemInfos: []
   categories: []
@@ -329,7 +321,7 @@ MonoBehaviour:
     x: -401
     y: -226
     width: 1961
-    height: 981
+    height: 1093
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -360,6 +352,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614580}
   - {fileID: 8926484042661614598}
   - {fileID: 8926484042661614607}
+  - {fileID: 8926484042661614614}
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
   m_UISuperCollapsed: 0
@@ -388,6 +381,19 @@ MonoBehaviour:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       m_SerializableObject: '{"x":0.0,"y":0.0,"z":0.0}'
+    min: -Infinity
+    max: Infinity
+    descendantCount: 0
+  - name: New Gradient
+    path: New Gradient
+    tooltip: 
+    sheetType: m_Gradient
+    realType: Gradient
+    defaultValue:
+      m_Type:
+        m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.44811320304870608,"g":1.0,"b":0.7251507043838501,"a":1.0},"time":0.0},{"color":{"r":0.9297237992286682,"g":1.0,"b":0.36320751905441286,"a":1.0},"time":0.6470588445663452}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
     min: -Infinity
     max: Infinity
     descendantCount: 0
@@ -871,7 +877,8 @@ MonoBehaviour:
       m_Regex: 
       m_RegexMaxLength: 0
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614615}
 --- !u!114 &114920711487922656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1434,85 +1441,85 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 1
-      - op: 1
-        valueIndex: 3
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
-        data[3]: 14
-      - op: 1
-        valueIndex: 4
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
-        data[3]: 13
+        data[3]: 3
       - op: 1
         valueIndex: 5
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 1
-      - op: 25
+      - op: 1
         valueIndex: 6
-        data[0]: 0
-        data[1]: 1
+        data[0]: -1
+        data[1]: -1
         data[2]: -1
-        data[3]: 1
+        data[3]: 13
       - op: 1
         valueIndex: 7
         data[0]: -1
         data[1]: -1
         data[2]: -1
+        data[3]: 14
+      - op: 1
+        valueIndex: 8
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
         data[3]: 1
       - op: 9
-        valueIndex: 8
+        valueIndex: 9
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: -1
       - op: 1
-        valueIndex: 24
+        valueIndex: 25
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 3
+        data[3]: 1
       - op: 25
-        valueIndex: 27
+        valueIndex: 26
         data[0]: 0
-        data[1]: 7
+        data[1]: 1
         data[2]: -1
         data[3]: 1
-      - op: 51
-        valueIndex: 28
-        data[0]: 3
+      - op: 1
+        valueIndex: 27
+        data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 0
+        data[3]: 1
+      - op: 1
+        valueIndex: 28
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 1
       - op: 50
         valueIndex: 29
         data[0]: 4
         data[1]: -1
         data[2]: -1
         data[3]: 0
-      - op: 6
+      - op: 51
         valueIndex: 33
-        data[0]: -1
+        data[0]: 5
         data[1]: -1
         data[2]: -1
-        data[3]: -1
-      - op: 1
+        data[3]: 0
+      - op: 25
         valueIndex: 34
-        data[0]: -1
-        data[1]: -1
+        data[0]: 0
+        data[1]: 6
         data[2]: -1
         data[3]: 1
-      - op: 1
+      - op: 6
         valueIndex: 35
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 1
+        data[3]: -1
       - op: 1
         valueIndex: 36
         data[0]: -1
@@ -1521,14 +1528,14 @@ VisualEffectResource:
         data[3]: 1
       - op: 27
         valueIndex: 37
-        data[0]: 2
-        data[1]: 6
+        data[0]: 3
+        data[1]: 9
         data[2]: -1
         data[3]: 1
       - op: 27
         valueIndex: 38
-        data[0]: 5
-        data[1]: 6
+        data[0]: 8
+        data[1]: 9
         data[2]: -1
         data[3]: 1
       - op: 1
@@ -1563,8 +1570,8 @@ VisualEffectResource:
         data[3]: 3
       - op: 41
         valueIndex: 54
-        data[0]: 8
-        data[1]: 9
+        data[0]: 7
+        data[1]: 2
         data[2]: -1
         data[3]: -1
       - op: 1
@@ -1583,23 +1590,23 @@ VisualEffectResource:
           m_Value: 0
         - m_ExpressionIndex: 1
           m_Value: 0.2
-        - m_ExpressionIndex: 2
+        - m_ExpressionIndex: 3
           m_Value: 2
-        - m_ExpressionIndex: 5
-          m_Value: 1
-        - m_ExpressionIndex: 7
+        - m_ExpressionIndex: 6
           m_Value: 4
-        - m_ExpressionIndex: 14
-          m_Value: 6.2831855
-        - m_ExpressionIndex: 15
+        - m_ExpressionIndex: 8
+          m_Value: 1
+        - m_ExpressionIndex: 10
           m_Value: 0
+        - m_ExpressionIndex: 11
+          m_Value: 6.2831855
         - m_ExpressionIndex: 16
           m_Value: 10
       m_Vector2f:
         m_Array: []
       m_Vector3f:
         m_Array:
-        - m_ExpressionIndex: 9
+        - m_ExpressionIndex: 2
           m_Value: {x: 0, y: 0, z: 0}
         - m_ExpressionIndex: 19
           m_Value: {x: -1, y: -1, z: -1}
@@ -1648,7 +1655,7 @@ VisualEffectResource:
             m_RotationOrder: 4
       m_Gradient:
         m_Array:
-        - m_ExpressionIndex: 3
+        - m_ExpressionIndex: 5
           m_Value:
             serializedVersion: 2
             key0: {r: 0.4481132, g: 1, b: 0.7251507, a: 1}
@@ -1685,6 +1692,8 @@ VisualEffectResource:
       m_Bool:
         m_Array: []
     m_ExposedExpressions:
+    - nameId: New Gradient
+      index: 5
     - nameId: PlayerPosition
       index: 21
     - nameId: PlayerSize
@@ -1893,7 +1902,7 @@ VisualEffectResource:
         index: 3
       values:
       - nameId: deltaTime_a
-        index: 13
+        index: 15
       params: []
       processor: {fileID: 0}
       shaderSourceIndex: 1
@@ -1905,9 +1914,9 @@ VisualEffectResource:
       - nameId: Size_b
         index: 12
       - nameId: gradient_c
-        index: 11
+        index: 13
       - nameId: Size_d
-        index: 10
+        index: 14
       - nameId: mainTexture
         index: 25
       params:
@@ -3817,3 +3826,79 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661614606}
+--- !u!114 &8926484042661614614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330e0fca1717dde4aaa144f48232aa64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Parent: {fileID: 114350483966674976}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 0
+  m_UISuperCollapsed: 0
+  m_InputSlots: []
+  m_OutputSlots:
+  - {fileID: 8926484042661614615}
+  m_exposedName: New Gradient
+  m_exposed: 1
+  m_Order: 2
+  m_Category: 
+  m_Min:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_Max:
+    m_Type:
+      m_SerializableType: 
+    m_SerializableObject: 
+  m_Tooltip: 
+  m_Nodes:
+  - m_Id: 0
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614615}
+      inputSlot: {fileID: 114888496708539098}
+    position: {x: 919, y: 554}
+    expandedSlots: []
+    expanded: 0
+--- !u!114 &8926484042661614615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f778ff57c4e8145b9681fe3268d8e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Parent: {fileID: 0}
+  m_Children: []
+  m_UIPosition: {x: 0, y: 0}
+  m_UICollapsed: 1
+  m_UISuperCollapsed: 0
+  m_MasterSlot: {fileID: 8926484042661614615}
+  m_MasterData:
+    m_Owner: {fileID: 8926484042661614614}
+    m_Value:
+      m_Type:
+        m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.44811320304870608,"g":1.0,"b":0.7251507043838501,"a":1.0},"time":0.0},{"color":{"r":0.9297237992286682,"g":1.0,"b":0.36320751905441286,"a":1.0},"time":0.6470588445663452}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+    m_Space: 2147483647
+  m_Property:
+    name: o
+    m_serializedType:
+      m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    attributes: []
+  m_Direction: 1
+  m_LinkedSlots:
+  - {fileID: 114888496708539098}
