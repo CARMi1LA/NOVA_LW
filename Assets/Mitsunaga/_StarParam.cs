@@ -159,6 +159,7 @@ public class _StarParam : MonoBehaviour
             .Subscribe(_ =>
             {
                 col.isTrigger = false;
+                PlanetSpawner.Instance.PlanetDestroy();
                 this.gameObject.SetActive(false);
             })
             .AddTo(this.gameObject);

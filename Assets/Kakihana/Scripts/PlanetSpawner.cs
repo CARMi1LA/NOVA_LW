@@ -29,8 +29,8 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     [SerializeField] private int level;                         // 現在のレベル
 
     [Header("デバッグ用に値を変更可能")]
-    [SerializeField] private int planetSpawnInterval;           // 惑星の再出現までのフレーム
-
+    [SerializeField] private float planetSpawnInterval;           // 惑星の再出現までの時間（秒）
+    [SerializeField] private float highSpeedSpawnInterval;        // 惑星の再出現までの時間（高速生成用、単位は秒）
     [Header("シーン毎に設定が必要なコンポーネント")]
     [SerializeField] private EnemySystem[] planetPrefab;        // スポーンする惑星をここに格納
     [SerializeField] private PlanetPool planetPool;             // 惑星のオブジェクトプール
@@ -54,7 +54,6 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     [SerializeField] private Transform playerPos;
     [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
     public float debugTime;                                     // デバッグ用時間経過をカウントする
-    [SerializeField] private TextMeshProUGUI debugLevelText;
     
     // Start is called before the first frame update
     void Start()
@@ -68,8 +67,6 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
         level = GameManager.Instance.playerLevel;
 
-        debugLevelText.text = string.Format("Level:{0}",level);
-
         // ボス周辺エリアの半径を2乗する
         maxR = Mathf.Pow(hotSpotRadiusMax, 2);
         minR = Mathf.Pow(hotSpotRadiusMin, 2);
@@ -77,9 +74,16 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         // オブジェクトプールの初期化
         planetPool = new PlanetPool(poolObjTrans,planetPrefab[0]);
 
-        // 指定したフレームごとに実行
-        Observable.IntervalFrame(planetSpawnInterval)
-            .Where(_ => count < planetMaxnum).Subscribe(_ =>
+        /*
+         惑星をスポーンするかどうかの処理を行う
+         最大生成数を超えてスポーンしない
+         また、敵残存に応じて処理の実行タイミングを変化させている。（既存は残存数が最大生成数÷2以下）
+        */
+        this.UpdateAsObservable()
+            .Where(_ => count < planetMaxnum)
+            .Delay(count <= planetMaxnum / 2 ? 
+            (TimeSpan.FromSeconds(highSpeedSpawnInterval)) : (TimeSpan.FromSeconds(planetSpawnInterval)))
+            .Subscribe(_ =>
             {
                 if (count < hotSpotMax)
                 {
@@ -94,6 +98,24 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
                     Debug.Log("NormalSpawn");
                 }
             }).AddTo(this.gameObject);
+
+        // 指定したフレームごとに実行、最大生成数を超えると実行されない
+        //Observable.IntervalFrame(planetSpawnInterval)
+        //    .Where(_ => count < planetMaxnum).Subscribe(_ =>
+        //    {
+        //        if (count < hotSpotMax)
+        //        {
+        //            // 惑星は一定値になるまでボス周辺エリアにスポーンする
+        //            HotSpotCreate();
+        //            Debug.Log("HotSpotSpawn");
+        //        }
+        //        else
+        //        {
+        //            // 一定値を超えると最大スポーン数まですべての範囲でスポーンする
+        //            PlanetCreate();
+        //            Debug.Log("NormalSpawn");
+        //        }
+        //    }).AddTo(this.gameObject);
 
         // 60秒毎にオブジェクトプールをリフレッシュする
         Observable.Timer(TimeSpan.FromSeconds(60.0f)).Subscribe(_ =>
@@ -151,7 +173,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
         // スポーン予定の惑星の大きさを事前に算出
         // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
-        var planetSubscription = playerPos.localScale.x * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
+        var planetSubscription = playerPos.localScale.x / 2 * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
 
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);
@@ -220,19 +242,6 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     public string NowSceneName()
     {
         return SceneManager.GetActiveScene().name;
-    }
-
-    // デバッグ用ボス周辺エリアを可視化する
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = new Color(1.0f, 0.0f, 0.0f, 0.5f);
-    //    Gizmos.DrawSphere(bossObjTrans.position, bossRadius);
-    //}
-
-    public void LevelUp()
-    {
-        level++;
-        debugLevelText.text = string.Format("Level:{0}", level);
     }
 }
 
