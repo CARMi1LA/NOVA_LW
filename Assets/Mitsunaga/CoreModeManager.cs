@@ -4,14 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine.Experimental.VFX;
 
 public class CoreModeManager : MonoBehaviour
 {
     // コアモードの管理
     // 制限時間の管理、フィールドの縮小、死亡処理など
 
-    [SerializeField, Header("フィールドオブジェクト、初期サイズ")]
+    [SerializeField, Header("フィールドオブジェクト、エフェクト、初期サイズ")]
     Transform fieldObject;
+    [SerializeField]
+    VisualEffect vfxField;
     [SerializeField]
     float fieldStartRange = 300.0f;
     [SerializeField, Header("制限時間、時間表示テキスト")]
@@ -26,6 +29,7 @@ public class CoreModeManager : MonoBehaviour
     void Start()
     {
         fieldRange = fieldStartRange;
+        vfxField.SetFloat("FieldSize", fieldStartRange / 2);
 
         timeCount.Value = timeLimit;
 
@@ -35,7 +39,7 @@ public class CoreModeManager : MonoBehaviour
             // 制限時間を表示
             timeText.text = (Mathf.Ceil(timeCount.Value * 10) / 10).ToString();
             // 制限時間切れでゲームオーバー
-            if(_ <= 0.0f)
+            if (_ <= 0.0f)
             {
                 // プレイヤーの死亡時処理を実行
                 GameManager.Instance.playerTransform.gameObject.GetComponent<_StarParam>()
@@ -43,7 +47,7 @@ public class CoreModeManager : MonoBehaviour
                 // ゲームオーバーフラグを立てる
                 GameManager.Instance.isGameOver.Value = true;
             }
-
+            vfxField.SetFloat("FieldSize", fieldStartRange / 2 * (timeCount.Value / timeLimit));
             fieldRange = fieldStartRange * (timeCount.Value / timeLimit);
 
             fieldObject.localScale = new Vector3(fieldRange, fieldObject.localScale.y, fieldRange);

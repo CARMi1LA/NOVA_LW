@@ -10,12 +10,15 @@ public class BossCoreMode : MonoBehaviour
     // ボスのコアモードのAI
 
     [SerializeField, Header("探索範囲")]
-    float searchRange = 20;
+    float searchRange = 10;
     float searchInterval = 0.5f;    // 探索間隔
 
     Vector3 moveDir = Vector3.zero; // 移動角度
 
     float[] searchAngles = new float[] { 0, 45, -45, 90, -90, 135, -135, 180 };
+
+    [SerializeField]
+    Transform debugObj;
 
     void Start()
     {
@@ -29,38 +32,44 @@ public class BossCoreMode : MonoBehaviour
             {
                 int rayNumber = 0;
 
-                Vector3 dirPtB = (GameManager.Instance.playerTransform.position - this.transform.position).normalized;
-                float dirY = Mathf.Rad2Deg * Mathf.Atan2(dirPtB.z, dirPtB.x);
+                Vector3 playerDir = (GameManager.Instance.playerTransform.position - this.transform.position);
+                playerDir *= -1;
 
-                Vector3 playerDir = new Vector3(
-                    0.0f,
-                    dirY + 180.0f,
-                    0.0f
-                );
+                moveDir = playerDir.normalized;
 
                 while (rayNumber < 8)
                 {
-                    Vector3 addDir = new Vector3(0.0f,searchAngles[rayNumber], 0.0f);
-                    Vector3 searchDir = playerDir + addDir;
+                    Vector3 addDir = new Vector3(Mathf.Cos(searchAngles[rayNumber]), 0.0f, Mathf.Sin(searchAngles[rayNumber]));
+                    Vector3 searchDir = (playerDir + addDir).normalized;
 
                     RaycastHit hit;
 
-                    // Physics.Raycast(原点、角度、長さ)
-                    // 衝突すればtrue、しなければfalse
-                    if (Physics.Raycast(transform.position + transform.localScale.x * searchDir,searchDir ,out hit, searchRange)
-                    )
+                    debugObj.position = transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir);
+                    Debug.Log(Vector3.Distance(new Vector3(0, 0, 0), transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir)));
+                    
+                    // Physics.SphereCast(原点、球の大きさ、角度、当たった情報、長さ)
+                    // 衝突すればTrue、しなければFalse
+                    // 球がステージの外にある場合もTrue
+                    if (
+                        Physics.SphereCast(transform.position + (transform.localScale.x * 0.55f * searchDir),
+                                           transform.localScale.x, searchDir,
+                                           out hit, searchRange) ||
+                        Vector3.Distance(new Vector3(0, 0, 0), transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir))
+                        > CoreModeManager.fieldRange / 2
+                       )
                     {
+                        Debug.Log("Collision!!");
                         rayNumber++;
                     }
                     else
                     {
                         Debug.Log("RayNumber : " + rayNumber.ToString());
-                        moveDir = new Vector3(Mathf.Cos(searchDir.y), 0.0f, Mathf.Sin(searchDir.y));
+                        moveDir = searchDir;
                         break;
                     }
                 }
                 Debug.Log("moveDir : " + moveDir.ToString());
-                bossSystem.SetMoveDirection(this.transform.eulerAngles + moveDir);
+                bossSystem.SetMoveDirection(moveDir);
 
             })
             .AddTo(this.gameObject);

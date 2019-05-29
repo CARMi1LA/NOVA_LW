@@ -35,8 +35,6 @@ public class LineRendererP2B : MonoBehaviour
                 Vector3 dist = targetObject[0].position - targetObject[1].position;
                 float atan = Mathf.Atan2(dist.z, dist.x);
 
-                Debug.Log(dist.ToString() + atan.ToString());
-
                 lineMat.SetFloat("_Angle", atan);
 
                 for (int i = 0; i < line.positionCount; ++i)
