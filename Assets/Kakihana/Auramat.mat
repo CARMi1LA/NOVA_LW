@@ -76,7 +76,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_625F0915: {r: 0, g: 3.838485, b: 5.340313, a: 0}
+    - Color_625F0915: {r: 0, g: 5.1513295, b: 7.1297374, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

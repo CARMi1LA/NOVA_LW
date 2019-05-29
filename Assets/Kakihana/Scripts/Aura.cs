@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor.ShaderGraph;
+
+using UnityEngine.Experimental.VFX;
 
 public class Aura : MonoBehaviour
 {
@@ -26,14 +29,45 @@ public class Aura : MonoBehaviour
 
     [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
 
+    [SerializeField] private Material auraMat;
+    [SerializeField] private Gradient a;
     // Start is called before the first frame update
     void Start()
     {
         playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
         level = GameManager.Instance.playerLevel;           // レベル情報を取得
+        auraMat = GetComponent<Renderer>().material;
         auraHp = auraHpLevelList[level - 1];                            // 初期のオーラHPを設定
         // オーラの大きさを設定
         transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
+
+        this.UpdateAsObservable()
+            .Where(_ => level != GameManager.Instance.playerLevel)
+            .Subscribe(_ => {
+                level = GameManager.Instance.playerLevel;
+            }).AddTo(this.gameObject);
+
+        this.UpdateAsObservable()
+            .Subscribe(_ =>
+            {
+                if (auraHp <= auraHp * 0.5f)
+                {
+                    auraMat.SetInt("_AuraFlgDanger", 1);
+                }
+                else if(auraHp <= auraHp * 0.25f)
+                {
+                    auraMat.SetInt("_AuraFlgDanger", 0);
+                }
+                if (auraHp >= auraHp * 0.8f)
+                {
+                    auraMat.SetInt("_AuraFlgFine", 0);
+                }
+                else
+                {
+                    auraMat.SetInt("_AuraFlgFine", 1);
+                }
+            }).AddTo(this.gameObject);
+        
         // 通常時のイベント ポーズしてなければ稼働する
         this.UpdateAsObservable()
             .Where(c => !GameManager.Instance.isPause.Value)
@@ -96,6 +130,7 @@ public class Aura : MonoBehaviour
                             }
                             else
                             {
+                                c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
                                 c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/8");
                             }
@@ -111,6 +146,7 @@ public class Aura : MonoBehaviour
                             {
                                 damage = 1;
                                 auraHp -= damage;
+                                c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
                                 c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/4");
                             }

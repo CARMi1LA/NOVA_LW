@@ -1,0 +1,39 @@
+fileFormatVersion: 2
+guid: 65a0cdd96830ad14d8f5702571447b8b
+VideoClipImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  useLegacyImporter: 0
+  quality: 0.89
+  isColorLinear: 1
+  frameRange: 0
+  startFrame: -1
+  endFrame: -1
+  colorSpace: 0
+  deinterlace: 0
+  encodeAlpha: 0
+  flipVertical: 0
+  flipHorizontal: 0
+  importAudio: 0
+  targetSettings:
+    0:
+      enableTranscoding: 0
+      codec: 0
+      resizeFormat: 0
+      aspectRatio: 0
+      customWidth: 1152
+      customHeight: 648
+      bitrateMode: 2
+      spatialQuality: 2
+    1:
+      enableTranscoding: 1
+      codec: 0
+      resizeFormat: 0
+      aspectRatio: 0
+      customWidth: 1152
+      customHeight: 648
+      bitrateMode: 0
+      spatialQuality: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
