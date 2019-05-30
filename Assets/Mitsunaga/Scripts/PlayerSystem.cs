@@ -29,7 +29,7 @@ public class PlayerSystem : _StarParam
     [SerializeField, Header("星の衝突、合体時の待ち時間、パーティクル")]
     float hitStopTime = 0.2f;
     [SerializeField]
-    float waitCount = 3.0f;
+    public float waitCount = 3.0f;
 
     // カメラ関連 これもいずれ独立させる
     [SerializeField, Header("シネマシーンのカメラ")]
@@ -67,37 +67,27 @@ public class PlayerSystem : _StarParam
             .Where(c => !GameManager.Instance.isPause.Value)
             .Subscribe(c =>
             {
+                // プレイヤー情報をGameManagerに送信
+                GameManager.Instance.playerTransform = this.transform;                          // トランスフォーム
+                GameManager.Instance.cameraPosition = vCam.gameObject.transform.position;       // カメラ
+                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);  // レベル
+
+                // レベルに応じて速度上昇
+                moveSpeed = startSpeed * (1 + GameManager.Instance.playerLevel * 0.1f);
+
                 // 移動処理
-                // 移動速度と追従度を渡す
                 SetStarMove(moveSpeed, moveSpeedMul);
+                // 軌道エフェクト
                 VFXPath.SetVector3("PlayerPosition", this.transform.position);
                 VFXPath.SetFloat("PlayerSize", (GetStarSize() + 1.0f) / 2);
 
-                if (Input.GetKeyDown(KeyCode.E))
+                // フィールド外に出た場合、ゲームオーバー
+                if (GameManager.Instance.isCoreMode.Value &&
+                    Vector3.Distance(this.transform.position, GameManager.Instance.bossTransform.position) > GameManager.Instance.fieldRange)
                 {
-                    playCollisionFX.OnNext(waitCount);
+                    playDeathFX.OnNext(waitCount);
+                    GameManager.Instance.isGameOver.Value = true;
                 }
-
-                // プレイヤー情報をGameManagerに送信
-                GameManager.Instance.playerTransform = this.transform;
-                GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
-                GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);
-
-                moveSpeed = startSpeed * (1 + GameManager.Instance.playerLevel * 0.1f);
-            })
-            .AddTo(this.gameObject);
-
-        // クリックでポーズを解除する
-        // 各フラグが一致する場合のみ実行
-        this.UpdateAsObservable()
-            .Where(c => Input.GetMouseButtonDown(0))
-            .Where(c => GameManager.Instance.isPause.Value)
-            .Where(c => !GameManager.Instance.isGameOver.Value)
-            .Where(c => !GameManager.Instance.isClear.Value)
-            .Subscribe(_ =>
-            {
-                GameManager.Instance.bigText.text = "";
-                GameManager.Instance.isPause.Value = false;
             })
             .AddTo(this.gameObject);
 
@@ -106,50 +96,54 @@ public class PlayerSystem : _StarParam
         this.OnCollisionEnterAsObservable()
             .Subscribe(c =>
             {
-                EnemySystem enemyParam;         // 衝突したオブジェクトの情報を取得する
+                _StarParam enemyParam;         // 衝突したオブジェクトの情報を取得する
                 collisionAudioSource.Play();    // 衝突の音を出す
 
+                // モードごとの処理
                 if (GameManager.Instance.isCoreMode.Value)
                 {
                     // コアモード
                     try
                     {
                         // 衝突したオブジェクトの情報を取得する
-                        enemyParam = c.gameObject.GetComponent<EnemySystem>();
+                        enemyParam = c.gameObject.GetComponent<_StarParam>();
+                        Debug.Log("collision Boss!!"  + enemyParam.starID.ToString());
 
                         // ボスと衝突した場合、ゲームクリア
-                        if (enemyParam.starID == 2)
+                        if (enemyParam != null)
                         {
-                            enemyParam.playDeathFX.OnNext(0.5f);
                             GameManager.Instance.isClear.Value = true;
-
+                            playCollisionFX.OnNext(waitCount);
+                            enemyParam.playDeathFX.OnNext(0.5f);
                         }
                     }
                     catch
                     {
                         // ボス以外のオブジェクトと衝突した場合、ゲームオーバー
-                        GameManager.Instance.isGameOver.Value = true;
+                        try
+                        {
+                            FragmentSystem fragParam = c.gameObject.GetComponent<FragmentSystem>();
 
-                        // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
-                        Debug.Log("_StarParam is Null");
+                            if(fragParam != null)
+                            {
+                                playDeathFX.OnNext(waitCount);
+                                GameManager.Instance.isGameOver.Value = true;
+                            }
+                        }
+                        catch { }
                     }
                 }
                 else
                 {
                     // 通常モード
-
                     try
                     {
-                        enemyParam = c.gameObject.GetComponent<EnemySystem>();
-
-                        // 通常モード
+                        enemyParam = c.gameObject.GetComponent<_StarParam>();
 
                         // 当たった星のサイズを比べる
                         if (enemyParam.GetStarSize() <= (GetStarSize() * 1.1f))
                         {
-                            // 2. 自分と同じくらいならばお互いを破壊して再構成
-
-                            playCollisionFX.OnNext(waitCount);
+                            // 2. 自分より小さければお互いを破壊し再構成　成長
 
                             if (enemyParam.starID == 2)
                             {
@@ -162,14 +156,14 @@ public class PlayerSystem : _StarParam
                                 StartCoroutine(WaitCoroutine(waitCount, c.transform.localScale.x * 0.5f));
                             }
 
-                            // 相手のオブジェクトを非表示にする
+                            playCollisionFX.OnNext(waitCount);
                             enemyParam.playDeathFX.OnNext(0.5f);
                         }
                         else
                         {
                             // 3. 自分より大きければ自分が破壊される　ゲームオーバー
-                            playDeathFX.OnNext(waitCount);
 
+                            playDeathFX.OnNext(waitCount);
                             GameManager.Instance.isGameOver.Value = true;
                         }
                     }

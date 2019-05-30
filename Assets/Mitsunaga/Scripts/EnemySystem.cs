@@ -11,8 +11,7 @@ public class EnemySystem : _StarParam
     // パラメータ
     //[SerializeField] PlanetSpawner spawner; // 惑星が持つスクリプト 30秒経つと消える
 
-    [SerializeField,Header("AI番号")]
-    int AInum;
+    int AInum = 0;
 
     // 移動のパラメータ
     // AI
@@ -114,7 +113,7 @@ public class EnemySystem : _StarParam
             .Where(_ => GameManager.Instance.isCoreMode.Value)
             .Subscribe(_ =>
             {
-                moveSpeed = 10.0f;
+                moveSpeed = 12.0f;
                 moveSpeedMul = 5.0f;
 
                 isMoving.Value = true;

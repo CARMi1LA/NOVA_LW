@@ -1,14 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
-using UniRx.Toolkit;
-using Cinemachine;
-
-using UnityEngine.VFX;
-//using UnityEditor.VFX;
-//using UnityEngine.Experimental.Rendering.LWRP;
 using UnityEngine.Experimental.VFX;
 
 public class EnemyCollision : MonoBehaviour
@@ -17,15 +12,14 @@ public class EnemyCollision : MonoBehaviour
 
     [SerializeField,Header("VFXのプレハブ")]
     VisualEffect VFXCollision;
-    [SerializeField]
-    ParticleSystem PSCollision;
 
     void Start()
     {
+        // 初期設定
         GameObject vc;
-
         _StarParam sp = this.GetComponent<_StarParam>();
 
+        // 衝突時の処理
         sp.playCollisionFX
             .Subscribe(count =>
             {
@@ -38,6 +32,7 @@ public class EnemyCollision : MonoBehaviour
             })
             .AddTo(this.gameObject);
 
+        // 死亡時の処理
         this.GetComponent<_StarParam>().playDeathFX
             .Subscribe(count =>
             {

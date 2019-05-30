@@ -45,7 +45,6 @@ public class BossCoreMode : MonoBehaviour
                     RaycastHit hit;
 
                     debugObj.position = transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir);
-                    Debug.Log(Vector3.Distance(new Vector3(0, 0, 0), transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir)));
                     
                     // Physics.SphereCast(原点、球の大きさ、角度、当たった情報、長さ)
                     // 衝突すればTrue、しなければFalse
@@ -55,7 +54,6 @@ public class BossCoreMode : MonoBehaviour
                                            transform.localScale.x * 2, searchDir,
                                            out hit, searchRange))
                     {
-                        Debug.Log("Collision!! RayNumber : " + rayNumber.ToString());
                         rayNumber++;
                     }
                     else

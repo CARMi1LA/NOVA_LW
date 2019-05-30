@@ -32,7 +32,7 @@ public class FragmentSystem : MonoBehaviour
                 this.transform.eulerAngles += (randomRotate * RotationSpeed * Time.deltaTime);
 
                 // フィールドの外に出たら破壊される
-                if (Vector3.Distance(this.transform.position,GameManager.Instance.bossTransform.position) >= CoreModeManager.fieldRange / 2)
+                if (Vector3.Distance(this.transform.position,GameManager.Instance.bossTransform.position) >= GameManager.Instance.fieldRange)
                 {
                     GameObject fx = Instantiate(vfxCollision.gameObject);
                     fx.transform.position = this.transform.position;

@@ -43,6 +43,7 @@ public class _StarParam : MonoBehaviour
         // Rigidbodyを取得して、Y軸の移動を停止させる
         starRig = GetComponent<Rigidbody>();
         starRig.constraints = RigidbodyConstraints.FreezePositionY;
+        starRig.useGravity = false;
 
         // starSizeの値が変化した場合、値をスケールに適用
         starSize.Subscribe(c =>
@@ -131,7 +132,7 @@ public class _StarParam : MonoBehaviour
                 // マウスカーソルの方向を取得し、その方向に向かって力を加える
                 isMoving.Value = true;
                 Vector3 pDir = (GameManager.Instance.cursorPos - this.transform.position).normalized;
-                starRig.AddForce(speedMul * ((pDir * ((GameManager.Instance.cursorFlg) ? speed : -speed)) - starRig.velocity));
+                starRig.AddForce(speedMul * ((pDir * (GameManager.Instance.cursorFlg ? speed : -speed)) - starRig.velocity));
                 break;
             case 2:
                 isMoving.Value = false;
@@ -143,7 +144,7 @@ public class _StarParam : MonoBehaviour
                 {
                     isMoving.Value = true;
                     Vector3 eDir = (GameManager.Instance.cursorPos - transform.position).normalized;
-                    starRig.AddForce(speedMul * ((eDir * speed) - starRig.velocity));
+                    starRig.AddForce(speedMul * ((eDir * (GameManager.Instance.cursorFlg ? speed : -speed)) - starRig.velocity));
                 }
                 else
                 {
@@ -171,8 +172,12 @@ public class _StarParam : MonoBehaviour
             .Subscribe(_ =>
             {
                 col.isTrigger = false;
-                PlanetSpawner.Instance.PlanetDestroy();
                 this.gameObject.SetActive(false);
+
+                if(starID == 3)
+                {
+                    PlanetSpawner.Instance.PlanetDestroy();
+                }
             })
             .AddTo(this.gameObject);
     }
