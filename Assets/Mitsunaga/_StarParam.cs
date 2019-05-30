@@ -32,6 +32,9 @@ public class _StarParam : MonoBehaviour
     public Subject<float> playCollisionFX = new Subject<float>();
     public Subject<float> playDeathFX = new Subject<float>();
 
+    public Subject<Vector3> playCollisionImpact = new Subject<Vector3>();
+    float impactPower = 5;
+
     protected void Awake()
     {
         // コルーチンの再生、停止をコントロールするためここで宣言
@@ -58,6 +61,15 @@ public class _StarParam : MonoBehaviour
             {
                 starRig.isKinematic = true;
             }
+        })
+        .AddTo(this.gameObject);
+
+        // 衝突した相手の位置の反対向きに移動する
+        // col … 衝突したオブジェクトの位置
+        playCollisionImpact.Subscribe(col =>
+        {
+            Vector3 dir = (this.transform.position - col).normalized;
+            starRig.AddForce(dir * impactPower, ForceMode.Impulse);
         })
         .AddTo(this.gameObject);
     }
