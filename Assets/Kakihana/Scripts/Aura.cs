@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
@@ -20,15 +21,16 @@ public class Aura : MonoBehaviour
     public AuraState auraState = AuraState.AuraFull;
         
     [SerializeField] private int auraHp = 0;                     // オーラのHP
+    [SerializeField] private int auraHpMax = 10;
     [SerializeField] public int[] auraHpLevelList;               // レベル毎のオーラの最大HPリスト
-    [SerializeField] private int auraHealDelayFrame = 300;       // オーラ回復処理に掛かる遅延時間（フレーム）
+    [SerializeField] private int auraHealDelay = 20;       // オーラ回復処理に掛かる遅延時間（フレーム）
     [SerializeField] private int auraHealIntervalFrame = 10;     // オーラを回復させる間隔（フレーム）
     [SerializeField] private int level = 0;                      // 現在のレベル
 
     [SerializeField] private Transform playerTrans;              // プレイヤーの座標
 
     [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
-
+    [SerializeField] private Renderer auraRenderer;
     [SerializeField] private Material auraMat;
     [SerializeField] private Gradient a;
     // Start is called before the first frame update
@@ -36,34 +38,42 @@ public class Aura : MonoBehaviour
     {
         playerTrans = GameManager.Instance.playerTransform; // プレイヤーの情報を取得
         level = GameManager.Instance.playerLevel;           // レベル情報を取得
-        auraMat = GetComponent<Renderer>().material;
-        auraHp = auraHpLevelList[level - 1];                            // 初期のオーラHPを設定
+        auraMat = auraRenderer.GetComponent<Renderer>().material;
+        auraHp = auraHpMax;                            // 初期のオーラHPを設定
         // オーラの大きさを設定
-        transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
-
+        transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x * 2;
+        //transform.localScale = (playerTrans.localScale + auraSizeMag) / playerTrans.localScale.x;
         this.UpdateAsObservable()
             .Where(_ => level != GameManager.Instance.playerLevel)
             .Subscribe(_ => {
                 level = GameManager.Instance.playerLevel;
+                auraHealDelay = auraHealDelay - Mathf.FloorToInt(auraHealDelay * 0.8f);
             }).AddTo(this.gameObject);
 
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-                if (auraHp <= auraHp * 0.5f)
+                // オーラのHPが半分以下で色が黄色に
+                if (auraHp <= auraHpMax * 0.5f && auraHp >= auraHpMax * 0.25f)
                 {
+                    Debug.Log("KentiCaution");
                     auraMat.SetInt("_AuraFlgDanger", 1);
                 }
-                else if(auraHp <= auraHp * 0.25f)
+                // オーラのHPが4分の1以下で色がオレンジに
+                else if (auraHp <= auraHpMax * 0.25f)
                 {
+                    Debug.Log("KentiDanger");
                     auraMat.SetInt("_AuraFlgDanger", 0);
                 }
-                if (auraHp >= auraHp * 0.8f)
+                // オーラのHPが半分より上なら色が緑に
+                if (auraHp > auraHpMax * 0.5f)
                 {
+                    Debug.Log("KentiFine");
                     auraMat.SetInt("_AuraFlgFine", 0);
                 }
                 else
                 {
+                    Debug.Log("KentiDamage");
                     auraMat.SetInt("_AuraFlgFine", 1);
                 }
             }).AddTo(this.gameObject);
@@ -73,41 +83,70 @@ public class Aura : MonoBehaviour
             .Where(c => !GameManager.Instance.isPause.Value)
             .Subscribe(c =>
             {
-                if (auraHp == auraHpLevelList[level-1])
+                if (auraHp == auraHpMax)
                 {
                     auraState = AuraState.AuraFull;
                     this.gameObject.SetActive(true);
                 }
-                else if (auraHp < auraHpLevelList[level - 1])
+                else if (auraHp < auraHpMax)
                 {
                     auraState = AuraState.AuraCharge;
                     this.gameObject.SetActive(true);
                     // ここにオーラONOFFメソッドを入れる
                     Debug.Log("KENTICHARGE");
                 }
-                else if (auraHp <= 0)
+
+                if (auraHp <= 0 && auraState == AuraState.AuraCharge)
                 {
                     auraState = AuraState.AuraOff;
                     this.gameObject.SetActive(false);
                 }
 
             }).AddTo(this.gameObject);
+
         // 1でもダメージを受けていたらオーラHP回復処理を実行 1秒毎にオーラ回復
-        Observable.TimerFrame(auraHealDelayFrame, auraHealIntervalFrame)
+             Observable.Interval(TimeSpan.FromSeconds(auraHealDelay))
             .Where(c => !GameManager.Instance.isPause.Value)
-            .Where(c => auraState == AuraState.AuraCharge || auraState == AuraState.AuraOff)
-            .Where(c => auraHp != auraHpLevelList[level - 1])
+            .Where(c => auraState == AuraState.AuraCharge)
+            .Where(c => auraHp != auraHpMax)
             .Subscribe(c =>
             {
                 int heal = 1;   // 回復量
                 auraHp += heal; // オーラHPに回復量を代入
-                if (auraHp == auraHpLevelList[level - 1])
+                if (auraHp == auraHpMax)
                 {
                     auraState = AuraState.AuraFull;
+                }
+                if(auraHp > auraHpMax)
+                {
+                    auraHp = auraHpMax;
                 }
                 Debug.Log("回復");
             }).AddTo(this.gameObject);
 
+        // オーラHP0からの復帰処理
+        Observable.Interval(TimeSpan.FromSeconds(0.25f))
+       .Where(c => !GameManager.Instance.isPause.Value)
+       .Where(c => auraState == AuraState.AuraOff)
+       .Where(c => auraHp != auraHpMax)
+       .Subscribe(c =>
+       {
+           int heal = 1;   // 回復量
+           auraHp += heal; // オーラHPに回復量を代入
+           if (auraHp == auraHpMax)
+           {
+               auraState = AuraState.AuraFull;
+               this.gameObject.SetActive(true);
+           }
+           if (auraHp > auraHpMax)
+           {
+               auraHp = auraHpMax;
+           }
+           Debug.Log("0からの回復");
+       }).AddTo(this.gameObject);
+
+
+        // 衝突時のイベント
         this.OnTriggerEnterAsObservable()
             .Subscribe(c =>
             {
@@ -131,7 +170,6 @@ public class Aura : MonoBehaviour
                             else
                             {
                                 c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
-                                c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/8");
                             }
                         }
@@ -147,7 +185,6 @@ public class Aura : MonoBehaviour
                                 damage = 1;
                                 auraHp -= damage;
                                 c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
-                                c.gameObject.SetActive(false);
                                 Debug.Log("衝突1/4");
                             }
                         }
