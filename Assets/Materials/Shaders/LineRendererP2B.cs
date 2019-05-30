@@ -12,10 +12,10 @@ public class LineRendererP2B : MonoBehaviour
     Transform[] targetObject = new Transform[2];
 
     LineRenderer line;
-    [SerializeField,Header("ラインのマテリアル")]
-    Material lineMat;
+    [SerializeField, Header("ラインのマテリアル 左右,上下の順")]
+    Material[] lineMat = new Material[2];
 
-    const float LINE_WIDTH = 0.3f;  // ラインの幅
+    const float LINE_WIDTH = 0.5f;  // ラインの幅
 
     void Start()
     {
@@ -31,11 +31,6 @@ public class LineRendererP2B : MonoBehaviour
             {
                 targetObject[0] = GameManager.Instance.playerTransform;
                 targetObject[1] = GameManager.Instance.bossTransform;
-
-                Vector3 dist = targetObject[0].position - targetObject[1].position;
-                float atan = Mathf.Atan2(dist.z, dist.x);
-
-                lineMat.SetFloat("_Angle", atan);
 
                 for (int i = 0; i < line.positionCount; ++i)
                 {

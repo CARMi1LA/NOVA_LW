@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat Line
+  m_Name: Mat Line 0
   m_Shader: {fileID: -6465566751694194690, guid: e4b12d752533125409aed86f8521ebe4,
     type: 3}
   m_ShaderKeywords: _EMISSION
@@ -49,14 +49,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_34AF793C: 5
+    - Vector1_34AF793C: 2
     - Vector1_5A46A2E7: 5
     - Vector1_6AD33506: -0.5
     - Vector1_6C49FD75: 0
     - Vector1_D63CF258: 0.3
     - Vector1_DDD0A47C: 0
     - _AlphaClip: 0
-    - _Angle: -0.86239177
+    - _Angle: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2

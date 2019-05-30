@@ -24,9 +24,8 @@ public class EnemySystem : _StarParam
     bool isLookPlayer = false;                                  // プレイヤーを追従するか否か
 
     // マウスカーソルに対する加速関連
-    float cursorSpeed = 20.0f;
-    float cursorSpeedMul = 1.0f;
-    float cursorSpace = 30.0f;
+    float cursorSpeed = 8.0f;
+    float cursorSpeedMul = 3.0f;
 
     // 死亡時と衝突時の待ち時間
     public const float DEATH_COUNT = 0.5f;
@@ -64,10 +63,6 @@ public class EnemySystem : _StarParam
         // 簡単なAIの挙動(プレイヤーの方向を向くか、ランダムな方向を向くか)
         switch (AInum)
         {
-            case 0: // ランダム方向にまっすぐ進む
-                moveDir.x = UnityEngine.Random.Range(-1.0f, 1.0f);
-                moveDir.z = UnityEngine.Random.Range(-1.0f, 1.0f);
-                break;
             case 1: // プレイヤーを追いかける
                 moveSpace *= 0.5f;
                 isLookPlayer = true;
@@ -85,10 +80,13 @@ public class EnemySystem : _StarParam
         }
 
         this.UpdateAsObservable()
-            .Where(_ => starID != 2)
+            .Where(_ => starID == 3)
             .Where(_ => !GameManager.Instance.isPause.Value)
             .Subscribe(c =>
             {
+                // カーソルの重力を計算する
+                SetStarMove(cursorSpeed, cursorSpeedMul);
+
                 if (Vector3.Distance(this.transform.position, GameManager.Instance.playerTransform.position) <= moveSpace)
                 {
                     isMoving.Value = true;
@@ -101,6 +99,11 @@ public class EnemySystem : _StarParam
                     // 速度と方向を計算して、力を加える
                     starRig.AddForce(moveSpeedMul * ((moveDir * moveSpeed) - starRig.velocity));
                 }
+
+                if(Vector3.Distance(Vector3.zero,this.transform.position) > GameManager.Instance.fieldRange)
+                {
+                    playDeathFX.OnNext(DEATH_COUNT);
+                }
             })
             .AddTo(this.gameObject);
 
@@ -111,8 +114,8 @@ public class EnemySystem : _StarParam
             .Where(_ => GameManager.Instance.isCoreMode.Value)
             .Subscribe(_ =>
             {
-                moveSpeed = 15.0f;
-                moveSpeedMul = 3.0f;
+                moveSpeed = 10.0f;
+                moveSpeedMul = 5.0f;
 
                 isMoving.Value = true;
                 coreEscape.OnNext(true);
@@ -123,6 +126,7 @@ public class EnemySystem : _StarParam
 
         // 当たり判定
         this.OnCollisionEnterAsObservable()
+            .Where(x => starID == 3)
             .Subscribe(_=>
             {
                 // 自分よりも大きい星にぶつかった場合、消滅する

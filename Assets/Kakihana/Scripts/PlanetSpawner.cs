@@ -173,7 +173,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
         // スポーン予定の惑星の大きさを事前に算出
         // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
-        var planetSubscription = playerPos.localScale.x / 2 * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
+        var planetSubscription = playerPos.localScale.x * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
 
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);

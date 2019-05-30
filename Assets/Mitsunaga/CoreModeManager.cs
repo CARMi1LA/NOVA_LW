@@ -60,6 +60,7 @@ public class CoreModeManager : MonoBehaviour
             .Where(x => timeCount.Value > 0)
             .Subscribe(_ => 
             {
+                vfxField.SetVector3("CenterPosition", GameManager.Instance.bossTransform.position);
                 timeCount.Value += -Time.deltaTime;
                 
                 if(timeCount.Value <= 0)

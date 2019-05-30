@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: 3994a208efac7b0409feee1a3ce0d2a7
+guid: 738d765fdd5ee7f409d4f0d8e91f3308
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -4614385055852220758
-    second: AuraMask_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -40,10 +37,10 @@ TextureImporter:
     wrapU: 0
     wrapV: 0
     wrapW: 0
-  nPOTScale: 0
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 0
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -118,32 +115,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: AuraMask_0
-      rect:
-        serializedVersion: 2
-        x: 93
-        y: 111
-        width: 451
-        height: 451
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8dd2dbe8e18e79479fcba358c91d82c
-      internalID: -4614385055852220758
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c1fffd332a2b631459375ffa36039190
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 

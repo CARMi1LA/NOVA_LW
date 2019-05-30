@@ -2305,7 +2305,7 @@ Transform:
   - {fileID: 937129997}
   - {fileID: 855642453}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &811812123
 GameObject:
@@ -3718,7 +3718,10 @@ VisualEffect:
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0, y: 0, z: 10}
+        m_Name: CenterPosition
+        m_Overridden: 1
     m_Vector4f:
       m_Array: []
     m_Uint:
@@ -3838,7 +3841,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1179305728
 GameObject:
@@ -3870,7 +3873,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a23a1e1ddcee54e898acb78c6478b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineMat: {fileID: 2100000, guid: c5260afb8b0c99d4f9aaec4955bd0e49, type: 2}
+  lineMat:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!120 &1179305730
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -5377,7 +5383,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 2, y: 2, z: 2}
-  m_Children: []
+  m_Children:
+  - {fileID: 2017001399}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6374,7 +6381,6 @@ GameObject:
   - component: {fileID: 2017001399}
   - component: {fileID: 2017001398}
   - component: {fileID: 2017001397}
-  - component: {fileID: 2017001396}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -6382,19 +6388,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!135 &2017001396
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017001395}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2017001397
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6447,12 +6440,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017001395}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 300, y: 1, z: 300}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 150, y: 0.5, z: 150}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 1621963104}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2036452171
 GameObject:
@@ -6683,6 +6676,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5647020822444406648, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8909092998188539936, guid: 6df4396467df98040a3da900d8ae494f,
         type: 3}
       propertyPath: m_Enabled
@@ -6707,11 +6705,6 @@ PrefabInstance:
         type: 3}
       propertyPath: cutoutRange.value
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5647020822444406648, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6df4396467df98040a3da900d8ae494f, type: 3}

@@ -52,18 +52,14 @@ public class BossCoreMode : MonoBehaviour
                     // 球がステージの外にある場合もTrue
                     if (
                         Physics.SphereCast(transform.position + (transform.localScale.x * 0.55f * searchDir),
-                                           transform.localScale.x, searchDir,
-                                           out hit, searchRange) ||
-                        Vector3.Distance(new Vector3(0, 0, 0), transform.position + (transform.localScale.x * 0.55f * searchDir) + (searchRange * searchDir))
-                        > CoreModeManager.fieldRange / 2
-                       )
+                                           transform.localScale.x * 2, searchDir,
+                                           out hit, searchRange))
                     {
-                        Debug.Log("Collision!!");
+                        Debug.Log("Collision!! RayNumber : " + rayNumber.ToString());
                         rayNumber++;
                     }
                     else
                     {
-                        Debug.Log("RayNumber : " + rayNumber.ToString());
                         moveDir = searchDir;
                         break;
                     }

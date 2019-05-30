@@ -33,7 +33,7 @@ public class _StarParam : MonoBehaviour
     public Subject<float> playDeathFX = new Subject<float>();
 
     public Subject<Vector3> playCollisionImpact = new Subject<Vector3>();
-    float impactPower = 8;
+    float impactPower = 30;
 
     protected void Awake()
     {
@@ -69,7 +69,7 @@ public class _StarParam : MonoBehaviour
         playCollisionImpact.Subscribe(col =>
         {
             Vector3 dir = (this.transform.position - col).normalized;
-            starRig.AddForce(-dir * impactPower, ForceMode.Impulse);
+            starRig.AddForce(dir * impactPower, ForceMode.Impulse);
         })
         .AddTo(this.gameObject);
     }
@@ -108,7 +108,7 @@ public class _StarParam : MonoBehaviour
             // 目標サイズが現在よりも小さい場合
             while (size <= starSize.Value)
             {
-                starSize.Value = Mathf.Lerp(starSize.Value, size, 0.05f);
+                starSize.Value = Mathf.Lerp(starSize.Value, size, 0.2f);
                 yield return null;
             }
         }
@@ -147,7 +147,7 @@ public class _StarParam : MonoBehaviour
                 }
                 else
                 {
-                    isMoving.Value = false;
+                    starRig.AddForce(speedMul * - starRig.velocity);
                 }
                 break;
             default:

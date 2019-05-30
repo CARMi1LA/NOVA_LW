@@ -23,7 +23,7 @@ public class GameManager : SingletonMBGameManager<GameManager>
 
     [Header("ここから下、確認用")]
     // フィールドの情報
-
+    public float        fieldRange;         // フィールドの大きさ
     // プレイヤーの情報
     public Transform    playerTransform;    // プレイヤーのトランスフォーム
     public Transform    bossTransform;      // ボスのトランスフォーム
@@ -61,6 +61,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
             {
                 isPause.Value = true;
 
+                playerTransform.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
                 Debug.Log("IsClear : " + _.ToString());
                 bigText.text = "CLEAR!";
 
@@ -80,6 +82,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
             .Subscribe(_ =>
             {
                 isPause.Value = true;
+
+                playerTransform.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
                 Debug.Log("IsGameOver : " + _.ToString());
                 bigText.text = "GAME OVER";

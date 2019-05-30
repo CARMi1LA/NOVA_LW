@@ -18,7 +18,8 @@ public class PlayerSystem : _StarParam
 
     // 星の移動関連 移動は敵と統合して _StarParam に移す予定
     [SerializeField, Header("星の加速度、加速度への追従度、軌跡パーティクル")]
-    float moveSpeed = 10.0f;
+    float moveSpeed = 15.0f;
+    float startSpeed;
     [SerializeField]
     float moveSpeedMul = 2.0f;
     [SerializeField]
@@ -55,6 +56,7 @@ public class PlayerSystem : _StarParam
 
     void Start()
     {
+        startSpeed = moveSpeed;
         // プレイヤー情報をGameManagerに送信
         GameManager.Instance.playerTransform = this.transform;
         GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
@@ -80,6 +82,8 @@ public class PlayerSystem : _StarParam
                 GameManager.Instance.playerTransform = this.transform;
                 GameManager.Instance.cameraPosition = vCam.gameObject.transform.position; // カメラ
                 GameManager.Instance.playerLevel = Mathf.Clamp((int)GetStarSize() / 10, 1, 5);
+
+                moveSpeed = startSpeed * (1 + GameManager.Instance.playerLevel * 0.1f);
             })
             .AddTo(this.gameObject);
 
@@ -116,8 +120,9 @@ public class PlayerSystem : _StarParam
                         // ボスと衝突した場合、ゲームクリア
                         if (enemyParam.starID == 2)
                         {
-                            GameManager.Instance.isClear.Value = true;
                             enemyParam.playDeathFX.OnNext(0.5f);
+                            GameManager.Instance.isClear.Value = true;
+
                         }
                     }
                     catch
@@ -140,20 +145,7 @@ public class PlayerSystem : _StarParam
                         // 通常モード
 
                         // 当たった星のサイズを比べる
-                        if (enemyParam.GetStarSize() <= (GetStarSize() / 4))
-                        {
-                            // 1. 自分よりも圧倒的に小さければそのまま破壊
-
-                            if (enemyParam.starID == 2)
-                            {
-                                // ボスを破壊したらコアモードへ
-                                GameManager.Instance.isCoreMode.Value = true;
-                            }
-
-                            // 相手のオブジェクトを非表示にする
-                            enemyParam.playDeathFX.OnNext(0.5f);
-                        }
-                        else if (enemyParam.GetStarSize() <= (GetStarSize() * 1.1f))
+                        if (enemyParam.GetStarSize() <= (GetStarSize() * 1.1f))
                         {
                             // 2. 自分と同じくらいならばお互いを破壊して再構成
 
@@ -167,7 +159,7 @@ public class PlayerSystem : _StarParam
                             else
                             {
                                 // 砕けて待ち、成長
-                                StartCoroutine(WaitCoroutine(waitCount, c.transform.localScale.x / 2));
+                                StartCoroutine(WaitCoroutine(waitCount, c.transform.localScale.x * 0.5f));
                             }
 
                             // 相手のオブジェクトを非表示にする
@@ -186,10 +178,7 @@ public class PlayerSystem : _StarParam
                         // コンポーネントを持っていない場合例外が発生するためデバッグログで流す
                         Debug.Log("Collision Error.");
                     }
-
-                    
-                    }
-
+                }
             })
             .AddTo(this.gameObject);
     }
@@ -201,7 +190,7 @@ public class PlayerSystem : _StarParam
         {
             // カメラ初期位置と星の半径を足した距離分、カメラを離す
             vCam.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance
-                = CDISTANCE + (transform.localScale.x / 1.5f);
+                = CDISTANCE + (transform.localScale.x * 2.5f);
         }
         else
         {

@@ -8,7 +8,7 @@ public class VFXCollisionEnemy : MonoBehaviour
     // 生成後に一定時間で自壊する
 
     [SerializeField, Header("自動で削除")]
-    public float deathCount = 1.0f;
+    public float deathCount = 2.0f;
 
     void Start()
     {
