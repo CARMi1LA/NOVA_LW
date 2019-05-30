@@ -33,7 +33,7 @@ public class _StarParam : MonoBehaviour
     public Subject<float> playDeathFX = new Subject<float>();
 
     public Subject<Vector3> playCollisionImpact = new Subject<Vector3>();
-    float impactPower = 5;
+    float impactPower = 8;
 
     protected void Awake()
     {
@@ -69,7 +69,7 @@ public class _StarParam : MonoBehaviour
         playCollisionImpact.Subscribe(col =>
         {
             Vector3 dir = (this.transform.position - col).normalized;
-            starRig.AddForce(dir * impactPower, ForceMode.Impulse);
+            starRig.AddForce(-dir * impactPower, ForceMode.Impulse);
         })
         .AddTo(this.gameObject);
     }

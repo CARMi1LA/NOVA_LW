@@ -150,6 +150,7 @@ public class Aura : MonoBehaviour
         this.OnTriggerEnterAsObservable()
             .Subscribe(c =>
             {
+                _StarParam enemyParam;
                 float enemySize = 0.0f;
                 int damage = 0;
 
@@ -159,24 +160,24 @@ public class Aura : MonoBehaviour
                     try
                     {
                         // 衝突した惑星のコンポーネント取得
-                        enemySize = c.gameObject.GetComponent<_StarParam>().GetStarSize();
+                        enemyParam = c.gameObject.GetComponent<_StarParam>();
                         // 衝突した惑星が自分より遥かに小さい場合は蒸発する。オーラのHPは【減少しない】
-                        if (enemySize <= playerTrans.localScale.x / 8)
+                        if (enemyParam.GetStarSize() <= playerTrans.localScale.x / 8)
                         {
-                            if (c.gameObject.GetComponent<_StarParam>().starID == 2)
+                            if (enemyParam.starID == 2)
                             {
                                 // ボスと衝突したらボスイベントへ突入
                             }
                             else
                             {
-                                c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
+                                enemyParam.playDeathFX.OnNext(0.5f);
                                 Debug.Log("衝突1/8");
                             }
                         }
                         // 衝突した惑星が自分よりかなり小さい場合は蒸発する。オーラのHPは【減少する】
-                        else if (enemySize <= playerTrans.localScale.x / 4)
+                        else if (enemyParam.GetStarSize() <= playerTrans.localScale.x / 4)
                         {
-                            if (c.gameObject.GetComponent<_StarParam>().starID == 2)
+                            if (enemyParam.starID == 2)
                             {
                                 // ボスと衝突したらボスイベントへ突入
                             }
@@ -184,20 +185,25 @@ public class Aura : MonoBehaviour
                             {
                                 damage = 1;
                                 auraHp -= damage;
-                                c.gameObject.GetComponent<_StarParam>().playDeathFX.OnNext(0.5f);
+                                enemyParam.playDeathFX.OnNext(0.5f);
                                 Debug.Log("衝突1/4");
                             }
                         }
                         // 衝突した惑星が自分とほぼ同じ大きさの場合オーラは発動しない
-                        else if (enemySize <= playerTrans.localScale.x * 1.1f)
+                        else if (enemyParam.GetStarSize() <= playerTrans.localScale.x * 1.1f)
                         {
                             Debug.Log("衝突等倍");
                         }
                         // 衝突した惑星が自分よりやや大きい場合、オーラのHPを消費してゲームオーバーを回避する
-                        else if (enemySize <= playerTrans.localScale.x * 1.5f)
+                        else if (enemyParam.GetStarSize() <= playerTrans.localScale.x * 1.5f)
                         {
                             // 暫定消滅
-                            c.gameObject.SetActive(false);
+                            //c.gameObject.SetActive(false);
+
+                            // 衝撃を加える
+                            playerTrans.gameObject.GetComponent<_StarParam>().playCollisionImpact.OnNext(c.transform.position);
+                            enemyParam.playCollisionImpact.OnNext(playerTrans.position);
+
                             // レベルに応じてオーラのHPを減らす
                             damage = Mathf.RoundToInt((enemySize * level - 1) / playerTrans.localScale.x);
                             auraHp -= damage;
@@ -205,10 +211,15 @@ public class Aura : MonoBehaviour
                             Debug.Log("衝突1.5/1");
                         }
                         // 衝突した惑星が自分よりかなり大きい場合、オーラのHPをより多く消費してゲームオーバーを回避する
-                        else if (enemySize <= playerTrans.localScale.x * 2.0f)
+                        else if (enemyParam.GetStarSize() <= playerTrans.localScale.x * 2.0f)
                         {
                             // 暫定消滅
-                            c.gameObject.SetActive(false);
+                            //c.gameObject.SetActive(false);
+
+                            // 衝撃を加える
+                            playerTrans.gameObject.GetComponent<_StarParam>().playCollisionImpact.OnNext(c.transform.position);
+                            enemyParam.playCollisionImpact.OnNext(playerTrans.position);
+
                             // レベルに応じてオーラのHPを減らす
                             damage = Mathf.RoundToInt((enemySize * (2 * level - 1)) / playerTrans.localScale.x);
                             auraHp -= damage;

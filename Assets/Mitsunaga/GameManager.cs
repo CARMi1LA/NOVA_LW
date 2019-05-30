@@ -22,6 +22,8 @@ public class GameManager : SingletonMBGameManager<GameManager>
     float fadeTime;
 
     [Header("ここから下、確認用")]
+    // フィールドの情報
+
     // プレイヤーの情報
     public Transform    playerTransform;    // プレイヤーのトランスフォーム
     public Transform    bossTransform;      // ボスのトランスフォーム

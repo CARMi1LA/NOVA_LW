@@ -19,7 +19,7 @@ public class EnemySystem : _StarParam
     Vector3 moveDir = Vector3.zero;                             // 移動方向
     float moveSpeed;                                            // 移動速度
     float moveSpeedMul = 1.0f;                                  // 移動速度への追従度
-    float moveSpace = 150.0f;                                   // 移動可能距離(プレイヤーからの距離)
+    float moveSpace = 50.0f;                                   // 移動可能距離(プレイヤーからの距離)
 
     bool isLookPlayer = false;                                  // プレイヤーを追従するか否か
 
@@ -134,6 +134,7 @@ public class EnemySystem : _StarParam
                 else
                 {
                     // 衝突時のエフェクト再生
+                    this.playCollisionImpact.OnNext(_.transform.position);
                     this.playCollisionFX.OnNext(COLLISION_COUNT);
                 }
             })

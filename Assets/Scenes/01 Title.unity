@@ -956,11 +956,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 6848820110570491134, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7453109474562079479, guid: 6df4396467df98040a3da900d8ae494f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1066,10 +1061,30 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5647020822444406648, guid: 6df4396467df98040a3da900d8ae494f,
+    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633774388822854763, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943462586927184238, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_ShowMaskGraphic
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6df4396467df98040a3da900d8ae494f, type: 3}
