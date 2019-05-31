@@ -38,7 +38,7 @@ public class EnemyCollision : MonoBehaviour
             {
                 // 死亡処理を起動
                 sp.StarDeath(count);
-                PlanetSpawner.Instance.PlanetDestroy();
+
                 // VFXを生成
                 vc = Instantiate(VFXCollision.gameObject);
                 vc.gameObject.transform.position = this.transform.position;
