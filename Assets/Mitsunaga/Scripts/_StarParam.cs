@@ -154,7 +154,6 @@ public class _StarParam : MonoBehaviour
             default:
                 isMoving.Value = false;
                 break;
-
         }
     }
 
@@ -171,13 +170,13 @@ public class _StarParam : MonoBehaviour
         Observable.Timer(TimeSpan.FromSeconds(deathCount))
             .Subscribe(_ =>
             {
-                col.isTrigger = false;
-                this.gameObject.SetActive(false);
-
-                if(starID == 3)
+                if (starID == 3)
                 {
                     PlanetSpawner.Instance.PlanetDestroy();
                 }
+
+                col.isTrigger = false;
+                this.gameObject.SetActive(false);
             })
             .AddTo(this.gameObject);
     }
