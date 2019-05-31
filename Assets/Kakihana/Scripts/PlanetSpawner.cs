@@ -78,11 +78,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
          惑星をスポーンするかどうかの処理を行う
          最大生成数を超えてスポーンしない
          また、敵残存に応じて処理の実行タイミングを変化させている。（既存は残存数が最大生成数÷2以下）
-        */
-        this.UpdateAsObservable()
-            .Where(_ => count < planetMaxnum)
-            .Delay(count <= planetMaxnum / 2 ? 
+         count <= planetMaxnum / 2 ?
             (TimeSpan.FromSeconds(highSpeedSpawnInterval)) : (TimeSpan.FromSeconds(planetSpawnInterval)))
+        */
+        Observable.Interval(TimeSpan.FromSeconds(0.5f))
+            .Where(_ => count <= planetMaxnum)
             .Subscribe(_ =>
             {
                 if (count < hotSpotMax)
@@ -99,9 +99,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
                 }
             }).AddTo(this.gameObject);
 
-        // 指定したフレームごとに実行、最大生成数を超えると実行されない
-        //Observable.IntervalFrame(planetSpawnInterval)
-        //    .Where(_ => count < planetMaxnum).Subscribe(_ =>
+        //this.UpdateAsObservable()
+        //    .Where(_ => count < planetMaxnum)
+        //    .Delay(count <= planetMaxnum / 2 ? 
+        //    (TimeSpan.FromSeconds(highSpeedSpawnInterval)) : (TimeSpan.FromSeconds(planetSpawnInterval)))
+        //    .Subscribe(_ =>
         //    {
         //        if (count < hotSpotMax)
         //        {
@@ -173,7 +175,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
         // スポーン予定の惑星の大きさを事前に算出
         // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
-        var planetSubscription = playerPos.localScale.x * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
+        var planetSubscription = (playerPos.localScale.x * (0.5f + (level * 0.1f))) * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
 
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);
