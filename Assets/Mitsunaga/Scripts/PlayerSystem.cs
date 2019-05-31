@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
-using UniRx.Toolkit;
 using Cinemachine;
 
 using UnityEngine.Experimental.VFX;
@@ -82,8 +81,7 @@ public class PlayerSystem : _StarParam
                 VFXPath.SetFloat("PlayerSize", (GetStarSize() + 1.0f) / 2);
 
                 // フィールド外に出た場合、ゲームオーバー
-                if (GameManager.Instance.isCoreMode.Value &&
-                    Vector3.Distance(this.transform.position, GameManager.Instance.bossTransform.position) > GameManager.Instance.fieldRange)
+                if (Vector3.Distance(this.transform.position, GameManager.Instance.bossTransform.position) > GameManager.Instance.fieldRange)
                 {
                     playDeathFX.OnNext(waitCount);
                     GameManager.Instance.isGameOver.Value = true;
