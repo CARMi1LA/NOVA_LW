@@ -8,7 +8,7 @@ using UnityEditor.ShaderGraph;
 
 using UnityEngine.Experimental.VFX;
 
-public class Aura : MonoBehaviour
+public class Aura : PlanetSingleton<Aura>
 {
     // オーラの状態
     public enum AuraState
@@ -56,24 +56,20 @@ public class Aura : MonoBehaviour
                 // オーラのHPが半分以下で色が黄色に
                 if (auraHp <= auraHpMax * 0.5f && auraHp >= auraHpMax * 0.25f)
                 {
-                    Debug.Log("KentiCaution");
                     auraMat.SetInt("_AuraFlgDanger", 1);
                 }
                 // オーラのHPが4分の1以下で色がオレンジに
                 else if (auraHp <= auraHpMax * 0.25f)
                 {
-                    Debug.Log("KentiDanger");
                     auraMat.SetInt("_AuraFlgDanger", 0);
                 }
                 // オーラのHPが半分より上なら色が緑に
                 if (auraHp > auraHpMax * 0.5f)
                 {
-                    Debug.Log("KentiFine");
                     auraMat.SetInt("_AuraFlgFine", 0);
                 }
                 else
                 {
-                    Debug.Log("KentiDamage");
                     auraMat.SetInt("_AuraFlgFine", 1);
                 }
             }).AddTo(this.gameObject);
@@ -93,7 +89,6 @@ public class Aura : MonoBehaviour
                     auraState = AuraState.AuraCharge;
                     this.gameObject.SetActive(true);
                     // ここにオーラONOFFメソッドを入れる
-                    Debug.Log("KENTICHARGE");
                 }
 
                 if (auraHp <= 0 && auraState == AuraState.AuraCharge)
@@ -121,7 +116,6 @@ public class Aura : MonoBehaviour
                 {
                     auraHp = auraHpMax;
                 }
-                Debug.Log("回復");
             }).AddTo(this.gameObject);
 
         // オーラHP0からの復帰処理

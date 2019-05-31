@@ -52,6 +52,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
     [SerializeField] private Vector3 spawnPos;                  // スポーンする惑星の座標
     [SerializeField] private Transform playerPos;
+    [SerializeField] private Transform auraTrans;
     [SerializeField] private Transform bossObjTrans;            // ボスオブジェクトのトランスフォーム
     public float debugTime;                                     // デバッグ用時間経過をカウントする
     
@@ -60,6 +61,8 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     {
         // プレイヤー情報の取得
         playerPos = GameManager.Instance.playerTransform;
+        // オーラ情報の取得
+        auraTrans = Aura.Instance.transform;
         // ボス情報の取得
         bossObjTrans = GameManager.Instance.bossTransform;
         // ボスオブジェクトの円周を求める
@@ -85,17 +88,15 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
             .Where(_ => count <= planetMaxnum)
             .Subscribe(_ =>
             {
-                if (count < hotSpotMax)
+                if (count <= hotSpotMax)
                 {
                     // 惑星は一定値になるまでボス周辺エリアにスポーンする
                     HotSpotCreate();
-                    Debug.Log("HotSpotSpawn");
                 }
                 else
                 {
                     // 一定値を超えると最大スポーン数まですべての範囲でスポーンする
                     PlanetCreate();
-                    Debug.Log("NormalSpawn");
                 }
             }).AddTo(this.gameObject);
 
@@ -151,7 +152,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         Debug.Log("プレイヤーとの距離" + distance);
 
         // スポーン予定座標とプレイヤーとの距離が近ければスポーンしない
-        if (distance <= 30.0f) return;
+        if (distance <= 50.0f) return;
 
         // オブジェクトプールに追加
         var planet = planetPool.Rent();
@@ -177,6 +178,9 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         // 大きさはレベル毎に設定された最小値と最大値内のランダムで抽出し、自身の大きさと掛ける
         var planetSubscription = (playerPos.localScale.x * (0.5f + (level * 0.1f))) * Random.Range(planetScaleMin[level - 1], planetScaleMax[level - 1]);
 
+        float planetSubRadius = planetSubscription * 0.5f;
+
+
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);
         spawnPos.y = planetSpawnHeight;
@@ -187,48 +191,50 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         Debug.Log("プレイヤーとの距離" + distance);
 
         // スポーン予定座標とプレイヤーとの距離が近ければスポーンしない
-        if (distance <= 30.0f) {
+        if (distance <= planetSubRadius + (auraTrans.localScale.x * 0.6f)) {
             Debug.Log("プレイヤーが近くにいるため、スポーン範囲外");
             return;
-        };
-
-        xAbs = Mathf.Abs(Mathf.Pow(spawnPos.x, 2));
-        zAbs = Mathf.Abs(Mathf.Pow(spawnPos.z, 2));
-        // 惑星をスポーンする前にスポーンしたい惑星の大きさと同じ球型Rayを飛ばす
-        if (Physics.SphereCast(spawnPos,planetSubscription,Vector3.down,out hit))
-        {
-            // 既に惑星がいる場合はスポーン不可
-            Debug.DrawRay(spawnPos, hit.point, Color.red,5);
-            Debug.Log("スポーン不可");
         }
         else
         {
-            // スポーン可能な場合、スポーン先座標が半径の2乗以内であればスポーンする
-            if (maxR > xAbs + zAbs && zAbs + zAbs > minR)
+            xAbs = Mathf.Abs(Mathf.Pow(spawnPos.x, 2));
+            zAbs = Mathf.Abs(Mathf.Pow(spawnPos.z, 2));
+            // 惑星をスポーンする前にスポーンしたい惑星の大きさと同じ球型Rayを飛ばす
+            if (Physics.SphereCast(spawnPos, planetSubscription, Vector3.down, out hit))
             {
-                Debug.DrawRay(spawnPos, hit.point, Color.red);
-                Debug.Log("惑星スポーン");
-                // オブジェクトプールに追加
-                var planet = planetPool.Rent();
-                // 惑星スポーン、数をカウント
-                count++;
-                // 惑星をスポーンさせる
-                // 事前に算出した大きさを代入
-                planet.PlanetSpawn(
-                spawnPos + bossObjTrans.position,
-                planetSubscription);
-                Debug.Log(spawnPos + bossObjTrans.position);
-                
-                // 消滅時、オブジェクトをプールに返す
-                planet.OnDisableAsObservable().Subscribe(_ =>
-                {
-                    planet.Stop();
-                    planetPool.Return(planet);
-                }).AddTo(planet);
+                // 既に惑星がいる場合はスポーン不可
+                Debug.DrawRay(spawnPos, hit.point, Color.red, 5);
+                Debug.Log("スポーン不可");
             }
             else
             {
-                Debug.Log("スポーン範囲外");
+                // スポーン可能な場合、スポーン先座標が半径の2乗以内であればスポーンする
+                if (maxR > xAbs + zAbs && zAbs + zAbs > minR)
+                {
+                    Debug.DrawRay(spawnPos, hit.point, Color.red);
+                    Debug.Log("惑星スポーン");
+                    // オブジェクトプールに追加
+                    var planet = planetPool.Rent();
+                    // 惑星スポーン、数をカウント
+                    count++;
+                    // 惑星をスポーンさせる
+                    // 事前に算出した大きさを代入
+                    planet.PlanetSpawn(
+                    spawnPos + bossObjTrans.position,
+                    planetSubscription);
+                    Debug.Log(spawnPos + bossObjTrans.position);
+
+                    // 消滅時、オブジェクトをプールに返す
+                    planet.OnDisableAsObservable().Subscribe(_ =>
+                    {
+                        planet.Stop();
+                        planetPool.Return(planet);
+                    }).AddTo(planet);
+                }
+                else
+                {
+                    Debug.Log("スポーン範囲外");
+                }
             }
         }
     }
