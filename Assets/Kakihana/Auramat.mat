@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Auramat
-  m_Shader: {fileID: -6465566751694194690, guid: 05e7fdcaba31120429b6ddbbcdb6aa0e,
+  m_Shader: {fileID: -6465566751694194690, guid: a94da78bafc27a846868f5e36a877724,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -78,9 +78,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_625F0915: {r: 0, g: 5.1513295, b: 7.1297374, a: 0}
+    - Color_625F0915: {r: 4.983879, g: 8.284132, b: 9.51876, a: 0}
+    - Color_B2F16B77: {r: 2, g: 1.24884, b: 0.5, a: 0}
+    - Color_E3F6B153: {r: 1.301961, g: 0.2039216, b: 0.1568628, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _ColorFine: {r: 0.7411833, g: 2.575916, b: 1.83218, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
 --- !u!114 &1356029714212596618
