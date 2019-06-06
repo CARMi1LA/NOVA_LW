@@ -176,6 +176,7 @@ public class PlayerSystem : _StarParam
     }
 
     // カメラの処理
+    // CinemachineのVCのDistanceを、プレイヤーのサイズに合わせて変更する
     void SetCamera()
     {
         if (isMainScene)
@@ -194,7 +195,7 @@ public class PlayerSystem : _StarParam
 
     // 衝突後の待ち時間、星の再構成を管理するコルーチン
     // waitCount：待ち時間(単位：秒)
-    // nextSize ：設定する星のサイズ
+    // nextSize ：変更する星のサイズ
     IEnumerator WaitCoroutine(float waitCount, float nextSize)
     {
 
