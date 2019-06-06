@@ -66,7 +66,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         // ボス情報の取得
         bossObjTrans = GameManager.Instance.bossTransform;
         // ボスオブジェクトの円周を求める
-        bossRadius = bossObjTrans.localScale.x * Mathf.PI;
+        bossRadius = bossObjTrans.localScale.x * 0.5f;
 
         level = GameManager.Instance.playerLevel;
 
@@ -84,7 +84,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
          count <= planetMaxnum / 2 ?
             (TimeSpan.FromSeconds(highSpeedSpawnInterval)) : (TimeSpan.FromSeconds(planetSpawnInterval)))
         */
-        Observable.Interval(TimeSpan.FromSeconds(0.5f))
+        Observable.Interval(TimeSpan.FromSeconds(0.5f + (level * 0.1f)))
             .Where(_ => count <= planetMaxnum)
             .Subscribe(_ =>
             {
@@ -99,26 +99,6 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
                     PlanetCreate();
                 }
             }).AddTo(this.gameObject);
-
-        //this.UpdateAsObservable()
-        //    .Where(_ => count < planetMaxnum)
-        //    .Delay(count <= planetMaxnum / 2 ? 
-        //    (TimeSpan.FromSeconds(highSpeedSpawnInterval)) : (TimeSpan.FromSeconds(planetSpawnInterval)))
-        //    .Subscribe(_ =>
-        //    {
-        //        if (count < hotSpotMax)
-        //        {
-        //            // 惑星は一定値になるまでボス周辺エリアにスポーンする
-        //            HotSpotCreate();
-        //            Debug.Log("HotSpotSpawn");
-        //        }
-        //        else
-        //        {
-        //            // 一定値を超えると最大スポーン数まですべての範囲でスポーンする
-        //            PlanetCreate();
-        //            Debug.Log("NormalSpawn");
-        //        }
-        //    }).AddTo(this.gameObject);
 
         // 60秒毎にオブジェクトプールをリフレッシュする
         Observable.Timer(TimeSpan.FromSeconds(60.0f)).Subscribe(_ =>
@@ -180,6 +160,11 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 
         float planetSubRadius = planetSubscription * 0.5f;
 
+        // スポーン予定の惑星の大きさがボスの大きさを超えたら、ボスの大きさをもとにリサイズする
+        if (planetSubRadius >= bossRadius)
+        {
+            planetSubscription = bossRadius * Random.Range(0.75f, 0.9f);
+        }
 
         // スポーン座標をランダムで生成
         spawnPos.x = Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax);
