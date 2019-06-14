@@ -21,7 +21,7 @@ public class Aura : PlanetSingleton<Aura>
         
     [SerializeField] private int auraHp = 0;                     // オーラのHP
     [SerializeField] private int auraHpMax = 10;
-    [SerializeField] public int[] auraHpLevelList;               // レベル毎のオーラの最大HPリスト
+    [SerializeField] public float[] auraHpLevelList;               // レベル毎のオーラの最大HPリスト
     [SerializeField] private int auraHealDelay = 20;       // オーラ回復処理に掛かる遅延時間（フレーム）
     [SerializeField] private int auraHealIntervalFrame = 10;     // オーラを回復させる間隔（フレーム）
     [SerializeField] private int level = 0;                      // 現在のレベル
@@ -31,7 +31,7 @@ public class Aura : PlanetSingleton<Aura>
     [SerializeField] private Vector3 auraSizeMag;                // オーラの大きさの倍率
     [SerializeField] private Renderer auraRenderer;
     [SerializeField] private Material auraMat;
-    [SerializeField] private Gradient a;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -99,7 +99,7 @@ public class Aura : PlanetSingleton<Aura>
             }).AddTo(this.gameObject);
 
         // 1でもダメージを受けていたらオーラHP回復処理を実行 1秒毎にオーラ回復
-             Observable.Interval(TimeSpan.FromSeconds(auraHealDelay))
+             Observable.Interval(TimeSpan.FromSeconds(auraHealDelay + auraHpLevelList[level-1]))
             .Where(c => !GameManager.Instance.isPause.Value)
             .Where(c => auraState == AuraState.AuraCharge)
             .Where(c => auraHp != auraHpMax)

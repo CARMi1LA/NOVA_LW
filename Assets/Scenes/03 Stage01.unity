@@ -914,6 +914,31 @@ PrefabInstance:
       propertyPath: auraSizeMag.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 248035083805153044, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+        type: 3}
+      propertyPath: auraHpLevelList.Array.data[0]
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 248035083805153044, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+        type: 3}
+      propertyPath: auraHpLevelList.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 248035083805153044, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+        type: 3}
+      propertyPath: auraHpLevelList.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 248035083805153044, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+        type: 3}
+      propertyPath: auraHpLevelList.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 248035083805153044, guid: 53608c713d0a4c24e812d39a9a0a3a73,
+        type: 3}
+      propertyPath: auraHpLevelList.Array.data[4]
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 248035083805153043, guid: 53608c713d0a4c24e812d39a9a0a3a73,
         type: 3}
       propertyPath: m_Radius
@@ -1523,15 +1548,15 @@ PrefabInstance:
       propertyPath: bossTransform
       value: 
       objectReference: {fileID: 931500899}
-    - target: {fileID: 6392270794743755023, guid: 6df4396467df98040a3da900d8ae494f,
-        type: 3}
-      propertyPath: m_Text
-      value: Click Start
-      objectReference: {fileID: 0}
     - target: {fileID: 5647020822444406648, guid: 6df4396467df98040a3da900d8ae494f,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392270794743755023, guid: 6df4396467df98040a3da900d8ae494f,
+        type: 3}
+      propertyPath: m_Text
+      value: Click Start
       objectReference: {fileID: 0}
     - target: {fileID: 5870999642101915993, guid: 6df4396467df98040a3da900d8ae494f,
         type: 3}
