@@ -28,7 +28,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Name\": \"ColorDamage\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"a87b66b1-dfd0-4658-8fa9-6584cb730e51\"\n    },\n    \"m_DefaultReferenceName\": \"Color_B2F16B77\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": {\n        \"r\": 2.0,\n        \"g\": 1.2488402128219605,\n        \"b\": 0.5,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1,\n    \"m_Hidden\": false\n}"
+            "JSONnodeData": "{\n    \"m_Name\": \"ColorDamage\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"a87b66b1-dfd0-4658-8fa9-6584cb730e51\"\n    },\n    \"m_DefaultReferenceName\": \"Color_B2F16B77\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_Value\": {\n        \"r\": 2.5945863723754885,\n        \"g\": 2.349722146987915,\n        \"b\": 0.8199872374534607,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1,\n    \"m_Hidden\": false\n}"
         },
         {
             "typeInfo": {
@@ -96,7 +96,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.PropertyNode"
             },
-            "JSONnodeData": "{\n    \"m_GuidSerialized\": \"02987a0e-b6ea-4c28-8c23-2ae5f1926cca\",\n    \"m_GroupGuidSerialized\": \"70e38058-988c-4183-9f11-0d01d3bc4d3e\",\n    \"m_Name\": \"Property\",\n    \"m_DrawState\": {\n        \"m_Expanded\": true,\n        \"m_Position\": {\n            \"serializedVersion\": \"2\",\n            \"x\": -1406.0001220703125,\n            \"y\": -405.0,\n            \"width\": 121.00000762939453,\n            \"height\": 77.0\n        }\n    },\n    \"m_SerializableSlots\": [\n        {\n            \"typeInfo\": {\n                \"fullName\": \"UnityEditor.ShaderGraph.Vector4MaterialSlot\"\n            },\n            \"JSONnodeData\": \"{\\n    \\\"m_Id\\\": 0,\\n    \\\"m_DisplayName\\\": \\\"ColorDamage\\\",\\n    \\\"m_SlotType\\\": 1,\\n    \\\"m_Priority\\\": 2147483647,\\n    \\\"m_Hidden\\\": false,\\n    \\\"m_ShaderOutputName\\\": \\\"Out\\\",\\n    \\\"m_StageCapability\\\": 3,\\n    \\\"m_Value\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    },\\n    \\\"m_DefaultValue\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    }\\n}\"\n        }\n    ],\n    \"m_PreviewExpanded\": true,\n    \"m_PropertyGuidSerialized\": \"a87b66b1-dfd0-4658-8fa9-6584cb730e51\"\n}"
+            "JSONnodeData": "{\n    \"m_GuidSerialized\": \"02987a0e-b6ea-4c28-8c23-2ae5f1926cca\",\n    \"m_GroupGuidSerialized\": \"70e38058-988c-4183-9f11-0d01d3bc4d3e\",\n    \"m_Name\": \"Property\",\n    \"m_DrawState\": {\n        \"m_Expanded\": true,\n        \"m_Position\": {\n            \"serializedVersion\": \"2\",\n            \"x\": -1404.0,\n            \"y\": -476.0,\n            \"width\": 120.0,\n            \"height\": 77.0\n        }\n    },\n    \"m_SerializableSlots\": [\n        {\n            \"typeInfo\": {\n                \"fullName\": \"UnityEditor.ShaderGraph.Vector4MaterialSlot\"\n            },\n            \"JSONnodeData\": \"{\\n    \\\"m_Id\\\": 0,\\n    \\\"m_DisplayName\\\": \\\"ColorDamage\\\",\\n    \\\"m_SlotType\\\": 1,\\n    \\\"m_Priority\\\": 2147483647,\\n    \\\"m_Hidden\\\": false,\\n    \\\"m_ShaderOutputName\\\": \\\"Out\\\",\\n    \\\"m_StageCapability\\\": 3,\\n    \\\"m_Value\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    },\\n    \\\"m_DefaultValue\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    }\\n}\"\n        }\n    ],\n    \"m_PreviewExpanded\": true,\n    \"m_PropertyGuidSerialized\": \"a87b66b1-dfd0-4658-8fa9-6584cb730e51\"\n}"
         },
         {
             "typeInfo": {
@@ -120,7 +120,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.PropertyNode"
             },
-            "JSONnodeData": "{\n    \"m_GuidSerialized\": \"46b9f907-800b-4354-b566-f0c87aacbe9d\",\n    \"m_GroupGuidSerialized\": \"70e38058-988c-4183-9f11-0d01d3bc4d3e\",\n    \"m_Name\": \"Property\",\n    \"m_DrawState\": {\n        \"m_Expanded\": true,\n        \"m_Position\": {\n            \"serializedVersion\": \"2\",\n            \"x\": -1401.0,\n            \"y\": -481.00006103515627,\n            \"width\": 115.00000762939453,\n            \"height\": 77.0\n        }\n    },\n    \"m_SerializableSlots\": [\n        {\n            \"typeInfo\": {\n                \"fullName\": \"UnityEditor.ShaderGraph.Vector4MaterialSlot\"\n            },\n            \"JSONnodeData\": \"{\\n    \\\"m_Id\\\": 0,\\n    \\\"m_DisplayName\\\": \\\"ColorDenger\\\",\\n    \\\"m_SlotType\\\": 1,\\n    \\\"m_Priority\\\": 2147483647,\\n    \\\"m_Hidden\\\": false,\\n    \\\"m_ShaderOutputName\\\": \\\"Out\\\",\\n    \\\"m_StageCapability\\\": 3,\\n    \\\"m_Value\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    },\\n    \\\"m_DefaultValue\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    }\\n}\"\n        }\n    ],\n    \"m_PreviewExpanded\": true,\n    \"m_PropertyGuidSerialized\": \"b8bd76f4-f76f-4a1b-8903-ff2783cd326b\"\n}"
+            "JSONnodeData": "{\n    \"m_GuidSerialized\": \"46b9f907-800b-4354-b566-f0c87aacbe9d\",\n    \"m_GroupGuidSerialized\": \"70e38058-988c-4183-9f11-0d01d3bc4d3e\",\n    \"m_Name\": \"Property\",\n    \"m_DrawState\": {\n        \"m_Expanded\": true,\n        \"m_Position\": {\n            \"serializedVersion\": \"2\",\n            \"x\": -1395.0,\n            \"y\": -394.0,\n            \"width\": 115.0,\n            \"height\": 77.0\n        }\n    },\n    \"m_SerializableSlots\": [\n        {\n            \"typeInfo\": {\n                \"fullName\": \"UnityEditor.ShaderGraph.Vector4MaterialSlot\"\n            },\n            \"JSONnodeData\": \"{\\n    \\\"m_Id\\\": 0,\\n    \\\"m_DisplayName\\\": \\\"ColorDenger\\\",\\n    \\\"m_SlotType\\\": 1,\\n    \\\"m_Priority\\\": 2147483647,\\n    \\\"m_Hidden\\\": false,\\n    \\\"m_ShaderOutputName\\\": \\\"Out\\\",\\n    \\\"m_StageCapability\\\": 3,\\n    \\\"m_Value\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    },\\n    \\\"m_DefaultValue\\\": {\\n        \\\"x\\\": 0.0,\\n        \\\"y\\\": 0.0,\\n        \\\"z\\\": 0.0,\\n        \\\"w\\\": 0.0\\n    }\\n}\"\n        }\n    ],\n    \"m_PreviewExpanded\": true,\n    \"m_PropertyGuidSerialized\": \"b8bd76f4-f76f-4a1b-8903-ff2783cd326b\"\n}"
         },
         {
             "typeInfo": {
@@ -230,18 +230,6 @@
             "typeInfo": {
                 "fullName": "UnityEditor.Graphing.Edge"
             },
-            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"46b9f907-800b-4354-b566-f0c87aacbe9d\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"5b0b61ac-a571-46bb-871e-f91d2c2a2ec1\"\n    }\n}"
-        },
-        {
-            "typeInfo": {
-                "fullName": "UnityEditor.Graphing.Edge"
-            },
-            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"02987a0e-b6ea-4c28-8c23-2ae5f1926cca\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 2,\n        \"m_NodeGUIDSerialized\": \"5b0b61ac-a571-46bb-871e-f91d2c2a2ec1\"\n    }\n}"
-        },
-        {
-            "typeInfo": {
-                "fullName": "UnityEditor.Graphing.Edge"
-            },
             "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 2,\n        \"m_NodeGUIDSerialized\": \"ed5008c1-c6b6-465a-a59f-5b2ed43fd305\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"b22c8098-e15a-4315-b781-412b8f4d021a\"\n    }\n}"
         },
         {
@@ -261,6 +249,18 @@
                 "fullName": "UnityEditor.Graphing.Edge"
             },
             "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"a4b52b98-bc39-4ed3-8770-f744bb0f05ff\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 2,\n        \"m_NodeGUIDSerialized\": \"574e3849-fd39-4afa-a598-276e8042b965\"\n    }\n}"
+        },
+        {
+            "typeInfo": {
+                "fullName": "UnityEditor.Graphing.Edge"
+            },
+            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"46b9f907-800b-4354-b566-f0c87aacbe9d\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 2,\n        \"m_NodeGUIDSerialized\": \"5b0b61ac-a571-46bb-871e-f91d2c2a2ec1\"\n    }\n}"
+        },
+        {
+            "typeInfo": {
+                "fullName": "UnityEditor.Graphing.Edge"
+            },
+            "JSONnodeData": "{\n    \"m_OutputSlot\": {\n        \"m_SlotId\": 0,\n        \"m_NodeGUIDSerialized\": \"02987a0e-b6ea-4c28-8c23-2ae5f1926cca\"\n    },\n    \"m_InputSlot\": {\n        \"m_SlotId\": 1,\n        \"m_NodeGUIDSerialized\": \"5b0b61ac-a571-46bb-871e-f91d2c2a2ec1\"\n    }\n}"
         }
     ],
     "m_PreviewData": {

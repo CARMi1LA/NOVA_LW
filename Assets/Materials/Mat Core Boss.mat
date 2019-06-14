@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat Core
+  m_Name: Mat Core Boss
   m_Shader: {fileID: -6465566751694194690, guid: b8af8038745808740af2f2984d412984,
     type: 3}
   m_ShaderKeywords: 
@@ -71,6 +71,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_871F1549: {r: 2.6701567, g: 0.9785915, b: 1.7095867, a: 0}
     - Color_C3CC6E77: {r: 1.498039, g: 1.380392, b: 1.043137, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
