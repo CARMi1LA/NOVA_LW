@@ -32,7 +32,7 @@ public class BossCoreMode : MonoBehaviour
             {
                 int rayNumber = 0;
 
-                Vector3 playerDir = (GameManager.Instance.playerTransform.position - this.transform.position);
+                Vector3 playerDir = GameManager.Instance.playerTransform.position - this.transform.position;
                 playerDir *= -1;
 
                 moveDir = playerDir.normalized;
