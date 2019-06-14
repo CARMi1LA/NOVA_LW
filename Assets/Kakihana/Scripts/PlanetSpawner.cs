@@ -7,13 +7,19 @@ using UniRx;
 using UniRx.Triggers;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 
 using Random = UnityEngine.Random; // ランダム関数はUnityEngineの物を使う
 
 public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
 {
     // 惑星自動生成スクリプト
+
+    public enum SpawnMode
+    {
+        Normal = 0,
+        ScoreAttack,
+        HardCore
+    }
 
     [Header("シーン毎に設定が必要な変数")]
 
@@ -27,6 +33,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
     [SerializeField] private float stageSize;                   // ランダム生成の範囲
 
     [SerializeField] private int level;                         // 現在のレベル
+    [SerializeField] private SpawnMode spawnMode;
 
     [Header("デバッグ用に値を変更可能")]
     [SerializeField] private float planetSpawnInterval;           // 惑星の再出現までの時間（秒）
@@ -67,7 +74,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
         bossObjTrans = GameManager.Instance.bossTransform;
         // ボスオブジェクトの円周を求める
         bossRadius = bossObjTrans.localScale.x * 0.5f;
-
+        // レベルの取得
         level = GameManager.Instance.playerLevel;
 
         // ボス周辺エリアの半径を2乗する
@@ -109,6 +116,7 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
             Debug.Log("Pool開放");
         });
 
+        // レベルが更新されたらこのクラスに反映させる
         this.UpdateAsObservable().
             Where(c => level != GameManager.Instance.playerLevel).
             Subscribe(c =>
@@ -185,18 +193,19 @@ public class PlanetSpawner : PlanetSingleton<PlanetSpawner>
             xAbs = Mathf.Abs(Mathf.Pow(spawnPos.x, 2));
             zAbs = Mathf.Abs(Mathf.Pow(spawnPos.z, 2));
             // 惑星をスポーンする前にスポーンしたい惑星の大きさと同じ球型Rayを飛ばす
-            if (Physics.SphereCast(spawnPos, planetSubscription, Vector3.down, out hit))
+            if (Physics.SphereCast(spawnPos, planetSubRadius, Vector3.forward, out hit,1))
             {
                 // 既に惑星がいる場合はスポーン不可
                 Debug.DrawRay(spawnPos, hit.point, Color.red, 5);
-                Debug.Log("スポーン不可");
+                Debug.Log("既に他の惑星が存在するため、スポーン不可");
+                return;
             }
             else
             {
                 // スポーン可能な場合、スポーン先座標が半径の2乗以内であればスポーンする
                 if (maxR > xAbs + zAbs && zAbs + zAbs > minR)
                 {
-                    Debug.DrawRay(spawnPos, hit.point, Color.red);
+                    Debug.DrawRay(spawnPos, hit.point, Color.red, 5);
                     Debug.Log("惑星スポーン");
                     // オブジェクトプールに追加
                     var planet = planetPool.Rent();
