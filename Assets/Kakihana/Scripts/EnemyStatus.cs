@@ -7,7 +7,7 @@ using UniRx.Triggers;
 public class EnemyStatus : MonoBehaviour
 {
     /*
-     出現するオブジェクトのステータスをまとめたクラス
+     出現するオブジェクトのパラメータをまとめたクラス
      （EnemyStatusと書いてあるがプレイヤーの情報もここでまとめる）
     */
 
@@ -35,13 +35,12 @@ public class EnemyStatus : MonoBehaviour
     [SerializeField] const float APDISTANCE = 0.0f;     // 認識する距離
 
 
-    [SerializeField] private int hp = 0;
-    [SerializeField] private int barrier = 0;
-    [SerializeField] private int atk = 0;
-    [SerializeField] private int level = 0;
+    [SerializeField] public int hp = 0;
+    [SerializeField] public int barrier = 0;
+    [SerializeField] public int atk = 0;
 
-    [SerializeField] private float moveSpeed = 0.0f;
-    [SerializeField] private Rigidbody charaRig;
+    [SerializeField] public float moveSpeed = 0.0f;
+    [SerializeField] public Rigidbody charaRig;
 
     // Start is called before the first frame update
     void Start()
