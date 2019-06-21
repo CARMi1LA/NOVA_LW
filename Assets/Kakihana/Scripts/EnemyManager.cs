@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : EnemyStatus
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] EnemyDataList enemyDataList;
+    [SerializeField] EnemyStatus myStatus;
+    EnemyManager(int Id, int Level)
     {
-        
-    }
+        enemyDataList = Resources.Load<EnemyDataList>(string.Format("Enemy{0}", Id));
+        myStatus = enemyDataList.EnemyStatusList[Level - 1];
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        #region 初期化処理 ステータス名 = myStatus.各ステータス
+        charaType = myStatus.charaType;
+        atkType = myStatus.atkType;
+        hp = myStatus.hp;
+        barrier = myStatus.barrier;
+        atk = myStatus.atk;
+        exp = myStatus.exp;
+        moveSpeed = myStatus.moveSpeed;
+        #endregion 
     }
 }

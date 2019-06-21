@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
+[System.Serializable]
 public class EnemyStatus : MonoBehaviour
 {
     /*
@@ -29,28 +30,19 @@ public class EnemyStatus : MonoBehaviour
         None = 3        // 攻撃を行わない、または未設定
     }
 
-    [SerializeField] CharactorType charaType = CharactorType.None;
-    [SerializeField] NormalAtkType atkType = NormalAtkType.None;
+    // キャラクターの属性の変数
+    [SerializeField] public CharactorType charaType = CharactorType.None;
+    // 攻撃方法の変数
+    [SerializeField] public NormalAtkType atkType = NormalAtkType.None; 
 
-    [SerializeField] const float APDISTANCE = 0.0f;     // 認識する距離
+    [SerializeField] public int hp = 0;                 // HP
+    [SerializeField] public int barrier = 0;            // ダメージを一定量吸収するバリア
+    [SerializeField] public int atk = 0;                // 攻撃力
+    [SerializeField] public int exp = 0;                // 消滅時に落とす経験値
 
 
-    [SerializeField] public int hp = 0;
-    [SerializeField] public int barrier = 0;
-    [SerializeField] public int atk = 0;
 
     [SerializeField] public float moveSpeed = 0.0f;
     [SerializeField] public Rigidbody charaRig;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
+

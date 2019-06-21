@@ -14,10 +14,11 @@ public class GameManagement : GMSingleton<GameManagement>
 
     public IntReactiveProperty gameLevel = new IntReactiveProperty(1);
     public IntReactiveProperty playerLevel = new IntReactiveProperty(1);
+    public IntReactiveProperty playerScore = new IntReactiveProperty(0);
 
-    BoolReactiveProperty isClear = new BoolReactiveProperty(false);
-    BoolReactiveProperty gameOver = new BoolReactiveProperty(false);
-    BoolReactiveProperty isPause = new BoolReactiveProperty(true);
+    public BoolReactiveProperty isClear = new BoolReactiveProperty(false);
+    public BoolReactiveProperty gameOver = new BoolReactiveProperty(false);
+    public BoolReactiveProperty isPause = new BoolReactiveProperty(true);
 
     protected override void Awake()
     {
@@ -38,7 +39,6 @@ public class GameManagement : GMSingleton<GameManagement>
             {
                 //ゲームオーバー処理
             }).AddTo(this.gameObject);
-
     }
     // Start is called before the first frame update
     void Start()
@@ -46,9 +46,8 @@ public class GameManagement : GMSingleton<GameManagement>
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetScore(IntReactiveProperty score)
     {
-        
+        playerScore = score;
     }
 }

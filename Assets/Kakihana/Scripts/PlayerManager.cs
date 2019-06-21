@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class PlayerManager : EnemyStatus,IDamage,IMove
+public class PlayerManager : EnemyStatus
 {
     public enum SpAttackType
     {
@@ -13,13 +13,23 @@ public class PlayerManager : EnemyStatus,IDamage,IMove
         None = 2
     }
 
-    [SerializeField] PlayerUnit[] playerUnits;
+    [SerializeField] PlayerUnit[] playerUnits;      // 子機の情報
+    [SerializeField] EnemyDataList playerDataList;  // データが格納されているリスト
+    [SerializeField] EnemyStatus myStatus;          // 各種パラメータの情報
+
     [SerializeField] private SpAttackType spAtk = SpAttackType.None;
-    [SerializeField] NormalAtkType atkType = NormalAtkType.Burst;
+
+    [SerializeField] private float maxHp = 0;
 
     [SerializeField] private IntReactiveProperty level;
 
     [SerializeField] private IntReactiveProperty unitValue = new IntReactiveProperty(1);
+
+    public IntReactiveProperty score = new IntReactiveProperty(0);
+    PlayerManager()
+    {
+
+    }
 
     void Awake()
     {
@@ -32,21 +42,11 @@ public class PlayerManager : EnemyStatus,IDamage,IMove
         level.Subscribe(_ =>
         {
             unitValue.Value++;
-        }).AddTo(this.gameObject);
+        });
 
         if (true)
         {
             level.Value++;
         }
-    }
-
-    void IDamage.HitDamage(int damage)
-    {
-
-    }
-
-    void IMove.Move(float speed, float speedMul)
-    {
-
     }
 }
