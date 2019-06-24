@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+
+using Random = UnityEngine.Random; // ランダム関数はUnityEngineの物を使う
 
 public class EnemySpawner : PlanetSingleton<EnemySpawner>
 {
@@ -22,9 +25,9 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
     [SerializeField] private int level;                         // 現在のレベル
 
     [Header("デバッグ用に値を変更可能な変数")]
-    [SerializeField] private float planetSpawnInterval;         // 敵再生成までの時間（秒）
+    [SerializeField] private float enemySpawnInterval;         // 敵再生成までの時間（秒）
     [SerializeField] private EnemyManager[] enemyPrefab;        // 生成させる敵
-    [SerializeField] private PlanetPool planetPool;             // 敵のオブジェクトプール
+    [SerializeField] private EnemyPool enemyPool;             // 敵のオブジェクトプール
 
     [Header("プールをまとめるオブジェクトを作成、格納")]
     [SerializeField] private Transform enemyPoolObj;            // スポーンした敵をまとめるオブジェクトをここに格納
@@ -43,13 +46,62 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
     void Start()
     {
         // プレイヤー情報の取得
-        playerTrans = GameManager.Instance.playerTransform;
+       // playerTrans = GameManager.Instance.playerTransform;
 
         // レベルの取得
-        level = GameManager.Instance.playerLevel;
+        //level = GameManager.Instance.playerLevel;
 
         // ホットスポットの半径を2乗する
         maxR = Mathf.Pow(hotSpotRadiusMax, 2);
         minR = Mathf.Pow(hotSpotRadiusMin, 2);
+
+        // オブジェクトプールの初期化
+        enemyPool = new EnemyPool(enemyPoolObj, enemyPrefab[0]);
+
+        Observable.Interval(TimeSpan.FromSeconds(enemySpawnInterval))
+            .Where(_ => spawnCount <= spawnMaxValue)
+            .Subscribe(_ => 
+            {
+                EnemySpawn();
+            }).AddTo(this.gameObject);
+    }
+    void EnemySpawn()
+    {
+        if (spawnCount >= spawnMaxValue) return;
+        RaycastHit hit;                           // 敵重なり防止用Rayの当たり判定
+
+        // 敵の生成先座標を設定
+        spawnPos = new Vector3(
+            Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax),
+            0,
+            Random.Range(-hotSpotRadiusMax, hotSpotRadiusMax)
+            );
+
+        // 生成先座標の絶対値を計算
+        xAbs = Mathf.Abs(Mathf.Pow(spawnPos.x, 2));
+        zAbs = Mathf.Abs(Mathf.Pow(spawnPos.z, 2));
+
+        // スポーン可能な場合、スポーン先座標が半径の2乗以内であればスポーンする
+        if (maxR > xAbs + zAbs && zAbs + zAbs > minR)
+        {
+            var enemy = enemyPool.Rent();
+            spawnCount++;
+            enemy.EnemySpawn(spawnPos + playerTrans.position, 1, level);
+
+            enemy.OnDisableAsObservable().Subscribe(_ =>
+            {
+                enemy.Death();
+                enemyPool.Return(enemy);
+            }).AddTo(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("スポーン範囲外");
+        }
+    }
+
+    public void EnemyDestroy()
+    {
+        spawnCount--;
     }
 }

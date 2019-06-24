@@ -9,8 +9,6 @@ using UnityEngine;
 ]
 public class EnemyDataList : ScriptableObject
 {
-
-    //ListステータスのList
+    //ステータスのList
     public List<EnemyStatus> EnemyStatusList = new List<EnemyStatus>();
-
 }

@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
-using UniRx.Triggers;
 
-[System.Serializable]
-public class EnemyStatus
+public class EnemyParam : MonoBehaviour
 {
     /*
      出現するオブジェクトのパラメータをまとめたクラス
@@ -17,6 +14,7 @@ public class EnemyStatus
     [SerializeField] public int atk = 0;                // 攻撃力
     [SerializeField] public int exp = 0;                // 消滅時に落とす経験値
 
+
+
     [SerializeField] public float moveSpeed = 0.0f;
 }
-
