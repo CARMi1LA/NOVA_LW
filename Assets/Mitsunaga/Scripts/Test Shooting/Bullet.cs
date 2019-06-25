@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     float speed = 50.0f;
 
-    float deathRange = 100.0f;
+    float deathRange = 150.0f;
 
     void Start()
     {

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat Line 1
-  m_Shader: {fileID: -6465566751694194690, guid: 049c203cc473d144b9decc2a1fadb05e,
+  m_Name: Mat Line
+  m_Shader: {fileID: -6465566751694194690, guid: e4b12d752533125409aed86f8521ebe4,
     type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
