@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+    // 右クリックでエディター上からリストを作成できるようにする
 [CreateAssetMenu(
   fileName = "EnemyDataList",
   menuName = "ScriptableObject/EnemyDataList",

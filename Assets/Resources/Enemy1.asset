@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Enemy1
   m_EditorClassIdentifier: 
   EnemyStatusList:
-  - hp: 100
+  - hp: 30
     barrier: 0
     atk: 10
-    exp: 1000
+    exp: 100
     moveSpeed: 10
-  - hp: 120
+  - hp: 35
     barrier: 0
-    atk: 20
-    exp: 1200
+    atk: 14
+    exp: 150
     moveSpeed: 10
   - hp: 150
     barrier: 0
@@ -33,6 +33,31 @@ MonoBehaviour:
     atk: 50
     exp: 2500
     moveSpeed: 10
+  - hp: 300
+    barrier: 0
+    atk: 60
+    exp: 3000
+    moveSpeed: 20
+  - hp: 300
+    barrier: 0
+    atk: 60
+    exp: 3000
+    moveSpeed: 20
+  - hp: 300
+    barrier: 0
+    atk: 60
+    exp: 3000
+    moveSpeed: 20
+  - hp: 300
+    barrier: 0
+    atk: 60
+    exp: 3000
+    moveSpeed: 20
+  - hp: 300
+    barrier: 0
+    atk: 60
+    exp: 3000
+    moveSpeed: 20
   - hp: 300
     barrier: 0
     atk: 60

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c2d542cedd4314fb2158ef8ee87462, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  EnemyStatusList:
+  - hp: 200
+    barrier: 5
+    atk: 10
+    exp: 0
+    moveSpeed: 10
+  - hp: 210
+    barrier: 5
+    atk: 14
+    exp: 0
+    moveSpeed: 10
+  - hp: 220
+    barrier: 5
+    atk: 18
+    exp: 0
+    moveSpeed: 10
+  - hp: 240
+    barrier: 5
+    atk: 24
+    exp: 0
+    moveSpeed: 10
+  - hp: 250
+    barrier: 5
+    atk: 26
+    exp: 0
+    moveSpeed: 10
+  - hp: 270
+    barrier: 5
+    atk: 30
+    exp: 0
+    moveSpeed: 10
+  - hp: 300
+    barrier: 5
+    atk: 36
+    exp: 0
+    moveSpeed: 15
+  - hp: 340
+    barrier: 5
+    atk: 40
+    exp: 0
+    moveSpeed: 15
+  - hp: 350
+    barrier: 5
+    atk: 42
+    exp: 0
+    moveSpeed: 15
+  - hp: 400
+    barrier: 5
+    atk: 50
+    exp: 0
+    moveSpeed: 20

@@ -6,6 +6,22 @@ using UniRx.Triggers;
 
 public class PlayerUnit : MonoBehaviour
 {
+    public enum UnitID
+    {
+        No1 = 0,
+        No2
+    }
+
+    public enum Mode
+    {
+        Revolution = 0,
+        LookAt
+    }
+    [SerializeField] private PlayerManager pm;
+
+    [SerializeField] private UnitID unitId;
+    [SerializeField] private Mode atkMode = Mode.Revolution;
+
     [SerializeField] private Transform playerTrans;
     [SerializeField] private Transform partnerTrans;
 
@@ -22,11 +38,12 @@ public class PlayerUnit : MonoBehaviour
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-            }).AddTo(this.gameObject);
-    }
 
-    void SetAtk(int playerAtk)
-    {
-        atk = playerAtk;
+            }).AddTo(this.gameObject);
+
+        pm.level.Subscribe(_ =>
+        {
+ 
+        }).AddTo(this.gameObject);
     }
 }
