@@ -23,43 +23,43 @@ MonoBehaviour:
     atk: 14
     exp: 150
     moveSpeed: 10
-  - hp: 150
+  - hp: 50
+    barrier: 0
+    atk: 18
+    exp: 200
+    moveSpeed: 10
+  - hp: 60
+    barrier: 0
+    atk: 22
+    exp: 220
+    moveSpeed: 10
+  - hp: 65
+    barrier: 0
+    atk: 26
+    exp: 240
+    moveSpeed: 10
+  - hp: 75
     barrier: 0
     atk: 30
-    exp: 1500
+    exp: 280
     moveSpeed: 10
-  - hp: 200
+  - hp: 80
+    barrier: 0
+    atk: 36
+    exp: 300
+    moveSpeed: 15
+  - hp: 90
+    barrier: 0
+    atk: 42
+    exp: 340
+    moveSpeed: 15
+  - hp: 100
     barrier: 0
     atk: 50
-    exp: 2500
-    moveSpeed: 10
-  - hp: 300
+    exp: 380
+    moveSpeed: 15
+  - hp: 150
     barrier: 0
     atk: 60
-    exp: 3000
-    moveSpeed: 20
-  - hp: 300
-    barrier: 0
-    atk: 60
-    exp: 3000
-    moveSpeed: 20
-  - hp: 300
-    barrier: 0
-    atk: 60
-    exp: 3000
-    moveSpeed: 20
-  - hp: 300
-    barrier: 0
-    atk: 60
-    exp: 3000
-    moveSpeed: 20
-  - hp: 300
-    barrier: 0
-    atk: 60
-    exp: 3000
-    moveSpeed: 20
-  - hp: 300
-    barrier: 0
-    atk: 60
-    exp: 3000
+    exp: 500
     moveSpeed: 20
