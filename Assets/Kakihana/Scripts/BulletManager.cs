@@ -35,31 +35,6 @@ public class BulletManager : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }).AddTo(this.gameObject);
-
-        this.OnTriggerEnterAsObservable()
-            .Subscribe(c => 
-            {
-                switch (shootChara)
-                {
-                    case ShootChara.Player:
-                        EnemyManager em;
-                        try
-                        {
-                            em = c.gameObject.GetComponent<EnemyManager>();
-                        }
-                        catch (System.Exception)
-                        {
-
-                            throw;
-                        }
-                        break;
-                    case ShootChara.Enemy:
-                        break;
-                    default:
-                        break;
-                }
-                gameObject.SetActive(false);
-            }).AddTo(this.gameObject);
     }
 
     public void BulletCreate(float speed, int atk,ShootChara chara,Transform trans)
