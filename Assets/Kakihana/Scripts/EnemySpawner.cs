@@ -25,9 +25,9 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
     [SerializeField] private int level;                         // 現在のレベル
 
     [Header("デバッグ用に値を変更可能な変数")]
-    [SerializeField] private float enemySpawnInterval;         // 敵再生成までの時間（秒）
+    [SerializeField] private float enemySpawnInterval;          // 敵再生成までの時間（秒）
     [SerializeField] private EnemyManager[] enemyPrefab;        // 生成させる敵
-    [SerializeField] private EnemyPool enemyPool;             // 敵のオブジェクトプール
+    [SerializeField] private EnemyPool enemyPool;               // 敵のオブジェクトプール
 
     [Header("プールをまとめるオブジェクトを作成、格納")]
     [SerializeField] private Transform enemyPoolObj;            // スポーンした敵をまとめるオブジェクトをここに格納

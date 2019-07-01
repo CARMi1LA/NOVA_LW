@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
@@ -16,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] PlayerUnit[] playerUnits;      // 子機の情報
     [SerializeField] Transform[] unitTrans;         // 子機のトランスフォーム
     [SerializeField] EnemyDataList playerDataList;  // データが格納されているリスト
+    [SerializeField] BulletSpawner bs;
     [SerializeField] public EnemyStatus myStatus;          // 各種パラメータの情報
 
     [SerializeField] private SpAttackType spAtk = SpAttackType.None;
@@ -32,6 +34,11 @@ public class PlayerManager : MonoBehaviour
     // コンストラクタ
     PlayerManager()
     {
+
+    }
+
+    void Awake()
+    {
         // レベルの取得
         level = GameManagement.Instance.playerLevel;
         // プレイヤーのパラメータのデータリストを取得
@@ -42,11 +49,6 @@ public class PlayerManager : MonoBehaviour
         hp = myStatus.hp;
         // 最大HPの設定
         maxHp = myStatus.hp;
-    }
-
-    void Awake()
-    {
-        
     }
 
     // Start is called before the first frame update
@@ -62,5 +64,13 @@ public class PlayerManager : MonoBehaviour
             // レベルアップ分のHPを現在のHPに代入
             hp = hp + (hp - maxHp);
         }).AddTo(this.gameObject);
+
+        this.UpdateAsObservable()
+            .Sample(TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => 
+            {
+                bs.bulletDataList.Add(new BulletData(10, 10, this.transform, BulletManager.ShootChara.Player));
+                Debug.Log("kenti");
+            }).AddTo(this.gameObject);
     }
 }

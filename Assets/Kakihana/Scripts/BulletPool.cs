@@ -8,7 +8,7 @@ public class BulletPool : ObjectPool<BulletManager>
     public readonly BulletManager bulletObj;
     private Transform myTrans;
 
-    BulletPool(BulletManager bm,Transform trans)
+    public BulletPool(BulletManager bm,Transform trans)
     {
         bulletObj = bm;
         myTrans = trans;
