@@ -17,19 +17,21 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] PlayerUnit[] playerUnits;      // 子機の情報
     [SerializeField] Transform[] unitTrans;         // 子機のトランスフォーム
     [SerializeField] EnemyDataList playerDataList;  // データが格納されているリスト
-    [SerializeField] BulletSpawner bs;
-    [SerializeField] public EnemyStatus myStatus;          // 各種パラメータの情報
+    [SerializeField] public EnemyStatus myStatus;   // 各種パラメータの情報
 
+    // 特殊攻撃のステート
     [SerializeField] private SpAttackType spAtk = SpAttackType.None;
 
-    [SerializeField] private float hp;
-    [SerializeField] private float maxHp = 0;
+    [SerializeField] private float hp;              // 現在のHP
+    [SerializeField] private float maxHp = 0;       // 最大HP
 
-    [SerializeField] public IntReactiveProperty level;
+    [SerializeField] public IntReactiveProperty level;     // レベルを監視可能な変数
+    // クリックしたか
     [SerializeField] public BoolReactiveProperty isClick = new BoolReactiveProperty(false);
 
     [SerializeField] private IntReactiveProperty unitValue = new IntReactiveProperty(1);
 
+    // スコアを監視可能な変数
     public IntReactiveProperty score = new IntReactiveProperty(0);
     // コンストラクタ
     PlayerManager()
@@ -66,10 +68,10 @@ public class PlayerManager : MonoBehaviour
         }).AddTo(this.gameObject);
 
         this.UpdateAsObservable()
-            .Sample(TimeSpan.FromSeconds(1.0f))
+            .Sample(TimeSpan.FromSeconds(0.25f))
             .Subscribe(_ => 
             {
-                bs.bulletDataList.Add(new BulletData(10, 10, this.transform, BulletManager.ShootChara.Player));
+                BulletSpawner.Instance.bulletDataList.Add(new BulletManager(10, 10, this.transform,BulletManager.ShootChara.Player));
                 Debug.Log("kenti");
             }).AddTo(this.gameObject);
     }
