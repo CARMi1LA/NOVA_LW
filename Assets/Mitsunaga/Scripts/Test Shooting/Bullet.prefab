@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2233581227664509531}
   - component: {fileID: 2233581227664509532}
   - component: {fileID: 2233581227664509533}
-  - component: {fileID: 2233581227664509534}
+  - component: {fileID: 5166252425158651811}
   - component: {fileID: 2233581227664509530}
   - component: {fileID: 2233581227664509535}
   m_Layer: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2233581227664509504}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 2, z: 0.5}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,8 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &2233581227664509534
-CapsuleCollider:
+--- !u!135 &5166252425158651811
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,10 +90,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  serializedVersion: 2
+  m_Radius: 0.15
+  m_Center: {x: 0.000000059604645, y: 0.86, z: -0.00000008940699}
 --- !u!54 &2233581227664509530
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -122,4 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7504370300b3842b3de78d5dc36ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  speed: 50

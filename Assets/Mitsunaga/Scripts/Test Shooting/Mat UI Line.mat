@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Floor
-  m_Shader: {fileID: -6465566751694194690, guid: 049c203cc473d144b9decc2a1fadb05e,
+  m_Name: Mat UI Line
+  m_Shader: {fileID: -6465566751694194690, guid: e99da58ea403ef04fb1186fe04767498,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_E00F8921:
+        m_Texture: {fileID: 2800000, guid: 7520360a3dc96e646afe51af41dc1589, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -49,14 +53,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_34AF793C: 15.83
-    - Vector1_5A46A2E7: 5
-    - Vector1_6AD33506: -0.01
-    - Vector1_6C49FD75: -0.78
-    - Vector1_D63CF258: 0.3
-    - Vector1_DDD0A47C: 0
+    - Vector1_6A20D12: 6
+    - Vector1_75F3F192: 0.17
+    - Vector1_8EBF65B2: 7
+    - Vector1_AAB25B51: 0
+    - Vector1_C4D34951: 1
     - _AlphaClip: 0
-    - _Angle: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -78,13 +80,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_5CF983F5: {r: 0.2196078, g: 0.37450975, b: 0.30980387, a: 0}
-    - Color_64B4373D: {r: 2, g: 1.027451, b: 1.027451, a: 0}
+    - Color_E11A57A1: {r: 1.160784, g: 2, b: 1.984314, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
---- !u!114 &156126688312893054
+--- !u!114 &8563114191303248530
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

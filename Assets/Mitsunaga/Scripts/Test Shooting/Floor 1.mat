@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Floor
+  m_Name: Floor 1
   m_Shader: {fileID: -6465566751694194690, guid: 049c203cc473d144b9decc2a1fadb05e,
     type: 3}
   m_ShaderKeywords: 
@@ -51,7 +51,7 @@ Material:
     m_Floats:
     - Vector1_34AF793C: 15.83
     - Vector1_5A46A2E7: 5
-    - Vector1_6AD33506: -0.01
+    - Vector1_6AD33506: 0.01
     - Vector1_6C49FD75: -0.78
     - Vector1_D63CF258: 0.3
     - Vector1_DDD0A47C: 0
