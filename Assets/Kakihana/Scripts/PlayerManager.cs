@@ -25,7 +25,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float hp;              // 現在のHP
     [SerializeField] private float maxHp = 0;       // 最大HP
 
-    [SerializeField] public IntReactiveProperty level;     // レベルを監視可能な変数
+    // レベルを監視可能な変数
+    [SerializeField] public IntReactiveProperty level;     
     // クリックしたか
     [SerializeField] public BoolReactiveProperty isClick = new BoolReactiveProperty(false);
 
@@ -67,12 +68,14 @@ public class PlayerManager : MonoBehaviour
             hp = hp + (hp - maxHp);
         }).AddTo(this.gameObject);
 
+        // クリックで弾を出します（デバッグ用）
         this.UpdateAsObservable()
-            .Sample(TimeSpan.FromSeconds(0.25f))
+            .Where(_ => Input.GetMouseButton(0))
             .Subscribe(_ => 
             {
-                BulletSpawner.Instance.bulletDataList.Add(new BulletManager(10, 10, this.transform,BulletManager.ShootChara.Player));
-                Debug.Log("kenti");
+                new BulletData(10, 10, this.transform, BulletManager.ShootChara.Player);
+                Debug.Log("生成");
             }).AddTo(this.gameObject);
+
     }
 }

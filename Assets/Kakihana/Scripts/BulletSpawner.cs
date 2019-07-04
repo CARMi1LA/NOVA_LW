@@ -9,62 +9,53 @@ public class BulletSpawner : BMSingleton<BulletSpawner>
     // 弾生成管理クラス
 
     [SerializeField] private int bulletValueMax;            // 弾の最大生成数
-    [SerializeField] private int bulletCount;               // 弾の生成数
+    [SerializeField] public int bulletCount;                // 弾の生成数
     [SerializeField] private BulletManager[] bulletObj;     // 弾のプレハブ
     [SerializeField] private BulletPool bulletPool;         // 弾のオブジェクトプールクラス
 
     [SerializeField] private Transform bulletPoolTrans;     // オブジェクトプールを格納するための変数
 
-    // 弾のデータを格納するリスト
-    [SerializeField] public ReactiveCollection<BulletManager> bulletDataList = new ReactiveCollection<BulletManager>();
+    // 生成予定の弾のデータを格納するリスト
+    [SerializeField] public ReactiveCollection<BulletData> bulletDataList = new ReactiveCollection<BulletData>();
 
+    // 生成した弾を格納するリスト
+    [SerializeField] public ReactiveCollection<BulletManager> bulletList = new ReactiveCollection<BulletManager>();
     // Start is called before the first frame update
     void Start()
     {
         // プールの初期化
         bulletPool = new BulletPool(bulletObj[0], bulletPoolTrans);
-        // 弾生成処理、他スクリプトで弾の生成が呼び出されたときのみ動作
+
+        // 弾生成処理、生成予定のデータリストに情報が追加された時に動作
         bulletDataList.ObserveAdd()
+        .Where(_ => bulletCount <= bulletValueMax)
         .Subscribe(_ =>
         {
-            Debug.Log("kenti2");
             // プールの生成
             var bullet = bulletPool.Rent();
+            Debug.Log("弾スポーン");
             // 弾の生成
-            bullet.BulletCreate(_.Value.damageAtk, _.Value.shootSpeed, _.Value.shootOriginTrans, _.Value.shootChara,_.Index);
-            // 生成をカウントする
-            bulletCount++;
-            // プールを監視し、消滅したらプールを返却する、リストの削除も行う
-            bullet.OnDisableAsObservable().Subscribe(x =>
-            {
-                bulletPool.Return(bullet);
-                //if (bulletDataList[_.Index].isDestroy.Value == true)
-                //{
-                //    bulletDataList.Remove(bulletDataList[_.Index]);
-
-                //}
-            }).AddTo(this.gameObject);
+            bullet.BulletCreate(_.Value.initAtk, _.Value.initSpeed, _.Value.initTrans, _.Value.initShootChara,_.Index);
+            // 生成済みリスト情報を追加
+            bulletList.Add(bullet);
+            // 弾生成用データリストは不要になるので破棄する。
+            bulletDataList.Remove(_.Value);
         }).AddTo(this.gameObject);
 
-        bulletDataList.ObserveRemove()
-            .Subscribe(_ => 
+        this.UpdateAsObservable()
+            .Where(_ => bulletDataList.Count >= 100).Subscribe(_ => 
             {
-
+                bulletDataList.Clear();
             }).AddTo(this.gameObject);
     }
 
-    // 弾消滅時の処理
-    public void BulletRemove(int index)
+    // プールの返却と出現済みリストから弾の情報を削除するメソッド
+    public void BulletRemove(BulletManager bm)
     {
-        //if (bulletDataList[index].)
-        //{
-
-        //}
-        // 消滅分を現在の生成数から削除
-        bulletCount--;
-        // リストからデータを削除する
-        bulletDataList.Remove(bulletDataList[index]);
+        bulletPool.Return(bm);
+        bulletList.Remove(bm);
     }
+
 }
 
 // 弾生成パラメータを格納するクラス
@@ -82,5 +73,6 @@ public class BulletData
         initSpeed = speed;
         initTrans = trans;
         initShootChara = chara;
+        BulletSpawner.Instance.bulletDataList.Add(this);
     }
 }
