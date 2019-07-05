@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class BulletSpawner : BMSingleton<BulletSpawner>
+public class BulletSpawner : BSSingleton<BulletSpawner>
 {
     // 弾生成管理クラス
 
