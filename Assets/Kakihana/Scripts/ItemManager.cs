@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 public class ItemManager : MonoBehaviour
 {
@@ -19,5 +21,13 @@ public class ItemManager : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void CreateItem(int Score,int Hp,int Energy,ItemManager.ItemType item)
+    {
+        itemScore = Score;
+        itemHp = Hp;
+        itemEnergy = Energy;
+        itemType = item;
     }
 }

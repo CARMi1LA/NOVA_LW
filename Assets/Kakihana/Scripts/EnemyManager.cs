@@ -108,13 +108,14 @@ public class EnemyManager : MonoBehaviour,IDamage
                 float radian = Mathf.Atan2(dif.z, dif.x);
                 float degree = radian * Mathf.Rad2Deg;
 
-                myRigid.AddForce(new Vector3(Mathf.Cos(radian),0,Mathf.Sin(radian)) * myStatus.moveSpeed);
+                myRigid.AddForce(new Vector3(Mathf.Cos(radian),0,Mathf.Sin(radian)) * myStatus.moveSpeed * 100);
             }).AddTo(this.gameObject);
 
         enemyAIPropaty.Where(_ => _ == EnemyAI.Attack)
+        .Sample(TimeSpan.FromSeconds(0.25f))
         .Subscribe(_ =>
         {
-
+            new BulletData(myStatus.atk, myStatus.moveSpeed, this.transform, BulletManager.ShootChara.Enemy);
         }).AddTo(this.gameObject);
 
         Observable.Timer(TimeSpan.FromSeconds(30.0f)).Subscribe(_ =>
@@ -127,7 +128,7 @@ public class EnemyManager : MonoBehaviour,IDamage
             Death();
         }).AddTo(this.gameObject);
 
-        this.OnCollisionEnterAsObservable()
+        this.OnTriggerEnterAsObservable()
             .Subscribe(c => 
             {
                 try
@@ -137,6 +138,7 @@ public class EnemyManager : MonoBehaviour,IDamage
                 if (bullet.shootChara == BulletManager.ShootChara.Player)
                     {
                         HitDamage(bullet.damageAtk);
+                        bullet.BulletDestroy();
                     }
                 }
                 catch 
@@ -148,6 +150,7 @@ public class EnemyManager : MonoBehaviour,IDamage
     public void EnemySpawn(Vector3 pos,int id,int level)
     {
         enemyDataList = Resources.Load<EnemyDataList>(string.Format("Enemy{0}", id));
+        playerTrans = GameManagement.Instance.playerTransform;
         myStatus = enemyDataList.EnemyStatusList[level - 1];
         myHp.Value = myStatus.hp;
         maxDistance = maxDistance * ((11 - level) * 0.1f);
@@ -169,6 +172,7 @@ public class EnemyManager : MonoBehaviour,IDamage
     public void HitDamage(int damage)
     {
         myHp.Value -= damage;
+        Debug.LogFormat("痛い！ダメージ{0}", damage);
     }
 }
 

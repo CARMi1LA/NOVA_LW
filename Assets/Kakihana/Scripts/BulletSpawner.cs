@@ -73,6 +73,7 @@ public class BulletData
         initSpeed = speed;
         initTrans = trans;
         initShootChara = chara;
+        // 生成予定データリストにこのデータを追加
         BulletSpawner.Instance.bulletDataList.Add(this);
     }
 }
