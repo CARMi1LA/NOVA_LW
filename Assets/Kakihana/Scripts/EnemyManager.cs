@@ -181,6 +181,10 @@ public class EnemyManager : MonoBehaviour,IDamage
     // 消滅時の処理
     public void Death()
     {
+        for (int i = 0; i < 2; i++)
+        {
+            new ItemData(myStatus.score / 2,0,0,DropItemManager.ItemType.Score,this.transform.position);
+        }
         this.gameObject.SetActive(false);
         EnemySpawner.Instance.EnemyDestroy();
     }

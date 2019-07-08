@@ -120,6 +120,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &93342624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 93342625}
+  m_Layer: 0
+  m_Name: ItemPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &93342625
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93342624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &204339304 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6663914236390675414, guid: 750fde29ce88c8f4192acf4f4b836c11,
@@ -941,17 +971,20 @@ MonoBehaviour:
     hp: 0
     barrier: 0
     atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0
   spAtk: 2
   hp: 0
   maxHp: 0
+  myRigid: {fileID: 771994812}
   level:
     value: 0
   isClick:
     value: 0
   unitValue:
     value: 1
+  cScreen: {x: 0, y: 0, z: 0}
+  cWorld: {x: 0, y: 0, z: 0}
   score:
     value: 0
 --- !u!135 &771994809
@@ -1026,7 +1059,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1 &861455393
 GameObject:
@@ -1122,6 +1155,7 @@ GameObject:
   - component: {fileID: 968131355}
   - component: {fileID: 968131354}
   - component: {fileID: 968131356}
+  - component: {fileID: 968131357}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -1190,6 +1224,23 @@ MonoBehaviour:
   bulletObj:
   - {fileID: 8584495859469888609, guid: 8acd107c05dc0cd4c8ad82e4468d4c23, type: 3}
   bulletPoolTrans: {fileID: 366270677}
+--- !u!114 &968131357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968131353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a7e54574b2ae5f46a8578ecd5f91cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSpawnCountMax: 200
+  itemSpawnCount: 0
+  itemObj:
+  - {fileID: 1654499467841137133, guid: d80e28df49689b24291f7f7c696f001e, type: 3}
+  itemPoolTrans: {fileID: 93342625}
 --- !u!1 &1092848551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,7 +1452,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1310075675
 MonoBehaviour:
@@ -1814,7 +1865,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1882216650
 MonoBehaviour:

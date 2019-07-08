@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Toolkit;
 
-public class ItemPool : ObjectPool<ItemManager>
+public class ItemPool : ObjectPool<DropItemManager>
 {
 
     /* 
@@ -17,18 +17,18 @@ public class ItemPool : ObjectPool<ItemManager>
    敵以外にもオブジェクトを多数生成させるため、
    現在のプロジェクトではオブジェクトの種類ごとにプールクラスを分けます
 */
-    public readonly ItemManager itemObj;    // 生成アイテム
+    public readonly DropItemManager itemObj;    // 生成アイテム
     public Transform itemObjTrans;          // プールしたオブジェクトをまとめるオブジェクトの座標
 
     // コンストラクタ
-    public ItemPool(ItemManager item,Transform trans)
+    public ItemPool(DropItemManager item,Transform trans)
     {
         itemObj = item;
         itemObjTrans = trans;
     }
 
     // アイテムを出現させる
-    protected override ItemManager CreateInstance()
+    protected override DropItemManager CreateInstance()
     {
         var e = GameObject.Instantiate(itemObj);
         e.transform.SetParent(itemObjTrans);

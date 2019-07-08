@@ -9,7 +9,7 @@ public class GameManagement : GMSingleton<GameManagement>
 {
 
     public Transform playerTransform;
-    public Vector3 cameraPos = Vector3.zero;
+    public Vector3 cameraPos = Camera.main.transform.position;
     public Vector3 cursorPos = Vector3.zero;
 
     public IntReactiveProperty gameLevel = new IntReactiveProperty(1);

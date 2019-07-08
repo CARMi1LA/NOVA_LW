@@ -5,7 +5,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour,IDamage
 {
     public enum SpAttackType
     {
@@ -24,6 +24,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private float hp;              // 現在のHP
     [SerializeField] private float maxHp = 0;       // 最大HP
+    [SerializeField] private Rigidbody myRigid;
 
     // レベルを監視可能な変数
     [SerializeField] public IntReactiveProperty level;     
@@ -31,6 +32,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] public BoolReactiveProperty isClick = new BoolReactiveProperty(false);
 
     [SerializeField] private IntReactiveProperty unitValue = new IntReactiveProperty(1);
+
+    [SerializeField] private Vector3 cScreen;
+    [SerializeField] private Vector3 cWorld;
 
     // スコアを監視可能な変数
     public IntReactiveProperty score = new IntReactiveProperty(0);
@@ -68,6 +72,17 @@ public class PlayerManager : MonoBehaviour
             hp = hp + (hp - maxHp);
         }).AddTo(this.gameObject);
 
+        this.UpdateAsObservable()
+            .Subscribe(_ =>
+            {
+            cScreen = Input.mousePosition;
+            cScreen.z = GameManagement.Instance.cameraPos.y - this.transform.position.y;
+            cWorld = Camera.main.ScreenToWorldPoint(cScreen);
+
+            Vector3 dir = (cWorld - this.transform.position).normalized;
+            myRigid.AddForce(10 * (dir * myStatus.moveSpeed));
+            }).AddTo(this.gameObject);
+
         // クリックで弾を出します（デバッグ用）
         this.UpdateAsObservable()
             .Where(_ => Input.GetMouseButton(0))
@@ -77,5 +92,45 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("生成");
             }).AddTo(this.gameObject);
 
+        this.OnTriggerEnterAsObservable()
+            .Where(c => gameObject.tag == "Bullet")
+            .Subscribe(c => 
+            {
+                try
+                {
+                    BulletManager bullet;
+                    bullet = c.gameObject.GetComponent<BulletManager>();
+                    if (bullet.shootChara == BulletManager.ShootChara.Player)
+                    {
+                        // プレイヤーによる攻撃であればダメージを受ける
+                        HitDamage(bullet.damageAtk);
+                        bullet.BulletDestroy();
+                    }
+                }
+                catch
+                {
+                }
+            }).AddTo(this.gameObject);
+
+        this.OnTriggerEnterAsObservable()
+            .Where(c => gameObject.tag == "Item")
+            .Subscribe(c => 
+            {
+                try
+                {
+                    DropItemManager item;
+                    item = c.gameObject.GetComponent<DropItemManager>();
+
+                    score.Value += item.itemScore;
+                    item.ItemDestroy();
+                }
+                catch
+                {
+                }
+            }).AddTo(this.gameObject);
+    }
+    public void HitDamage(int atk)
+    {
+        hp -= atk;
     }
 }
