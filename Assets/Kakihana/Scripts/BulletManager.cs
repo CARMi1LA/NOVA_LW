@@ -110,8 +110,11 @@ public class BulletManager : MonoBehaviour
         listIndex = index;
         // 現在の座標の初期化
         this.transform.position = origin.position;
-        //
-
     }
 
+    private void OnBecameInvisible()
+    {
+        Debug.Log("カメラ範囲外削除");
+        BulletDestroy();
+    }
 }

@@ -118,6 +118,7 @@ MonoBehaviour:
   playerTrans: {fileID: 0}
   movePos: {x: 0, y: 0, z: 0}
   maxDistance: 30
+  velocityMag: 0.99
   myHp:
     value: 0
   attackFlg:

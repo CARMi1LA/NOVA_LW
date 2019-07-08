@@ -73,7 +73,7 @@ public class PlayerManager : MonoBehaviour
             .Where(_ => Input.GetMouseButton(0))
             .Subscribe(_ => 
             {
-                new BulletData(10, 10, this.transform, BulletManager.ShootChara.Player);
+                new BulletData(10, 50, this.transform, BulletManager.ShootChara.Player);
                 Debug.Log("生成");
             }).AddTo(this.gameObject);
 

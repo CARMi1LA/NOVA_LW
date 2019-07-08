@@ -46,7 +46,7 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
     void Start()
     {
         // プレイヤー情報の取得
-       // playerTrans = GameManager.Instance.playerTransform;
+        playerTrans = GameManager.Instance.playerTransform;
 
         // レベルの取得
         //level = GameManager.Instance.playerLevel;
