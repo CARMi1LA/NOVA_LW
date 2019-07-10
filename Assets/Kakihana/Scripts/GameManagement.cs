@@ -9,7 +9,8 @@ public class GameManagement : GMSingleton<GameManagement>
 {
 
     public Transform playerTransform;
-    public Vector3 cameraPos = Camera.main.transform.position;
+    public Transform cameraTrans;
+    public Vector3 cameraPos;
     public Vector3 cursorPos = Vector3.zero;
 
     public IntReactiveProperty gameLevel = new IntReactiveProperty(1);
@@ -25,6 +26,7 @@ public class GameManagement : GMSingleton<GameManagement>
         base.Awake();
 
         DontDestroyOnLoad(this.gameObject);
+        cameraPos = cameraTrans.position;
 
         isClear.Where(x => x).
             Subscribe(_ =>

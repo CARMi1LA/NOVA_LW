@@ -35,6 +35,7 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     [SerializeField] private Vector3 cScreen;
     [SerializeField] private Vector3 cWorld;
+    [SerializeField] private Vector3 dif;
 
     // スコアを監視可能な変数
     public IntReactiveProperty score = new IntReactiveProperty(0);
@@ -75,12 +76,17 @@ public class PlayerManager : MonoBehaviour,IDamage
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-            cScreen = Input.mousePosition;
-            cScreen.z = GameManagement.Instance.cameraPos.y - this.transform.position.y;
-            cWorld = Camera.main.ScreenToWorldPoint(cScreen);
+                cScreen = Input.mousePosition;
+                cScreen.z = 100.0f;
+                cWorld = Camera.main.ScreenToWorldPoint(cScreen);
 
-            Vector3 dir = (cWorld - this.transform.position).normalized;
-            myRigid.AddForce(10 * (dir * myStatus.moveSpeed));
+                dif = (cWorld - this.transform.position).normalized;
+                float radian = Mathf.Atan2(dif.y, dif.x);
+
+                Vector3 movePos = this.transform.position + dif;
+                movePos.y = 0.0f;
+
+                transform.position = movePos;
             }).AddTo(this.gameObject);
 
         // クリックで弾を出します（デバッグ用）
@@ -113,7 +119,7 @@ public class PlayerManager : MonoBehaviour,IDamage
             }).AddTo(this.gameObject);
 
         this.OnTriggerEnterAsObservable()
-            .Where(c => gameObject.tag == "Item")
+            .Where(c => c.gameObject.tag == "Item")
             .Subscribe(c => 
             {
                 try

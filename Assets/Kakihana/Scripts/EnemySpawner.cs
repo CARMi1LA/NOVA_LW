@@ -89,8 +89,7 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
             enemy.EnemySpawn(spawnPos + playerTrans.position, 1, level);
 
             enemy.OnDisableAsObservable().Subscribe(_ =>
-            {
-                enemy.Death();
+            { 
                 enemyPool.Return(enemy);
             }).AddTo(this.gameObject);
         }

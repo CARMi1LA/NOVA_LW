@@ -127,6 +127,11 @@ MonoBehaviour:
   itemRot: {x: 0, y: 0, z: 0}
   itemDir: 0
   originPos: {x: 0, y: 0, z: 0}
+  playerTrans: {fileID: 0}
+  itemRigid: {fileID: 3725463503436026318}
+  maxDistance: 10
+  distance:
+    value: 0
 --- !u!54 &3725463503436026318
 Rigidbody:
   m_ObjectHideFlags: 0
