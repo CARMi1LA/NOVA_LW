@@ -22,8 +22,9 @@ public class PlayerManager : MonoBehaviour,IDamage
     // 特殊攻撃のステート
     [SerializeField] private SpAttackType spAtk = SpAttackType.None;
 
-    [SerializeField] private float hp;              // 現在のHP
-    [SerializeField] private float maxHp = 0;       // 最大HP
+    [SerializeField] private IntReactiveProperty hp;              // 現在のHP
+    [SerializeField] private IntReactiveProperty maxHp;           // 最大HP
+    [SerializeField] private IntReactiveProperty energy;          // エネルギー
     [SerializeField] private Rigidbody myRigid;
 
     // レベルを監視可能な変数
@@ -33,8 +34,11 @@ public class PlayerManager : MonoBehaviour,IDamage
 
     [SerializeField] private IntReactiveProperty unitValue = new IntReactiveProperty(1);
 
+    // マウスの座標
     [SerializeField] private Vector3 cScreen;
+    // マウスのワールド座標
     [SerializeField] private Vector3 cWorld;
+    // 進行方向の単位ベクトル
     [SerializeField] private Vector3 dif;
 
     // スコアを監視可能な変数
@@ -54,9 +58,9 @@ public class PlayerManager : MonoBehaviour,IDamage
         // データリストよりレベルに応じたパラメータを取得
         myStatus = playerDataList.EnemyStatusList[level.Value - 1];
         // HPの設定
-        hp = myStatus.hp;
+        hp.Value = myStatus.hp;
         // 最大HPの設定
-        maxHp = myStatus.hp;
+        maxHp.Value = myStatus.hp;
     }
 
     // Start is called before the first frame update
@@ -68,24 +72,28 @@ public class PlayerManager : MonoBehaviour,IDamage
             // パラメータの更新
             myStatus = playerDataList.EnemyStatusList[level.Value - 1];
             // 最大HPの更新
-            maxHp = myStatus.hp;
+            maxHp.Value = myStatus.hp;
             // レベルアップ分のHPを現在のHPに代入
-            hp = hp + (hp - maxHp);
+            hp.Value = hp.Value + (hp.Value - maxHp.Value);
         }).AddTo(this.gameObject);
 
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
+                // マウスのスクリーン座標を取得
                 cScreen = Input.mousePosition;
+                // カメラの焦点を補正
                 cScreen.z = 100.0f;
+                // スクリーン座標からワールド座標へ変換
                 cWorld = Camera.main.ScreenToWorldPoint(cScreen);
 
+                // マウスのワールド座標より、進行方向の単位ベクトルを取得する
                 dif = (cWorld - this.transform.position).normalized;
-                float radian = Mathf.Atan2(dif.y, dif.x);
-
+                // 単位ベクトルの方向に移動する、Y軸は常に0に
                 Vector3 movePos = this.transform.position + dif;
                 movePos.y = 0.0f;
 
+                // 移動処理
                 transform.position = movePos;
             }).AddTo(this.gameObject);
 
@@ -98,6 +106,7 @@ public class PlayerManager : MonoBehaviour,IDamage
                 Debug.Log("生成");
             }).AddTo(this.gameObject);
 
+        // 衝突判定（弾）
         this.OnTriggerEnterAsObservable()
             .Where(c => gameObject.tag == "Bullet")
             .Subscribe(c => 
@@ -110,6 +119,7 @@ public class PlayerManager : MonoBehaviour,IDamage
                     {
                         // プレイヤーによる攻撃であればダメージを受ける
                         HitDamage(bullet.damageAtk);
+                        // ヒットした弾は消滅させる
                         bullet.BulletDestroy();
                     }
                 }
@@ -118,16 +128,21 @@ public class PlayerManager : MonoBehaviour,IDamage
                 }
             }).AddTo(this.gameObject);
 
+        // 衝突判定（アイテム）
         this.OnTriggerEnterAsObservable()
             .Where(c => c.gameObject.tag == "Item")
             .Subscribe(c => 
             {
                 try
                 {
+                    // 衝突したアイテムの情報を取得、各種パラメータに反映
                     DropItemManager item;
                     item = c.gameObject.GetComponent<DropItemManager>();
 
                     score.Value += item.itemScore;
+                    hp.Value += item.itemLife;
+                    energy.Value += item.itemEnergy;
+                    // 衝突したアイテムは消滅させる
                     item.ItemDestroy();
                 }
                 catch
@@ -135,8 +150,10 @@ public class PlayerManager : MonoBehaviour,IDamage
                 }
             }).AddTo(this.gameObject);
     }
+
+    // ダメージ処理
     public void HitDamage(int atk)
     {
-        hp -= atk;
+        hp.Value -= atk;
     }
 }

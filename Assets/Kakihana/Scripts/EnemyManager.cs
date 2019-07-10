@@ -166,26 +166,40 @@ public class EnemyManager : MonoBehaviour,IDamage
     // 生成されたときの初期化メソッド
     public void EnemySpawn(Vector3 pos,int id,int level)
     {
+        // IDより取得したいデータリストを取得する
         enemyDataList = Resources.Load<EnemyDataList>(string.Format("Enemy{0}", id));
-        playerTrans = GameManagement.Instance.playerTransform;
+        // データリストよりレベルに応じたパラメータを取得
         myStatus = enemyDataList.EnemyStatusList[level - 1];
+        // プレイヤー座標の取得
+        playerTrans = GameManagement.Instance.playerTransform;
+        // HPの設定
         myHp.Value = myStatus.hp;
+        // プレイヤーまでの接近距離の設定（レベルが高いほど近くまで接近）
         maxDistance = maxDistance * ((11 - level) * 0.1f);
+        // キャラクターの種類の設定
         charaType = CharactorType.EnemyCommon;
+        // 攻撃モードの設定
         atkType = NormalAtkType.Burst;
+        // AIモードの設定
         enemyAI.Value = EnemyAI.Approach;
+        // 座標の設定
         transform.position = pos;
+        // プレイヤーとの距離を設定
         distance.Value = (playerTrans.position - this.transform.position).sqrMagnitude;
     }
 
     // 消滅時の処理
     public void Death()
     {
-        for (int i = 0; i < 2; i++)
+        // スコアドロップ用ループ文
+        for (int i = 0; i < 5; i++)
         {
-            new ItemData(myStatus.score / 2,0,0,DropItemManager.ItemType.Score,this.transform.position);
+            // スコアアイテムを5個ドロップする。経験値もループ回数に応じて分割する
+            new ItemData(myStatus.score / 5,0,0,DropItemManager.ItemType.Score,this.transform.position);
         }
+        // オブジェクトを非表示に
         this.gameObject.SetActive(false);
+        // スポーンクラスに消滅応報を送る
         EnemySpawner.Instance.EnemyDestroy();
     }
 
