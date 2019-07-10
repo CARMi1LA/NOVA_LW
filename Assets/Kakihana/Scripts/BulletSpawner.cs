@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
 
-public class BulletSpawner : BMSingleton<BulletSpawner>
+public class BulletSpawner : BSSingleton<BulletSpawner>
 {
     // 弾生成管理クラス
 
@@ -73,6 +73,7 @@ public class BulletData
         initSpeed = speed;
         initTrans = trans;
         initShootChara = chara;
+        // 生成予定データリストにこのデータを追加
         BulletSpawner.Instance.bulletDataList.Add(this);
     }
 }

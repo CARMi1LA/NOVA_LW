@@ -24,7 +24,7 @@ public class ShootTest : MonoBehaviour
             .Delay(TimeSpan.FromSeconds(0.1f))
             .Subscribe(_ => 
             {
-                new BulletData(10, 10, this.transform, BulletManager.ShootChara.Enemy);
+                new BulletData(10, 50, this.transform, BulletManager.ShootChara.Player);
                 Debug.Log("Test生成");
             }).AddTo(this.gameObject);
     }

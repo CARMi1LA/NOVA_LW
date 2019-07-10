@@ -54,11 +54,6 @@ public class BulletManager : MonoBehaviour
         // 弾を発射する
         this.GetComponent<Rigidbody>().AddForce(shootOriginTrans.forward * shootSpeed,ForceMode.Impulse);
         this.transform.rotation = Quaternion.LookRotation(this.transform.forward,shootOriginTrans.forward);
-        //this.UpdateAsObservable()
-        //    .Subscribe(_ =>
-        //    {
-
-        //    }).AddTo(this.gameObject);
         // 最大距離を超えたら消滅
         this.UpdateAsObservable()
             .Where(_ => bulletState == BulletState.Active)
@@ -110,8 +105,12 @@ public class BulletManager : MonoBehaviour
         listIndex = index;
         // 現在の座標の初期化
         this.transform.position = origin.position;
-        //
-
     }
 
+    // カメラの範囲外に到達したら削除される
+    private void OnBecameInvisible()
+    {
+        Debug.Log("カメラ範囲外削除");
+        BulletDestroy();
+    }
 }

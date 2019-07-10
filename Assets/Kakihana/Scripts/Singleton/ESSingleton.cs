@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BMSingleton<T> : MonoBehaviour where T : BMSingleton<T>
+public class ESSingleton<T> : MonoBehaviour where T : ESSingleton<T>
 {
-    // 弾スポーンクラス参照用シングルトン
+    // 敵スポーンクラス(EnemySpawner)参照用シングルトン
 
     protected static T instance;
     public static T Instance

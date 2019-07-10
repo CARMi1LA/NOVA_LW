@@ -46,7 +46,7 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
     void Start()
     {
         // プレイヤー情報の取得
-       // playerTrans = GameManager.Instance.playerTransform;
+        playerTrans = GameManagement.Instance.playerTransform;
 
         // レベルの取得
         //level = GameManager.Instance.playerLevel;
@@ -89,8 +89,7 @@ public class EnemySpawner : PlanetSingleton<EnemySpawner>
             enemy.EnemySpawn(spawnPos + playerTrans.position, 1, level);
 
             enemy.OnDisableAsObservable().Subscribe(_ =>
-            {
-                enemy.Death();
+            { 
                 enemyPool.Return(enemy);
             }).AddTo(this.gameObject);
         }
