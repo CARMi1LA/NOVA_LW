@@ -16,7 +16,7 @@ public class ItemPool : ObjectPool<DropItemManager>
 
    敵以外にもオブジェクトを多数生成させるため、
    現在のプロジェクトではオブジェクトの種類ごとにプールクラスを分けます
-*/
+    */
     public readonly DropItemManager itemObj;    // 生成アイテム
     public Transform itemObjTrans;          // プールしたオブジェクトをまとめるオブジェクトの座標
 

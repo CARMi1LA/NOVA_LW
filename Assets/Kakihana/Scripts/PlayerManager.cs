@@ -20,7 +20,8 @@ public class PlayerManager : MonoBehaviour,IDamage
     [SerializeField] public EnemyStatus myStatus;   // 各種パラメータの情報
 
     // 特殊攻撃のステート
-    [SerializeField] private SpAttackType spAtk = SpAttackType.None;
+    [SerializeField] private SpAttackType[] spAtk;
+    [SerializeField] private bool[] spAtkList;
 
     [SerializeField] private IntReactiveProperty hp;              // 現在のHP
     [SerializeField] private IntReactiveProperty maxHp;           // 最大HP
@@ -37,7 +38,7 @@ public class PlayerManager : MonoBehaviour,IDamage
     // マウスの座標
     [SerializeField] private Vector3 cScreen;
     // マウスのワールド座標
-    [SerializeField] private Vector3 cWorld;
+    [SerializeField] public Vector3 cWorld;
     // 進行方向の単位ベクトル
     [SerializeField] private Vector3 dif;
 
@@ -95,16 +96,26 @@ public class PlayerManager : MonoBehaviour,IDamage
 
                 // 移動処理
                 transform.position = movePos;
+
+                if (Input.GetMouseButton(0))
+                {
+                    GameManagement.Instance.onClick.Value = true;
+                    movePos = Vector3.zero;
+                }
+                else
+                {
+                    GameManagement.Instance.onClick.Value = false;
+                }
             }).AddTo(this.gameObject);
 
-        // クリックで弾を出します（デバッグ用）
-        this.UpdateAsObservable()
-            .Where(_ => Input.GetMouseButton(0))
-            .Subscribe(_ => 
-            {
-                new BulletData(10, 50, this.transform, BulletManager.ShootChara.Player);
-                Debug.Log("生成");
-            }).AddTo(this.gameObject);
+        //// クリックで弾を出します（デバッグ用）
+        //this.UpdateAsObservable()
+        //    .Where(_ => Input.GetMouseButton(0))
+        //    .Subscribe(_ => 
+        //    {
+        //        new BulletData(10, 50, this.transform, BulletManager.ShootChara.Player);
+        //        Debug.Log("生成");
+        //    }).AddTo(this.gameObject);
 
         // 衝突判定（弾）
         this.OnTriggerEnterAsObservable()

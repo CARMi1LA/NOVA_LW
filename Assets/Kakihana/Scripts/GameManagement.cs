@@ -20,6 +20,7 @@ public class GameManagement : GMSingleton<GameManagement>
     public BoolReactiveProperty isClear = new BoolReactiveProperty(false);
     public BoolReactiveProperty gameOver = new BoolReactiveProperty(false);
     public BoolReactiveProperty isPause = new BoolReactiveProperty(true);
+    public BoolReactiveProperty onClick = new BoolReactiveProperty(false);
 
     protected override void Awake()
     {
