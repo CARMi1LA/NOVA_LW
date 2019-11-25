@@ -108,15 +108,6 @@ public class PlayerManager : MonoBehaviour,IDamage
                 }
             }).AddTo(this.gameObject);
 
-        //// クリックで弾を出します（デバッグ用）
-        //this.UpdateAsObservable()
-        //    .Where(_ => Input.GetMouseButton(0))
-        //    .Subscribe(_ => 
-        //    {
-        //        new BulletData(10, 50, this.transform, BulletManager.ShootChara.Player);
-        //        Debug.Log("生成");
-        //    }).AddTo(this.gameObject);
-
         // 衝突判定（弾）
         this.OnTriggerEnterAsObservable()
             .Where(c => gameObject.tag == "Bullet")
@@ -144,21 +135,15 @@ public class PlayerManager : MonoBehaviour,IDamage
             .Where(c => c.gameObject.tag == "Item")
             .Subscribe(c => 
             {
-                try
-                {
-                    // 衝突したアイテムの情報を取得、各種パラメータに反映
-                    DropItemManager item;
-                    item = c.gameObject.GetComponent<DropItemManager>();
+                // 衝突したアイテムの情報を取得、各種パラメータに反映
+                DropItemManager item;
+                item = c.gameObject.GetComponent<DropItemManager>();
 
-                    score.Value += item.itemScore;
-                    hp.Value += item.itemLife;
-                    energy.Value += item.itemEnergy;
-                    // 衝突したアイテムは消滅させる
-                    item.ItemDestroy();
-                }
-                catch
-                {
-                }
+                score.Value += item.itemScore;
+                hp.Value += item.itemLife;
+                energy.Value += item.itemEnergy;
+                // 衝突したアイテムは消滅させる
+                item.ItemDestroy();
             }).AddTo(this.gameObject);
     }
 
