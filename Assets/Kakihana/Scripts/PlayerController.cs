@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
+    public IntReactiveProperty hp;  // プレイヤーのHP
     public float playerSpeed;       // プレイヤーの速さ
     public int playerShrinkTime;    // プレイヤーが最終サイズになるまでの時間
     public Vector3 movePos;         // 移動量
     public Vector3 startScale;      // 開始時の初期サイズ
     public Vector3 endScale = new Vector3(1.0f, 1.0f, 1.0f);    // 最終サイズ
+
+    public int enemyDamage;         // 敵から受けるダメージ
+    public int pulseDamage;         // パルスのダメージ
+
+    public BoolReactiveProperty inPulse;
 
     public GameObject destroyEffect;// 消滅エフェクト
     // Start is called before the first frame update
@@ -56,6 +63,20 @@ public class PlayerController : MonoBehaviour
                 }
             }).AddTo(this.gameObject);
 
+        inPulse
+            .Where(_ => inPulse.Value == true)
+            .Sample(TimeSpan.FromSeconds(1.0f))
+            .Subscribe(_ => 
+            {
+                hp.Value -= 1;
+            }).AddTo(this.gameObject);
+
+        hp.Where(_ => hp.Value <= 0)
+            .Subscribe(_ => 
+            {
+                GameMaster.Instance.isGameOver.Value = true;
+            }).AddTo(this.gameObject);
+
         // 移動処理
         this.UpdateAsObservable()
             .Subscribe(_ =>
@@ -76,17 +97,33 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(destroyEffect, this.transform.position, Quaternion.identity);
-                    GameManager.Instance.isGameOver.Value = true;
+                    hp.Value -= 3;
                 }
             }).AddTo(this.gameObject);
+
+        this.OnTriggerEnterAsObservable()
+        .Where(c => c.gameObject.tag == "Boss")
+        .Subscribe(c =>
+        {
+            BossManager boss;
+            boss = c.gameObject.GetComponent<BossManager>();
+            GameMaster.Instance.AddScore.OnNext(boss.score);
+            boss.EnemyDestroy();
+        }).AddTo(this.gameObject);
+
+        this.OnTriggerEnterAsObservable()
+        .Where(c => c.gameObject.tag == "Pulse")
+        .Subscribe(c =>
+        {
+            inPulse.Value = false;
+        }).AddTo(this.gameObject);
 
         // プレイヤーがエリア外であればダメージを受ける
         this.OnTriggerExitAsObservable()
             .Where(c => c.gameObject.tag == "Pulse")
             .Subscribe(c =>
             {
-
+                inPulse.Value = true;
             }).AddTo(this.gameObject);
     }
 }

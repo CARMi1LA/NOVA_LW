@@ -16,35 +16,35 @@ MonoBehaviour:
   - hp: 100
     barrier: 0
     atk: 10
-    exp: 1000
+    score: 0
     moveSpeed: 10
   - hp: 120
     barrier: 0
     atk: 20
-    exp: 1500
+    score: 0
     moveSpeed: 10
   - hp: 130
     barrier: 0
     atk: 25
-    exp: 1800
+    score: 0
     moveSpeed: 10
   - hp: 150
     barrier: 0
     atk: 30
-    exp: 2000
+    score: 0
     moveSpeed: 10
   - hp: 0
     barrier: 0
     atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0
   - hp: 0
     barrier: 0
     atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0
   - hp: 0
     barrier: 0
     atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0

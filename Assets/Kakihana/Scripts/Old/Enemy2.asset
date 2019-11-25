@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16c2d542cedd4314fb2158ef8ee87462, type: 3}
-  m_Name: Enemy3
+  m_Name: Enemy2
   m_EditorClassIdentifier: 
   EnemyStatusList:
+  - hp: 10
+    barrier: 0
+    atk: 20
+    score: 0
+    moveSpeed: 10
+  - hp: 15
+    barrier: 0
+    atk: 25
+    score: 0
+    moveSpeed: 10
+  - hp: 20
+    barrier: 0
+    atk: 30
+    score: 0
+    moveSpeed: 10
   - hp: 0
     barrier: 0
     atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0
   - hp: 0
     barrier: 0
     atk: 0
-    exp: 0
-    moveSpeed: 0
-  - hp: 0
-    barrier: 0
-    atk: 0
-    exp: 0
-    moveSpeed: 0
-  - hp: 0
-    barrier: 0
-    atk: 0
-    exp: 0
-    moveSpeed: 0
-  - hp: 0
-    barrier: 0
-    atk: 0
-    exp: 0
+    score: 0
     moveSpeed: 0
