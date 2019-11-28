@@ -9,15 +9,15 @@ using UniRx.Triggers;
 using Random = UnityEngine.Random;
 public class StageManager : SMSingleton<StageManager>
 {
+    // ステージのデータリスト
     public StageDataList dataList;
+    // ステージのデータ
     public StageData stageData;
 
     // 読み込みたいステージID
     public int loadStageID = 0;
     // 収縮フラグ
     public BoolReactiveProperty shrinkPulse = new BoolReactiveProperty(false);
-    // 
-    [SerializeField] public float size;
 
     protected override void Awake()
     {

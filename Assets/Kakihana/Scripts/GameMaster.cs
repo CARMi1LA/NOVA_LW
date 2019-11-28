@@ -29,6 +29,8 @@ public class GameMaster : SingletonGM<GameMaster>
     // Start is called before the first frame update
     void Start()
     {
+        // スコアの初期化
+        gameScore.Value = 0;
         // スコアUIを表示
         scoreUI.text = string.Format("Score:{0}", gameScore);
         // ゲーム開始時、クリアとゲームオーバーUIを非表示
@@ -37,32 +39,42 @@ public class GameMaster : SingletonGM<GameMaster>
         // HPUIを表示
         hpUI.text = string.Format("HP:{0}", player.hp.Value);
 
+        // スコア加算処理
         AddScore.Subscribe(value => 
             {
+                // スコアを加算
                 gameScore.Value += value;
+                // UIに反映させる
                 scoreUI.text = string.Format("Score:{0}", gameScore.Value);
             }).AddTo(this.gameObject);
 
+        // HPUI処理
         player.hp
             .Subscribe(_ => 
             {
+                // HPをUIに反映させる
                 hpUI.text = string.Format("HP:{0}", player.hp.Value);
             }).AddTo(this.gameObject);
 
+        // クリア処理
         isClear
             .Where(_ => isClear.Value == true)
             .Subscribe(_ => 
             {
+                // クリアをUIに表示
                 clearUI.enabled = true;
             }).AddTo(this.gameObject);
 
+        // ゲームオーバー処理
         isGameOver
-            .Where(_ => isClear.Value == true)
+            .Where(_ => isGameOver.Value == true)
             .Subscribe(_ => 
             {
+                // ゲームオーバーをUIに表示
                 gameOverUI.enabled = true;
             }).AddTo(this.gameObject);
 
+        // ボス出現処理
         gameScore
             .Where(_ => gameScore.Value >= 100)
             .Subscribe(_ => 
