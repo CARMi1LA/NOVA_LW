@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat FrameRight
-  m_Shader: {fileID: -6465566751694194690, guid: c176d0d0a98f85c479f63d30c7f709f5,
+  m_Name: Mat HUDOutLine 3
+  m_Shader: {fileID: -6465566751694194690, guid: 8750bda41b078bc468eeef5a36e05079,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,14 +21,16 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_E00F8921:
-        m_Texture: {fileID: 2800000, guid: fde826701613932438d801f55042e1f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1babc400b3cc81048809c7a5fd52f89a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_6A20D12: 3
+    - Vector1_6A20D12: 1
     - Vector1_75F3F192: 0.17
     - Vector1_8EBF65B2: 7
     - Vector1_AAB25B51: 0
     - Vector1_C4D34951: 1
+    - Vector1_CAF28A50: 1
     m_Colors:
-    - Color_E11A57A1: {r: 1.160784, g: 2, b: 1.984314, a: 0}
+    - Color_5B67333B: {r: 2, g: 2, b: 2, a: 0}
+    - Color_E11A57A1: {r: 0.72404027, g: 1.0943396, b: 0, a: 0}
